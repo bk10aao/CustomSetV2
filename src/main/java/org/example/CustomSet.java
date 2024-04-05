@@ -20,12 +20,16 @@ public class CustomSet<T> implements Cloneable {
     }
 
     public CustomSet(Collection<T> c) {
+        if(c == null) throw new NullPointerException();
         set = new LinkedList[setSize];
         for(T item : c) add(item);
     }
 
     public CustomSet(int initialCapacity) {
-        if(initialCapacity > setSize) setSize = initialCapacity;
+        if(initialCapacity > setSize) {
+            setSize = initialCapacity;
+            MOD_VALUE = getLargestPrime();
+        }
         set = new LinkedList[setSize];
     }
 
@@ -61,6 +65,17 @@ public class CustomSet<T> implements Cloneable {
         return super.clone();
     }
 
+    public boolean contains(T item) {
+        return Arrays.stream(set).filter(Objects::nonNull).anyMatch(l -> IntStream.range(0, l.size()).anyMatch(i -> l.get(i).equals(item)));
+    }
+
+    public int getSize() {
+        return size;
+    }
+    public int getSetSize() {
+        return setSize;
+    }
+
     public boolean remove(T item) {
         if(item == null) return false;
         if(contains(item)) {
@@ -78,17 +93,6 @@ public class CustomSet<T> implements Cloneable {
             }
         }
         return false;
-    }
-
-    public boolean contains(T item) {
-        return Arrays.stream(set).filter(Objects::nonNull).anyMatch(l -> IntStream.range(0, l.size()).anyMatch(i -> l.get(i).equals(item)));
-    }
-
-    public int getSize() {
-        return size;
-    }
-    public int getSetSize() {
-        return setSize;
     }
 
     public String toString() {

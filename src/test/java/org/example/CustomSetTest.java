@@ -8,6 +8,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CustomSetTest {
@@ -41,6 +42,12 @@ class CustomSetTest {
     public void onConstructingSet_withSizeOf_5_returnsSetSizeOf_10() {
         CustomSet<Integer> customSet = new CustomSet<>(5);
         assertEquals(10, customSet.getSetSize());
+    }
+
+    @Test
+    public void onConstructingSet_withCollectionOfNull_throws_NullPointerException() {
+        assertThrows(NullPointerException.class,
+                ()-> new CustomSet<>(null));
     }
 
     @Test
