@@ -39,6 +39,12 @@ class CustomSetTest {
     }
 
     @Test
+    public void onConstructingSet_withSizeLessThan_0_throws_IllegalArguementException() {
+        assertThrows(IllegalArgumentException.class,
+                ()-> new CustomSet<>(-1));
+    }
+
+    @Test
     public void onConstructingSet_withSizeOf_5_returnsSetSizeOf_10() {
         CustomSet<Integer> customSet = new CustomSet<>(5);
         assertEquals(10, customSet.getSetSize());

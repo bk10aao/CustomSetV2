@@ -26,6 +26,7 @@ public class CustomSet<T> implements Cloneable {
     }
 
     public CustomSet(int initialCapacity) {
+        if(initialCapacity < 0) throw new IllegalArgumentException();
         if(initialCapacity > setSize) {
             setSize = initialCapacity;
             MOD_VALUE = getLargestPrime();
