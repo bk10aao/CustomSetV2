@@ -17,18 +17,19 @@ class CustomSetTest {
     public void onConstructingSet_returnsSetSizeOf_10() {
         CustomSet<Integer> customSet = new CustomSet<>();
         assertEquals(10, customSet.getSetSize());
+        assertTrue(customSet.isEmpty());
     }
 
     @Test
     public void onConstructingSet_withCollectionOfFiveItems_returnsSetSizeOf_10_andSizeOf_5() {
-        Collection<Integer> collection = new ArrayList<Integer>();
+        Collection<Integer> collection = new ArrayList<>();
         collection.add(10);
         collection.add(20);
         collection.add(30);
         collection.add(40);
         collection.add(50);
         CustomSet<Integer> customSet = new CustomSet<>(collection);
-        assertEquals(5, customSet.getSize());
+        assertEquals(5, customSet.size());
         assertEquals(10, customSet.getSetSize());
         assertTrue(customSet.contains(10));
         assertTrue(customSet.contains(20));
@@ -57,10 +58,23 @@ class CustomSetTest {
     }
 
     @Test
+    public void onConstructingSetWithZeroItems_on_isEmpty_returnsTrue() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        assertTrue(customSet.isEmpty());
+    }
+
+    @Test
+    public void onConstructingSetWithOneItem_on_isEmpty_returnsFalse() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        assertFalse(customSet.isEmpty());
+    }
+
+    @Test
     public void onAddingToSet_10_returns_true_and_sizeOf_1() {
         CustomSet<Integer> customSet = new CustomSet<>();
         assertTrue(customSet.add(10));
-        assertEquals(1, customSet.getSize());
+        assertEquals(1, customSet.size());
     }
 
     @Test
@@ -71,7 +85,7 @@ class CustomSetTest {
             customSet.add(random.nextInt());
         }
 
-        assertEquals(2, customSet.getSize());
+        assertEquals(2, customSet.size());
     }
 
     @Test
@@ -83,16 +97,16 @@ class CustomSetTest {
             customSet.add(random.nextInt());
         }
 
-        assertEquals(10, customSet.getSize());
+        assertEquals(10, customSet.size());
     }
 
     @Test
     public void onAddingToSet_twoIdenticalNumbersToSet_onlyAddsOne() {
         CustomSet<Integer> customSet = new CustomSet<>();
         assertTrue(customSet.add(10));
-        assertEquals(1, customSet.getSize());
+        assertEquals(1, customSet.size());
         assertFalse(customSet.add(10));
-        assertEquals(1, customSet.getSize());
+        assertEquals(1, customSet.size());
     }
 
     @Test
@@ -104,7 +118,7 @@ class CustomSetTest {
             customSet.add(random.nextInt());
         }
 
-        assertEquals(50, customSet.getSize());
+        assertEquals(50, customSet.size());
         assertEquals(160, customSet.getSetSize());
     }
 
@@ -114,7 +128,7 @@ class CustomSetTest {
         customSet.add(1);
         customSet.add(1);
 
-        assertEquals(1, customSet.getSize());
+        assertEquals(1, customSet.size());
         System.out.println(customSet);
         assertEquals(10, customSet.getSetSize());
     }
@@ -126,7 +140,7 @@ class CustomSetTest {
         customSet.add(1);
         customSet.add(2);
 
-        assertEquals(2, customSet.getSize());
+        assertEquals(2, customSet.size());
         System.out.println(customSet);
         assertEquals(10, customSet.getSetSize());
     }
@@ -137,7 +151,7 @@ class CustomSetTest {
         customSet.add(10);
         customSet.add(20);
 
-        assertEquals(2, customSet.getSize());
+        assertEquals(2, customSet.size());
         assertFalse(customSet.remove(30));
         assertEquals(10, customSet.getSetSize());
     }
@@ -148,9 +162,9 @@ class CustomSetTest {
         customSet.add(10);
         customSet.add(20);
 
-        assertEquals(2, customSet.getSize());
+        assertEquals(2, customSet.size());
         assertFalse(customSet.remove(null));
-        assertEquals(2, customSet.getSize());
+        assertEquals(2, customSet.size());
         assertEquals(10, customSet.getSetSize());
     }
 
@@ -160,9 +174,9 @@ class CustomSetTest {
         customSet.add(10);
         customSet.add(20);
 
-        assertEquals(2, customSet.getSize());
+        assertEquals(2, customSet.size());
         assertTrue(customSet.remove(10));
-        assertEquals(1, customSet.getSize());
+        assertEquals(1, customSet.size());
         assertEquals(10, customSet.getSetSize());
     }
 
@@ -175,10 +189,10 @@ class CustomSetTest {
             customSet.add(random.nextInt());
         }
 
-        assertEquals(50, customSet.getSize());
+        assertEquals(50, customSet.size());
         assertEquals(160, customSet.getSetSize());
         customSet.clear();
-        assertEquals(0, customSet.getSize());
+        assertEquals(0, customSet.size());
         assertEquals(10, customSet.getSetSize());
     }
 }

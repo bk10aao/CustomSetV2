@@ -70,11 +70,12 @@ public class CustomSet<T> implements Cloneable {
         return Arrays.stream(set).filter(Objects::nonNull).anyMatch(l -> IntStream.range(0, l.size()).anyMatch(i -> l.get(i).equals(item)));
     }
 
-    public int getSize() {
-        return size;
-    }
     public int getSetSize() {
         return setSize;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     public boolean remove(T item) {
@@ -94,6 +95,10 @@ public class CustomSet<T> implements Cloneable {
             }
         }
         return false;
+    }
+
+    public int size() {
+        return size;
     }
 
     public String toString() {
