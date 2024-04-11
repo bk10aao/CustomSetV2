@@ -5,13 +5,13 @@ import java.util.Objects;
 import java.util.stream.IntStream;
 
 @SuppressWarnings("unchecked")
-public class CustomSet<T> implements Cloneable {
+public class CustomSet<T> implements Cloneable, SetInterface<T> {
 
-    private int setSize = 10;
+    private int setSize = 11;
     private int size = 0;
     private int MOD_VALUE = getLargestPrime();
 
-    private LinkedList<T>[] set;
+    private LinkedList<Object>[] set;
 
     public CustomSet() {
         set = new LinkedList[setSize];
@@ -25,11 +25,15 @@ public class CustomSet<T> implements Cloneable {
 
     public CustomSet(int initialCapacity) {
         if(initialCapacity < 0) throw new IllegalArgumentException();
+        if(!isPrime(initialCapacity)) {
+            initialCapacity = nextPrime(initialCapacity);
+        }
         if(initialCapacity > setSize) {
             setSize = initialCapacity;
             MOD_VALUE = getLargestPrime();
         }
         set = new LinkedList[setSize];
+
     }
 
     //TODO: implement and test
@@ -38,7 +42,7 @@ public class CustomSet<T> implements Cloneable {
         set = new LinkedList[setSize];
     }
 
-    public boolean add(T item) {
+    public boolean add(Object item) {
         if(!contains(item)) {
             int index = Math.abs(item.hashCode()) % MOD_VALUE;
             if (set[index] == null) {
@@ -53,7 +57,7 @@ public class CustomSet<T> implements Cloneable {
     }
 
     public void clear() {
-        setSize = 10;
+        setSize = 11;
         size = 0;
         MOD_VALUE = getLargestPrime();
         set = new LinkedList[setSize];
@@ -64,7 +68,7 @@ public class CustomSet<T> implements Cloneable {
         return super.clone();
     }
 
-    public boolean contains(T item) {
+    public boolean contains(Object item) {
         return Arrays.stream(set).filter(Objects::nonNull).anyMatch(l -> IntStream.range(0, l.size()).anyMatch(i -> l.get(i).equals(item)));
     }
 
@@ -76,17 +80,16 @@ public class CustomSet<T> implements Cloneable {
         return size == 0;
     }
 
-    public boolean remove(T item) {
+    public boolean remove(Object item) {
         if(item == null) return false;
         if(contains(item)) {
-            for (LinkedList<T> checkSet : set) {
+            for (LinkedList<Object> checkSet : set) {
                 if (checkSet == null) continue;
                 for (int x = 0; x < checkSet.size(); x++) {
                     if (checkSet.get(x) == item) {
                         checkSet.set(x, null);
                         size--;
-                        if(size <= setSize / 4 && setSize < 10)
-                            reduce();
+                        if(setSize > 11 && size <= setSize / 4) reduce();
                         return true;
                     }
                 }
@@ -104,8 +107,8 @@ public class CustomSet<T> implements Cloneable {
     }
 
     private void expand() {
-        setSize *= 2;
-        LinkedList<T>[] temp = new LinkedList[setSize];
+        setSize = nextPrime(setSize);
+        LinkedList<Object>[] temp = new LinkedList[setSize];
         System.arraycopy(set, 0, temp, 0, set.length);
         set = temp;
         MOD_VALUE = getLargestPrime();
@@ -123,11 +126,22 @@ public class CustomSet<T> implements Cloneable {
         return true;
     }
 
-    //TODO: trusting at the moment as testing is difficult
+    public static int nextPrime(int num) {
+        num++;
+        for (int i = 2; i < num; i++) {
+            if(num % i == 0) {
+                num++;
+                i = 2;
+            }
+        }
+        return num;
+    }
+
     private void reduce() {
-        LinkedList<T>[] reducedSet = new LinkedList[setSize / 2];
+        if(setSize <= 10) return;
+        LinkedList<Object>[] reducedSet = new LinkedList[setSize / 2];
         int insertIndex = 0;
-        for (LinkedList<T> list : set) if (list != null) reducedSet[insertIndex++] = list;
+        for (LinkedList<Object> list : set) if (list != null) reducedSet[insertIndex++] = list;
         setSize = setSize / 2;
         set = reducedSet;
     }
