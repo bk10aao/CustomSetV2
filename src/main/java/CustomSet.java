@@ -126,23 +126,29 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         return true;
     }
 
-    public static int nextPrime(int num) {
+    private static int nextPrime(int num) {
         num++;
-        for (int i = 2; i < num; i++) {
-            if(num % i == 0) {
-                num++;
-                i = 2;
-            }
+        while(!isPrime(num)) {
+            num++;
+        }
+        return num;
+    }
+
+    private int previousPrime(int num) {
+        if(num <= 11) return 11;
+        while(!isPrime(num)) {
+            num--;
         }
         return num;
     }
 
     private void reduce() {
         if(setSize <= 10) return;
-        LinkedList<Object>[] reducedSet = new LinkedList[setSize / 2];
+        setSize = previousPrime(setSize);
+        LinkedList<Object>[] reducedSet = new LinkedList[setSize];
         int insertIndex = 0;
         for (LinkedList<Object> list : set) if (list != null) reducedSet[insertIndex++] = list;
-        setSize = setSize / 2;
         set = reducedSet;
+        MOD_VALUE = getLargestPrime();
     }
 }
