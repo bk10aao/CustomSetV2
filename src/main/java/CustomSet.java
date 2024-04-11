@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 @SuppressWarnings("unchecked")
 public class CustomSet<T> implements Cloneable, SetInterface<T> {
 
+    public static double LOAD_FACTOR = 0.75;
     private int setSize = 11;
     private int size = 0;
     private int MOD_VALUE = getLargestPrime();
@@ -25,9 +26,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
 
     public CustomSet(int initialCapacity) {
         if(initialCapacity < 0) throw new IllegalArgumentException();
-        if(!isPrime(initialCapacity)) {
-            initialCapacity = nextPrime(initialCapacity);
-        }
+        if(!isPrime(initialCapacity)) initialCapacity = nextPrime(initialCapacity);
         if(initialCapacity > setSize) {
             setSize = initialCapacity;
             MOD_VALUE = getLargestPrime();
@@ -36,10 +35,12 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
 
     }
 
-    //TODO: implement and test
     public CustomSet(int initialCapacity, double loadFactor) {
+        if(initialCapacity < 0) throw new IllegalArgumentException();
+        if(loadFactor < 0) throw new IllegalArgumentException();
         if(initialCapacity > setSize) setSize = initialCapacity;
         set = new LinkedList[setSize];
+        LOAD_FACTOR = loadFactor;
     }
 
     public boolean add(Object item) {
@@ -50,7 +51,8 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
                 set[index].add(item);
             } else set[index].add(item);
             size++;
-            if(set[index].size() > 3) expand();
+            if((double)size / (double)setSize > LOAD_FACTOR)
+                expand();
             return true;
         }
         return false;
@@ -128,17 +130,13 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
 
     private static int nextPrime(int num) {
         num++;
-        while(!isPrime(num)) {
-            num++;
-        }
+        while(!isPrime(num)) num++;
         return num;
     }
 
     private int previousPrime(int num) {
         if(num <= 11) return 11;
-        while(!isPrime(num)) {
-            num--;
-        }
+        while(!isPrime(num)) num--;
         return num;
     }
 

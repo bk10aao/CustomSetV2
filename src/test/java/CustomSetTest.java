@@ -12,6 +12,41 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CustomSetTest {
 
+    @Test
+    public void onCreatingSetWitNegativeSize_and_loadFactorOf_50_throws_IllegalArguementException() {
+        assertThrows(IllegalArgumentException.class,
+                ()-> new CustomSet<>(-10, 0.5));
+    }
+
+    @Test
+    public void onCreatingSetWithNegativeSize_and_negativeLoadFactor_throws_IllegalArguementException() {
+        assertThrows(IllegalArgumentException.class,
+                ()-> new CustomSet<>(-10, -10));
+    }
+
+    @Test
+    public void onCreatingSetWithSizeOf_50_and_negativeLoadFactor_throws_IllegalArguementException() {
+        assertThrows(IllegalArgumentException.class,
+                ()-> new CustomSet<>(50, -10));
+    }
+
+    @Test
+    public void onCreatingSetWithSizeOf_50_andLoadFactorOf_50_onAdding_25Numbers_incresesSetSizeTo_51() {
+        CustomSet<Integer> customSet = new CustomSet<>(50, 0.5);
+        Random random = new Random();
+        for (int i = 0; i < 26; i++)
+            customSet.add(random.nextInt());
+        assertEquals(53, customSet.getSetSize());
+    }
+
+    @Test
+    public void onCreatingSetWithSizeOf_50_andLoadFactorOf_50_onAdding_50Numbers_incresesSetSizeTo_101() {
+        CustomSet<Integer> customSet = new CustomSet<>(50, 0.5);
+        Random random = new Random();
+        for (int i = 0; i < 50; i++)
+            customSet.add(random.nextInt());
+        assertEquals(101, customSet.getSetSize());
+    }
 
     @Test
     public void onCreatingSetWithSizeOf_50_returnsSetSizeOf_53() {
@@ -21,7 +56,7 @@ class CustomSetTest {
     }
 
     @Test
-    public void onConstructingSet_returnsSetSizeOf_10() {
+    public void onConstructingSet_returnsSetSizeOf_11() {
         CustomSet<Integer> customSet = new CustomSet<>();
 
         assertEquals(11, customSet.getSetSize());
