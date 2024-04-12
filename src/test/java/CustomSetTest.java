@@ -34,7 +34,7 @@ class CustomSetTest {
     public void onCreatingSetWithSizeOf_50_andLoadFactorOf_50_onAdding_25Numbers_incresesSetSizeTo_51() {
         CustomSet<Integer> customSet = new CustomSet<>(50, 0.5);
         Random random = new Random();
-        for (int i = 0; i < 26; i++)
+        for (int i = 0; i < 27; i++)
             customSet.add(random.nextInt());
         assertEquals(53, customSet.getSetSize());
     }
