@@ -1,5 +1,3 @@
-import java.util.Collection;
-
 public interface SetInterface<T> {
 
     /**
