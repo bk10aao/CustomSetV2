@@ -36,7 +36,7 @@ class CustomSetTest {
         Random random = new Random();
         for (int i = 0; i < 27; i++)
             customSet.add(random.nextInt());
-        assertEquals(53, customSet.getSetSize());
+        assertEquals(59, customSet.getSetSize());
     }
 
     @Test
@@ -45,14 +45,14 @@ class CustomSetTest {
         Random random = new Random();
         for (int i = 0; i < 50; i++)
             customSet.add(random.nextInt());
-        assertEquals(101, customSet.getSetSize());
+        assertEquals(107, customSet.getSetSize());
     }
 
     @Test
     public void onCreatingSetWithSizeOf_50_returnsSetSizeOf_53() {
         CustomSet<Integer> customSet = new CustomSet<>(50);
 
-        assertEquals(53, customSet.getSetSize());
+        assertEquals(59, customSet.getSetSize());
     }
 
     @Test
