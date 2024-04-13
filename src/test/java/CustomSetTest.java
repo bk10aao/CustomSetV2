@@ -226,6 +226,7 @@ class CustomSetTest {
 
         for(int i = 0; i < 100; i++)
             customSet.add(i);
+
         assertFalse(customSet.contains(101));
         assertTrue(customSet.contains(99));
         assertTrue(customSet.contains(55));
@@ -255,9 +256,8 @@ class CustomSetTest {
         assertTrue(customSet.contains(55));
         assertTrue(customSet.contains(33));
 
-        for(int i = 0; i < 250; i++) {
+        for(int i = 0; i < 250; i++)
             customSet.remove(i);
-        }
 
         assertFalse(customSet.contains(10));
         assertFalse(customSet.contains(11));
