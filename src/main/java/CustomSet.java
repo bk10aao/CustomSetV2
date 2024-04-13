@@ -32,7 +32,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     public CustomSet(int initialCapacity, double loadFactor) {
         if(initialCapacity < 0)
             throw new IllegalArgumentException();
-        if(loadFactor < 0)
+        if(loadFactor < 0 || loadFactor > 1)
             throw new IllegalArgumentException();
         generateSet(initialCapacity);
         LOAD_FACTOR = loadFactor;
