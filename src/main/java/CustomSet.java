@@ -9,7 +9,6 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     private int primesIndex = 0;
     private int size = 0;
     private int setSize = 11;
-    private int MOD_VALUE = 11;
 
     private LinkedList<Object>[] set;
 
@@ -41,7 +40,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
 
     public boolean add(Object item) {
         if(!contains(item)) {
-            int index = Math.abs(item.hashCode()) % MOD_VALUE;
+            int index = Math.abs(item.hashCode()) % setSize;
             if (set[index] == null) {
                 set[index] = new LinkedList<>();
                 set[index].add(item);
@@ -58,7 +57,6 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     public void clear() {
         setSize = 11;
         size = 0;
-        MOD_VALUE = 11;
         primesIndex = 0;
         set = new LinkedList[setSize];
     }
@@ -69,7 +67,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     }
 
     public boolean contains(Object item) {
-        int index = Math.abs(item.hashCode()) % MOD_VALUE;
+        int index = Math.abs(item.hashCode()) % setSize;
         if(set[index] != null)
             return set[index].contains(item);
         return false;
@@ -86,7 +84,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     public boolean remove(Object item) {
         if(item == null) return false;
         if(contains(item)) {
-            int index = Math.abs(item.hashCode()) % MOD_VALUE;
+            int index = Math.abs(item.hashCode()) % setSize;
             set[index].remove(item);
             size--;
             if(setSize > 11 && size <= setSize / 4)
@@ -106,12 +104,11 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
 
     private void expand() {
         setSize = Primes.primes[++primesIndex];
-        MOD_VALUE = setSize;
         LinkedList<Object>[] newSet = new LinkedList[setSize];
         for (LinkedList<Object> objects : set)
             if (objects != null)
                 for (Object item : objects) {
-                    int index = Math.abs(item.hashCode()) % MOD_VALUE;
+                    int index = Math.abs(item.hashCode()) % setSize;
                     if (newSet[index] == null)
                         newSet[index] = new LinkedList<>();
                     newSet[index].add(item);
@@ -122,12 +119,11 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     private void reduce() {
         primesIndex = (primesIndex / 2) + 1;
         setSize = Primes.primes[primesIndex];
-        MOD_VALUE = setSize;
         LinkedList<Object>[] newSet = new LinkedList[setSize];
         for(int i = 0; i < set.length; i++) {
             if(set[i] != null) {
                 for(Object item : set[i]) {
-                    int index = Math.abs(item.hashCode()) % MOD_VALUE;
+                    int index = Math.abs(item.hashCode()) % setSize;
                     if(newSet[index] == null)
                         newSet[index] = new LinkedList<>();
                     newSet[i].add(item);
@@ -142,8 +138,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
             for(int i = primesIndex + 1; i < Primes.primes.length; i++) {
                 if(Primes.primes[i] > initialCapacity) {
                     setSize = Primes.primes[i];
-                    primesIndex = i;
-                    MOD_VALUE = Primes.primes[primesIndex--];
+                    primesIndex = i - 1;
                     break;
                 }
             }
