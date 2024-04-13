@@ -18,19 +18,23 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     }
 
     public CustomSet(Collection<T> c) {
-        if(c == null) throw new NullPointerException();
+        if(c == null)
+            throw new NullPointerException();
         set = new LinkedList[Primes.primes[0]];
         for(T item : c) add(item);
     }
 
     public CustomSet(int initialCapacity) {
-        if(initialCapacity < 0) throw new IllegalArgumentException();
+        if(initialCapacity < 0)
+            throw new IllegalArgumentException();
         generateSet(initialCapacity);
     }
 
     public CustomSet(int initialCapacity, double loadFactor) {
-        if(initialCapacity < 0) throw new IllegalArgumentException();
-        if(loadFactor < 0) throw new IllegalArgumentException();
+        if(initialCapacity < 0)
+            throw new IllegalArgumentException();
+        if(loadFactor < 0)
+            throw new IllegalArgumentException();
         generateSet(initialCapacity);
         LOAD_FACTOR = loadFactor;
     }
@@ -41,9 +45,11 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
             if (set[index] == null) {
                 set[index] = new LinkedList<>();
                 set[index].add(item);
-            } else set[index].add(item);
+            } else
+                set[index].add(item);
             size++;
-            if((double)size / (double)setSize > LOAD_FACTOR) expand();
+            if((double)size / (double)setSize > LOAD_FACTOR)
+                expand();
             return true;
         }
         return false;
@@ -53,6 +59,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         setSize = 11;
         size = 0;
         MOD_VALUE = 11;
+        primesIndex = 0;
         set = new LinkedList[setSize];
     }
 
@@ -63,11 +70,9 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
 
     public boolean contains(Object item) {
         int index = Math.abs(item.hashCode()) % MOD_VALUE;
-        if(set[index] != null) {
+        if(set[index] != null)
             return set[index].contains(item);
-        }
         return false;
-//        return Arrays.stream(set).filter(Objects::nonNull).anyMatch(l -> IntStream.range(0, l.size()).anyMatch(i -> l.get(i).equals(item)));
     }
 
     public int getSetSize() {
@@ -84,7 +89,8 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
             int index = Math.abs(item.hashCode()) % MOD_VALUE;
             set[index].remove(item);
             size--;
-            if(setSize > 11 && size <= setSize / 4) reduce();
+            if(setSize > 11 && size <= setSize / 4)
+                reduce();
             return true;
         }
         return false;
@@ -102,20 +108,14 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         setSize = Primes.primes[++primesIndex];
         MOD_VALUE = setSize;
         LinkedList<Object>[] newSet = new LinkedList[setSize];
-        for (LinkedList<Object> objects : set) {
-            if (objects != null) {
+        for (LinkedList<Object> objects : set)
+            if (objects != null)
                 for (Object item : objects) {
                     int index = Math.abs(item.hashCode()) % MOD_VALUE;
-                    if (newSet[index] == null) {
+                    if (newSet[index] == null)
                         newSet[index] = new LinkedList<>();
-                        newSet[index].add(item);
-                    } else {
-                        newSet[index].add(item);
-                    }
+                    newSet[index].add(item);
                 }
-            }
-        }
-
         set = newSet;
     }
 
@@ -128,12 +128,9 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
             if(set[i] != null) {
                 for(Object item : set[i]) {
                     int index = Math.abs(item.hashCode()) % MOD_VALUE;
-                    if(newSet[index] == null) {
+                    if(newSet[index] == null)
                         newSet[index] = new LinkedList<>();
-                        newSet[i].add(item);
-                    } else {
-                        newSet[i].add(item);
-                    }
+                    newSet[i].add(item);
                 }
             }
         }
