@@ -73,6 +73,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         return false;
     }
 
+    //THIS IS REALLY JUST USED TO TEST LOAD FACTOR
     public int getSetSize() {
         return setSize;
     }

@@ -31,7 +31,7 @@ class CustomSetTest {
     }
 
     @Test
-    public void onCreatingSetWithSizeOf_50_andLoadFactorOf_50_onAdding_25Numbers_increasesSetSizeTo_51() {
+    public void onCreatingSetWithSizeOf_50_andLoadFactorOf_50_onAdding_25Numbers_increasesSetSizeTo_53() {
         CustomSet<Integer> customSet = new CustomSet<>(50, 0.5);
         Random random = new Random();
         for (int i = 0; i < 27; i++)
@@ -56,11 +56,10 @@ class CustomSetTest {
     }
 
     @Test
-    public void onConstructingSet_returnsSetSizeOf_11() {
+    public void onConstructingSet_returnsEmptySet() {
         CustomSet<Integer> customSet = new CustomSet<>();
-
-        assertEquals(11, customSet.getSetSize());
         assertTrue(customSet.isEmpty());
+        assertEquals(0, customSet.size());
     }
 
     @Test
@@ -70,7 +69,6 @@ class CustomSetTest {
         CustomSet<Integer> customSet = new CustomSet<>(collection);
 
         assertEquals(5, customSet.size());
-        assertEquals(11, customSet.getSetSize());
         assertTrue(customSet.contains(10));
         assertTrue(customSet.contains(20));
         assertTrue(customSet.contains(30));
@@ -83,13 +81,6 @@ class CustomSetTest {
     public void onConstructingSet_withSizeLessThan_0_throws_IllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 ()-> new CustomSet<>(-1));
-    }
-
-    @Test
-    public void onConstructingSet_withSizeOf_5_returnsSetSizeOf_10() {
-        CustomSet<Integer> customSet = new CustomSet<>(5);
-
-        assertEquals(11, customSet.getSetSize());
     }
 
     @Test
@@ -158,7 +149,6 @@ class CustomSetTest {
         assertTrue(customSet.add(1));
         assertFalse(customSet.add(1));
         assertEquals(1, customSet.size());
-        assertEquals(11, customSet.getSetSize());
     }
 
     @Test
@@ -171,7 +161,6 @@ class CustomSetTest {
         assertTrue(customSet.contains(1));
         assertTrue(customSet.contains(2));
         assertEquals(2, customSet.size());
-        assertEquals(11, customSet.getSetSize());
     }
 
     @Test
@@ -182,7 +171,6 @@ class CustomSetTest {
 
         assertEquals(2, customSet.size());
         assertFalse(customSet.remove(30));
-        assertEquals(11, customSet.getSetSize());
     }
 
     @Test
@@ -194,7 +182,6 @@ class CustomSetTest {
         assertEquals(2, customSet.size());
         assertFalse(customSet.remove(null));
         assertEquals(2, customSet.size());
-        assertEquals(11, customSet.getSetSize());
     }
 
     @Test
@@ -206,7 +193,6 @@ class CustomSetTest {
         assertEquals(2, customSet.size());
         assertTrue(customSet.remove(10));
         assertEquals(1, customSet.size());
-        assertEquals(11, customSet.getSetSize());
     }
 
     @Test
@@ -218,21 +204,12 @@ class CustomSetTest {
         customSet.clear();
 
         assertEquals(0, customSet.size());
-        assertEquals(11, customSet.getSetSize());
-    }
-
-    @Test
-    public void onCreatingSetWithSizeOf_5_returnsSetSizeOf_11() {
-        CustomSet<Integer> customSet = new CustomSet<>(5);
-
-        assertEquals(11, customSet.getSetSize());
     }
 
     @Test
     public void addLargeRangeOfNumbers_scalesAndIndexesCorrectlyOnHashCode() {
         CustomSet<Integer> customSet = new CustomSet<>();
 
-        assertEquals(11, customSet.getSetSize());
         for(int i = 0; i < 1000; i++)
             customSet.add(i);
 
@@ -270,7 +247,6 @@ class CustomSetTest {
     public void addEvenLargerRangeOfNumbers_scalesAndIndexesCorrectlyOnHashCode_andReducesCorrectly() {
         CustomSet<Integer> customSet = new CustomSet<>();
 
-        assertEquals(11, customSet.getSetSize());
         for(int i = 0; i < 1000; i++)
             customSet.add(i);
 
