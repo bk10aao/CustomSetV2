@@ -81,17 +81,11 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     public boolean remove(Object item) {
         if(item == null) return false;
         if(contains(item)) {
-            for (LinkedList<Object> checkSet : set) {
-                if (checkSet == null) continue;
-                for (int x = 0; x < checkSet.size(); x++) {
-                    if (checkSet.get(x) == item) {
-                        checkSet.set(x, null);
-                        size--;
-                        if(setSize > 11 && size <= setSize / 4) reduce();
-                        return true;
-                    }
-                }
-            }
+            int index = Math.abs(item.hashCode()) % MOD_VALUE;
+            set[index].remove(item);
+            size--;
+            if(setSize > 11 && size <= setSize / 4) reduce();
+            return true;
         }
         return false;
     }
