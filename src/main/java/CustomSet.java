@@ -5,7 +5,7 @@ import java.util.LinkedList;
 @SuppressWarnings("unchecked")
 public class CustomSet<T> implements Cloneable, SetInterface<T> {
 
-    public static double LOAD_FACTOR = 0.75;
+    private static double LOAD_FACTOR = 0.75;
     private int primesIndex = 0;
     private int size = 0;
     private int setSize = 3;
