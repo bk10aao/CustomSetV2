@@ -100,9 +100,7 @@ class CustomSetTest {
 
     @Test
     public void onConstructingSetWithZeroItems_on_isEmpty_returnsTrue() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-
-        assertTrue(customSet.isEmpty());
+        assertTrue(new CustomSet<>().isEmpty());
     }
 
     @Test
@@ -170,6 +168,8 @@ class CustomSetTest {
         customSet.add(1);
         customSet.add(2);
 
+        assertTrue(customSet.contains(1));
+        assertTrue(customSet.contains(2));
         assertEquals(2, customSet.size());
         assertEquals(11, customSet.getSetSize());
     }
@@ -233,10 +233,11 @@ class CustomSetTest {
         CustomSet<Integer> customSet = new CustomSet<>();
 
         assertEquals(11, customSet.getSetSize());
-        for(int i = 0; i < 1000; i++) {
+        for(int i = 0; i < 1000; i++)
             customSet.add(i);
-        }
+
         assertFalse(customSet.contains(1001));
+        assertFalse(customSet.contains(-1001));
         assertTrue(customSet.contains(999));
         assertTrue(customSet.contains(556));
         assertTrue(customSet.contains(333));
@@ -246,18 +247,15 @@ class CustomSetTest {
     public void addLargeRangeOfNumbers_scalesAndIndexesCorrectlyOnHashCode_andReducesCorrectly() {
         CustomSet<Integer> customSet = new CustomSet<>();
 
-        assertEquals(11, customSet.getSetSize());
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 100; i++)
             customSet.add(i);
-        }
         assertFalse(customSet.contains(101));
         assertTrue(customSet.contains(99));
         assertTrue(customSet.contains(55));
         assertTrue(customSet.contains(33));
 
-        for(int i = 0; i < 50; i++) {
+        for(int i = 0; i < 50; i++)
             customSet.remove(i);
-        }
 
         assertFalse(customSet.contains(10));
         assertFalse(customSet.contains(11));
@@ -273,9 +271,9 @@ class CustomSetTest {
         CustomSet<Integer> customSet = new CustomSet<>();
 
         assertEquals(11, customSet.getSetSize());
-        for(int i = 0; i < 1000; i++) {
+        for(int i = 0; i < 1000; i++)
             customSet.add(i);
-        }
+
         assertTrue(customSet.contains(101));
         assertTrue(customSet.contains(99));
         assertTrue(customSet.contains(55));
@@ -297,7 +295,8 @@ class CustomSetTest {
     private static CustomSet<Integer> createDynamicSet(int x) {
         CustomSet<Integer> customSet = new CustomSet<>();
         Random random = new Random();
-        for (int i = 0; i < x; i++) customSet.add(random.nextInt());
+        for (int i = 0; i < x; i++)
+            customSet.add(random.nextInt());
         return customSet;
     }
 }
