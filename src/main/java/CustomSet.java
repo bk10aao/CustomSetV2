@@ -121,29 +121,25 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         primesIndex = (primesIndex / 2) + 1;
         setSize = Primes.primes[primesIndex];
         LinkedList<Object>[] newSet = new LinkedList[setSize];
-        for(int i = 0; i < set.length; i++) {
-            if(set[i] != null) {
-                for(Object item : set[i]) {
+        for(int i = 0; i < set.length; i++)
+            if (set[i] != null)
+                for (Object item : set[i]) {
                     int index = Math.abs(item.hashCode()) % setSize;
-                    if(newSet[index] == null)
+                    if (newSet[index] == null)
                         newSet[index] = new LinkedList<>();
                     newSet[i].add(item);
                 }
-            }
-        }
         set = newSet;
     }
 
     private void generateSet(int initialCapacity) {
-        if(initialCapacity > Primes.primes[primesIndex]) {
-            for(int i = primesIndex + 1; i < Primes.primes.length; i++) {
-                if(Primes.primes[i] > initialCapacity) {
+        if(initialCapacity > Primes.primes[primesIndex])
+            for (int i = primesIndex + 1; i < Primes.primes.length; i++)
+                if (Primes.primes[i] > initialCapacity) {
                     setSize = Primes.primes[i];
                     primesIndex = i - 1;
                     break;
                 }
-            }
-        }
         set = new LinkedList[setSize];
     }
 }
