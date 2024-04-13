@@ -1,8 +1,6 @@
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.Objects;
-import java.util.stream.IntStream;
 
 @SuppressWarnings("unchecked")
 public class CustomSet<T> implements Cloneable, SetInterface<T> {
@@ -64,7 +62,12 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     }
 
     public boolean contains(Object item) {
-        return Arrays.stream(set).filter(Objects::nonNull).anyMatch(l -> IntStream.range(0, l.size()).anyMatch(i -> l.get(i).equals(item)));
+        int index = Math.abs(item.hashCode()) % MOD_VALUE;
+        if(set[index] != null) {
+            return set[index].contains(item);
+        }
+        return false;
+//        return Arrays.stream(set).filter(Objects::nonNull).anyMatch(l -> IntStream.range(0, l.size()).anyMatch(i -> l.get(i).equals(item)));
     }
 
     public int getSetSize() {
@@ -103,19 +106,44 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
 
     private void expand() {
         setSize = Primes.primes[++primesIndex];
-        LinkedList<Object>[] temp = new LinkedList[setSize];
-        IntStream.range(0, set.length).filter(i -> set[i] != null).forEach(i -> temp[i] = set[i]);
-        set = temp;
+        MOD_VALUE = setSize;
+        LinkedList<Object>[] newSet = new LinkedList[setSize];
+        for (LinkedList<Object> objects : set) {
+            if (objects != null) {
+                for (Object item : objects) {
+                    int index = Math.abs(item.hashCode()) % MOD_VALUE;
+                    if (newSet[index] == null) {
+                        newSet[index] = new LinkedList<>();
+                        newSet[index].add(item);
+                    } else {
+                        newSet[index].add(item);
+                    }
+                }
+            }
+        }
+
+        set = newSet;
     }
 
     private void reduce() {
-        if(setSize <= 10) return;
-        setSize = Primes.primes[--primesIndex];
-        LinkedList<Object>[] reducedSet = new LinkedList[setSize];
-        int insertIndex = 0;
-        for (LinkedList<Object> list : set) if (list != null) reducedSet[insertIndex++] = list;
-        set = reducedSet;
-        MOD_VALUE = Primes.primes[--primesIndex];
+        primesIndex = (primesIndex / 2) + 1;
+        setSize = Primes.primes[primesIndex];
+        MOD_VALUE = setSize;
+        LinkedList<Object>[] newSet = new LinkedList[setSize];
+        for(int i = 0; i < set.length; i++) {
+            if(set[i] != null) {
+                for(Object item : set[i]) {
+                    int index = Math.abs(item.hashCode()) % MOD_VALUE;
+                    if(newSet[index] == null) {
+                        newSet[index] = new LinkedList<>();
+                        newSet[i].add(item);
+                    } else {
+                        newSet[i].add(item);
+                    }
+                }
+            }
+        }
+        set = newSet;
     }
 
     private void generateSet(int initialCapacity) {
