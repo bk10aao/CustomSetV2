@@ -18,20 +18,20 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         set = new LinkedList[setSize];
     }
 
-    public CustomSet(Collection<T> c) {
+    public CustomSet(final Collection<T> c) {
         if(c == null)
             throw new NullPointerException();
         set = new LinkedList[primes[0]];
         for(T item : c) add(item);
     }
 
-    public CustomSet(int initialCapacity) {
+    public CustomSet(final int initialCapacity) {
         if(initialCapacity < 0)
             throw new IllegalArgumentException();
         generateSet(initialCapacity);
     }
 
-    public CustomSet(int initialCapacity, double loadFactor) {
+    public CustomSet(final int initialCapacity, final double loadFactor) {
         if(initialCapacity < 0)
             throw new IllegalArgumentException();
         if(loadFactor < 0 || loadFactor > 1)
@@ -40,7 +40,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         LOAD_FACTOR = loadFactor;
     }
 
-    public boolean add(Object item) {
+    public boolean add(final Object item) {
         if(!contains(item)) {
             int index = Math.abs(item.hashCode()) % setSize;
             if (set[index] == null) {
@@ -68,7 +68,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         return super.clone();
     }
 
-    public boolean contains(Object item) {
+    public boolean contains(final Object item) {
         int index = Math.abs(item.hashCode()) % setSize;
         if(set[index] != null)
             return set[index].contains(item);
@@ -84,7 +84,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         return size == 0;
     }
 
-    public boolean remove(Object item) {
+    public boolean remove(final Object item) {
         if(item == null) return false;
         if(contains(item)) {
             int index = Math.abs(item.hashCode()) % setSize;
@@ -135,7 +135,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         set = newSet;
     }
 
-    private void generateSet(int initialCapacity) {
+    private void generateSet(final int initialCapacity) {
         if(initialCapacity > primes[primesIndex])
             for (int i = primesIndex + 1; i < primes.length; i++)
                 if (primes[i] > initialCapacity) {
