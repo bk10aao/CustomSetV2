@@ -1,6 +1,8 @@
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Objects;
+import java.util.stream.IntStream;
 
 @SuppressWarnings("unchecked")
 public class CustomSet<T> implements Cloneable, SetInterface<T> {
@@ -106,14 +108,15 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     private void expand() {
         setSize = primes[++primesIndex];
         LinkedList<Object>[] newSet = new LinkedList[setSize];
-        for (LinkedList<Object> objects : set)
-            if (objects != null)
-                for (Object item : objects) {
+        Arrays.stream(set)
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
+                .forEach(item -> {
                     int index = Math.abs(item.hashCode()) % setSize;
                     if (newSet[index] == null)
                         newSet[index] = new LinkedList<>();
                     newSet[index].add(item);
-                }
+        });
         set = newSet;
     }
 
@@ -121,14 +124,14 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         primesIndex = (primesIndex / 2) + 1;
         setSize = primes[primesIndex];
         LinkedList<Object>[] newSet = new LinkedList[setSize];
-        for(int i = 0; i < set.length; i++)
-            if (set[i] != null)
-                for (Object item : set[i]) {
-                    int index = Math.abs(item.hashCode()) % setSize;
-                    if (newSet[index] == null)
-                        newSet[index] = new LinkedList<>();
-                    newSet[i].add(item);
-                }
+        IntStream.range(0, set.length)
+                    .filter(i -> set[i] != null)
+                    .forEach(i -> set[i].forEach(item -> {
+                        int index = Math.abs(item.hashCode()) % setSize;
+                        if (newSet[index] == null)
+                            newSet[index] = new LinkedList<>();
+                        newSet[i].add(item);
+                    }));
         set = newSet;
     }
 
