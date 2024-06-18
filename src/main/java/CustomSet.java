@@ -21,7 +21,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     public CustomSet(final Collection<T> c) {
         if(c == null)
             throw new NullPointerException();
-        set = new LinkedList[primes[0]];
+        set = new LinkedList[primes[primesIndex]];
         for(T item : c) add(item);
     }
 
