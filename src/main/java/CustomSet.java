@@ -12,7 +12,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     private int size = 0;
     private int setSize = 3;
 
-    private LinkedList<Object>[] set;
+    private LinkedList<T>[] set;
 
     public CustomSet() {
         set = new LinkedList[setSize];
@@ -22,7 +22,8 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         if(c == null)
             throw new NullPointerException();
         set = new LinkedList[primes[primesIndex]];
-        for(T item : c) add(item);
+        for(T item : c)
+            add(item);
     }
 
     public CustomSet(final int initialCapacity) {
@@ -40,7 +41,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         LOAD_FACTOR = loadFactor;
     }
 
-    public boolean add(final Object item) {
+    public boolean add(final T item) {
         if(!contains(item)) {
             int index = Math.abs(item.hashCode()) % setSize;
             if (set[index] == null) {
@@ -68,7 +69,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         return super.clone();
     }
 
-    public boolean contains(final Object item) {
+    public boolean contains(final T item) {
         int index = Math.abs(item.hashCode()) % setSize;
         if(set[index] != null)
             return set[index].contains(item);
@@ -84,7 +85,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         return size == 0;
     }
 
-    public boolean remove(final Object item) {
+    public boolean remove(final T item) {
         if(item == null) return false;
         if(contains(item)) {
             int index = Math.abs(item.hashCode()) % setSize;
@@ -101,13 +102,21 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
         return size;
     }
 
+    @Override
     public String toString() {
-        return Arrays.toString(set);
+        if(size == 0) return "{ }";
+        StringBuilder stringBuilder = new StringBuilder("{ ");
+        Arrays.stream(set)
+                .filter(Objects::nonNull)
+                .flatMap(Collection::stream)
+                .forEach(item -> stringBuilder.append(item)
+                                                .append(", "));
+        return stringBuilder.replace(stringBuilder.lastIndexOf(", "), stringBuilder.length(), " }").toString();
     }
 
     private void expand() {
         setSize = primes[++primesIndex];
-        LinkedList<Object>[] newSet = new LinkedList[setSize];
+        LinkedList<T>[] newSet = new LinkedList[setSize];
         Arrays.stream(set)
                 .filter(Objects::nonNull)
                 .flatMap(Collection::stream)
@@ -123,7 +132,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     private void reduce() {
         primesIndex = (primesIndex / 2) + 1;
         setSize = primes[primesIndex];
-        LinkedList<Object>[] newSet = new LinkedList[setSize];
+        LinkedList<T>[] newSet = new LinkedList[setSize];
         IntStream.range(0, set.length)
                     .filter(i -> set[i] != null)
                     .forEach(i -> set[i].forEach(item -> {

@@ -63,12 +63,13 @@ class CustomSetTest {
     }
 
     @Test
-    public void onConstructingSet_withCollectionOfFiveItems_returnsSetSizeOf_10_andSizeOf_5() {
+    public void onConstructingSet_withCollectionOfFiveItems_returnsSetSizeOf_11_andSizeOf_5() {
         Collection<Integer> collection = IntStream.iterate(10, i -> i <= 50, i -> i + 10).boxed().collect(Collectors.toList());
 
         CustomSet<Integer> customSet = new CustomSet<>(collection);
 
         assertEquals(5, customSet.size());
+        assertEquals(7, customSet.getSetSize());
         assertTrue(customSet.contains(10));
         assertTrue(customSet.contains(20));
         assertTrue(customSet.contains(30));
@@ -266,6 +267,29 @@ class CustomSetTest {
         assertTrue(customSet.contains(290));
         assertTrue(customSet.contains(950));
         assertTrue(customSet.contains(600));
+    }
+
+    @Test
+    public void onConstructingEmptySet_returnsEmptyCurlyBracket_on_toString() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        assertEquals("{ }", customSet.toString());
+    }
+
+    //NOTE: Because of not knowing the hashcode, which changes, we must check it exists in string, and it matches regex "\{ [0-9]+(, [0-9]+)+ }"
+    @Test
+    public void onConstructingSet_withCollectionOfFiveItems_returnsCorrect_toString() {
+        Collection<Integer> collection = IntStream.iterate(0, i -> i <= 50, i -> i + 10).boxed().collect(Collectors.toList());
+        CustomSet<Integer> customSet = new CustomSet<>(collection);
+        String setAsString = customSet.toString();
+        System.out.println(setAsString);
+        assertTrue(setAsString.contains("0"));
+        assertTrue(setAsString.contains("10"));
+        assertTrue(setAsString.contains("20"));
+        assertTrue(setAsString.contains("30"));
+        assertTrue(setAsString.contains("40"));
+        assertTrue(setAsString.contains("50"));
+        String pattern = "\\{ [0-9]+(, [0-9]+)+ }";
+        assert(setAsString.matches(pattern));
     }
 
     private static CustomSet<Integer> createDynamicSet(int x) {
