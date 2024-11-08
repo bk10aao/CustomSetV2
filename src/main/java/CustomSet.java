@@ -10,7 +10,7 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     private static double LOAD_FACTOR = 0.75;
     private int primesIndex = 0;
     private int size = 0;
-    private int setSize = 3;
+    private int setSize = primes[primesIndex];
 
     private LinkedList<T>[] set;
 
@@ -58,9 +58,9 @@ public class CustomSet<T> implements Cloneable, SetInterface<T> {
     }
 
     public void clear() {
-        setSize = 11;
-        size = 0;
         primesIndex = 0;
+        setSize = primes[primesIndex];
+        size = 0;
         set = new LinkedList[setSize];
     }
 
