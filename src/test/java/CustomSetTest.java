@@ -149,6 +149,15 @@ class CustomSetTest {
     }
 
     @Test
+    public void onAddingToSet_twoValuesOf_10_20_onRemoveValueOf_null_throws_NullPointerException() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+
+        assertThrows(NullPointerException.class, () -> customSet.remove(null));
+    }
+
+    @Test
     public void onAddingToSet_twoValuesOf_10_20_onRemove_30_returns_false() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
@@ -227,6 +236,21 @@ class CustomSetTest {
     }
 
     @Test
+    public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollectionContainingValueThatDoesNotExist_returnsFalse() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+        customSet.add(40);
+        customSet.add(50);
+
+        Collection<Integer> c = new ArrayList<>();;
+        c.add(60);
+        assertFalse(customSet.retainAll(c));
+        assertEquals(5, customSet.size());
+    }
+
+    @Test
     public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollection_20_30_60_returnsSetOf_20_30() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
@@ -260,6 +284,21 @@ class CustomSetTest {
         c.add(30);
         c.add(40);
         assertFalse(customSet.containsAll(c));
+    }
+
+    @Test
+    public void givenSetOfValue_10_20_30_onRemoveAllForCollection_20_30_40_null_ThrowsNullPointerException() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+
+        Collection<Integer> c = new ArrayList<>();
+        c.add(20);
+        c.add(30);
+        c.add(40);
+        c.add(null);
+        assertThrows(NullPointerException.class, () -> customSet.removeAll(c));
     }
 
     @Test
@@ -323,8 +362,6 @@ class CustomSetTest {
 
         assertEquals(0, customSet.size());
     }
-
-
 
     @Test
     public void onConstructingEmptySet_returnsEmptyCurlyBracket_on_toString() {

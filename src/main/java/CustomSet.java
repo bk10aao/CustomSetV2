@@ -71,12 +71,7 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public boolean containsAll(Collection<T> c) {
-        for(T t : c) {
-            if(!contains(t)) {
-                return false;
-            }
-        }
-        return true;
+        return c.stream().allMatch(this::contains);
     }
 
     public boolean isEmpty() {
@@ -85,7 +80,7 @@ public class CustomSet<T> implements SetInterface<T> {
 
     public boolean remove(final T item) {
         if(item == null)
-            return false;
+            throw new NullPointerException();
         if(set.remove(item.hashCode()) != null) {
             size--;
             return true;
@@ -93,19 +88,19 @@ public class CustomSet<T> implements SetInterface<T> {
         return false;
     }
 
+    public boolean removeAll(Collection<T> c) {
+        int n = size;
+        c.forEach(this::remove);
+        return n != size;
+    }
+
     public boolean retainAll(Collection<T> c) {
-        if(c.size() == 0) {
+        if(c.isEmpty())
             return true;
-        }
-        if(c.contains(null)) {
+        if(c.contains(null))
             throw new NullPointerException();
-        }
         CustomSet<T> temp = new CustomSet<>();
-        for(T t : set.values()) {
-            if(c.contains(t)) {
-                temp.add(t);
-            }
-        }
+        set.values().stream().filter(c::contains).forEach(temp::add);
         if(temp.size() > 0) {
             set = temp.set;
             size = temp.size;

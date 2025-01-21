@@ -52,7 +52,14 @@ public interface SetInterface<T> {
 
     /**
      * Remove all items from set that does not exist in collection
-     * @param c  - collection of items to be checked to retain.
+     * @param c - collection of items to be checked to retain.
+     * @return boolean true if contains, else false.
+     */
+    boolean removeAll(Collection<T> c);
+
+    /**
+     * retail all items from set that does not exist in collection
+     * @param c - collection of items to be checked to retain.
      * @return boolean true if contains, else false.
      */
     boolean retainAll(Collection<T> c);
