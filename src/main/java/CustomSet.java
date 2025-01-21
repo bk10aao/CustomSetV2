@@ -7,30 +7,26 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class CustomSet<T> implements SetInterface<T> {
 
-    private int primesIndex = 0;
     private int size = 0;
 
-    private Map<Integer, T> set = new HashMap<>(primes[primesIndex], 0.75f);
+    private Map<Integer, T> set = new HashMap<>(primes[0], 0.75f);
 
     public CustomSet() {
-        this.set = new HashMap<>(primes[primesIndex], 0.75f);
+        this.set = new HashMap<>(primes[0], 0.75f);
     }
 
     public CustomSet(final Collection<T> c) {
         if(c == null)
             throw new NullPointerException();
-        if(c.size() > primes[primesIndex])
-            getNextPrime(c.size());
-        set = new HashMap<>(primes[primesIndex], 0.75f);
+
+        set = new HashMap<>(getNextPrime(c.size()), 0.75f);
         addAll(c);
     }
 
     public CustomSet(final int initialCapacity) {
         if(initialCapacity < 0)
             throw new IllegalArgumentException();
-        if(initialCapacity > primes[primesIndex])
-            getNextPrime(initialCapacity);
-        new HashMap<>(primes[primesIndex], 0.75f);
+        new HashMap<>(getNextPrime(initialCapacity), 0.75f);
     }
 
     public CustomSet(final int initialCapacity, final float loadFactor) {
@@ -38,9 +34,7 @@ public class CustomSet<T> implements SetInterface<T> {
             throw new IllegalArgumentException();
         if(loadFactor < 0 || loadFactor > 1)
             throw new IllegalArgumentException();
-        if(initialCapacity > primes[primesIndex])
-            getNextPrime(initialCapacity);
-        set = new HashMap<>(primes[primesIndex], loadFactor);
+        set = new HashMap<>(getNextPrime(initialCapacity), loadFactor);
     }
 
     public boolean add(T t) {
@@ -61,8 +55,7 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public void clear() {
-        primesIndex = 0;
-        set = new HashMap<>(primes[primesIndex], 0.75f);
+        set = new HashMap<>(primes[0], 0.75f);
         size = 0;
     }
 
@@ -129,13 +122,13 @@ public class CustomSet<T> implements SetInterface<T> {
         return sb.substring(0, sb.length() - 2) + " }";
     }
 
-    private void getNextPrime(final int initialCapacity) {
+    private int getNextPrime(final int initialCapacity) {
+        int primesIndex = 0;
         if(initialCapacity > primes[primesIndex])
             for (int i = primesIndex + 1; i < primes.length; i++)
-                if (primes[i] > initialCapacity) {
-                    primesIndex = i - 1;
-                    return;
-                }
+                if (primes[i] > initialCapacity)
+                    return primes[i];
+        return 0;
     }
 
     protected static final int[] primes = { 3, 7, 11, 17, 23, 29, 37, 47, 59, 71, 89, 107, 131, 163, 197, 239, 293, 353, 431, 521, 631, 761, 919,
