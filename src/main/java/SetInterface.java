@@ -5,7 +5,7 @@ public interface SetInterface<T> {
     /**
      * Add item to Set.
      * @param item - item to be added to List.
-     * @throws NullPointerException - on null valye
+     * @throws NullPointerException - on null value
      * @return boolean true if successful, else false.
      */
     boolean add(T item);
