@@ -18,29 +18,29 @@ public interface SetInterface<T> {
      * @return boolean true if contains, else false.
      */
     boolean contains(T item);
-//
-//    /**
-//     * Check if Set is Empty.
-//     * @return True if empty.
-//     */
-//    boolean isEmpty();
-//
-//    /**
-//     * Remove object from Set.
-//     * @param item to be removed
-//     * @return true if successful.
-//     */
-//    boolean remove(T item);
-//
-//    /**
-//     * Get size of set
-//     * @return size as Integer
-//     */
-//    int size();
-//
-//    /**
-//     * Get Set object as String
-//     * @return String representation of Set
-//     */
-//    String toString();
+
+    /**
+     * Check if Set is Empty.
+     * @return True if empty.
+     */
+    boolean isEmpty();
+
+    /**
+     * Remove object from Set.
+     * @param item to be removed
+     * @return true if successful.
+     */
+    boolean remove(T item);
+
+    /**
+     * Get size of set
+     * @return size as Integer
+     */
+    int size();
+
+    /**
+     * Get Set object as String
+     * @return String representation of Set
+     */
+    String toString();
 }
