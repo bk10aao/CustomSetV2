@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -168,13 +169,13 @@ class CustomSetTest {
     }
 
     @Test
-    public void onAddingToSet_twoValuesOf_10_20_onRemove_null_returns_false() {
+    public void onAddingToSet_twoValuesOf_10_20_onRemove_null_throws_NullPointerException() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
         customSet.add(20);
 
         assertEquals(2, customSet.size());
-        assertFalse(customSet.remove(null));
+        assertThrows(NullPointerException.class, () -> customSet.remove(null));
         assertEquals(2, customSet.size());
     }
 
@@ -196,7 +197,7 @@ class CustomSetTest {
         customSet.add(20);
         customSet.add(30);
 
-        Collection<Integer> c = new ArrayList<>();;
+        Collection<Integer> c = new ArrayList<>();
         c.add(null);
         assertThrows(NullPointerException.class, ()-> customSet.containsAll(c));
     }
@@ -209,7 +210,7 @@ class CustomSetTest {
         customSet.add(30);
         customSet.add(40);
         customSet.add(50);
-        Collection<Integer> c = new ArrayList<>();;
+        Collection<Integer> c = new ArrayList<>();
         c.add(null);
         assertThrows(NullPointerException.class, ()-> customSet.retainAll(c));
     }
@@ -223,7 +224,7 @@ class CustomSetTest {
         customSet.add(40);
         customSet.add(50);
 
-        Collection<Integer> c = new ArrayList<>();;
+        Collection<Integer> c = new ArrayList<>();
         c.add(20);
         c.add(30);
         assertTrue(customSet.retainAll(c));
@@ -244,7 +245,7 @@ class CustomSetTest {
         customSet.add(40);
         customSet.add(50);
 
-        Collection<Integer> c = new ArrayList<>();;
+        Collection<Integer> c = new ArrayList<>();
         c.add(60);
         assertFalse(customSet.retainAll(c));
         assertEquals(5, customSet.size());
@@ -259,7 +260,7 @@ class CustomSetTest {
         customSet.add(40);
         customSet.add(50);
 
-        Collection<Integer> c = new ArrayList<>();;
+        Collection<Integer> c = new ArrayList<>();
         c.add(20);
         c.add(30);
         c.add(60);
@@ -302,6 +303,26 @@ class CustomSetTest {
     }
 
     @Test
+    public void givenSetOfValue_10_20_30_40_50_onRemoveAllForCollection_20_30_returnsCollectionOf_10_40_50() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+        customSet.add(40);
+        customSet.add(50);
+
+        Collection<Integer> c = new ArrayList<>();
+        c.add(20);
+        c.add(30);
+        assertTrue(customSet.removeAll(c));
+        assertTrue(customSet.contains(10));
+        assertFalse(customSet.contains(20));
+        assertFalse(customSet.contains(30));
+        assertTrue(customSet.contains(40));
+        assertTrue(customSet.contains(50));
+    }
+
+    @Test
     public void givenSetOfValue_10_20_30_onContainsAllForCollection_20_30_returns_true() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
@@ -321,7 +342,7 @@ class CustomSetTest {
         customSet.add(20);
         customSet.add(30);
 
-        Collection<Integer> c = new ArrayList<>();;
+        Collection<Integer> c = new ArrayList<>();
         c.add(null);
         assertThrows(NullPointerException.class, ()-> customSet.addAll(c));
     }
@@ -384,6 +405,28 @@ class CustomSetTest {
         assertTrue(setAsString.contains("50"));
         String pattern = "\\{ [0-9]+(, [0-9]+)+ }";
         assertTrue(setAsString.matches(pattern));
+    }
+
+    @Test
+    public void givenEmptySet_onToArray_returns_emptyArray() {
+        CustomSet<String> customSet = new CustomSet<>();
+        Object[] values = customSet.toArray();
+        Object[] expected = new Object[] { };
+        assertEquals(0, values.length);
+        assertArrayEquals(expected, values);
+    }
+
+    @Test
+    public void onConstructingSet_withCollectionOfFiveItems_returnsCorrectArray() {
+        CustomSet<String> customSet = new CustomSet<>();
+        customSet.add("10");
+        customSet.add("20");
+        customSet.add("30");
+        Object[] values = customSet.toArray();
+        Object[] expected = new Object[] { "10", "20", "30" };
+        assertEquals(3, values.length);
+        assertArrayEquals(expected, values);
+
     }
 
     private static CustomSet<Integer> createDynamicSet(int x) {

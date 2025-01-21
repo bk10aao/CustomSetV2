@@ -1,8 +1,10 @@
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 
+@SuppressWarnings("unchecked")
 public class CustomSet<T> implements SetInterface<T> {
 
     private int primesIndex = 0;
@@ -111,6 +113,10 @@ public class CustomSet<T> implements SetInterface<T> {
 
     public int size() {
         return size;
+    }
+
+    public T[] toArray() {
+        return  (T[]) Arrays.stream(set.values().toArray()).sorted().toArray();
     }
 
     @Override

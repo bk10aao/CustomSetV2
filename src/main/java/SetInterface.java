@@ -71,6 +71,12 @@ public interface SetInterface<T> {
     int size();
 
     /**
+     * Return set values
+     * @return T[] set values
+     */
+    T[] toArray();
+
+    /**
      * Get Set object as String
      * @return String representation of Set
      */
