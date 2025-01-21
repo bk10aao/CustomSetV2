@@ -6,20 +6,19 @@ public class CustomSet<T> implements SetInterface<T> {
 
     private int primesIndex = 0;
     private int size = 0;
-    private int setSize = primes[primesIndex];
 
-    private Map<Integer, T> set = new HashMap<>(setSize, 0.75f);
+    private Map<Integer, T> set = new HashMap<>(primes[primesIndex], 0.75f);
 
     public CustomSet() {
-        this.set = new HashMap<>(setSize, 0.75f);
+        this.set = new HashMap<>(primes[primesIndex], 0.75f);
     }
 
     public CustomSet(final Collection<T> c) {
         if(c == null)
             throw new NullPointerException();
-        if(c.size() > setSize)
+        if(c.size() > primes[primesIndex])
             getNextPrime(c.size());
-        set = new HashMap<>(setSize, 0.75f);
+        set = new HashMap<>(primes[primesIndex], 0.75f);
         for(T t : c)
             add(t);
     }
@@ -27,9 +26,9 @@ public class CustomSet<T> implements SetInterface<T> {
     public CustomSet(final int initialCapacity) {
         if(initialCapacity < 0)
             throw new IllegalArgumentException();
-        if(initialCapacity > setSize) {
+        if(initialCapacity > primes[primesIndex])
             getNextPrime(initialCapacity);
-        }
+        new HashMap<>(primes[primesIndex], 0.75f);
     }
 
     public CustomSet(final int initialCapacity, final float loadFactor) {
@@ -37,10 +36,9 @@ public class CustomSet<T> implements SetInterface<T> {
             throw new IllegalArgumentException();
         if(loadFactor < 0 || loadFactor > 1)
             throw new IllegalArgumentException();
-        if(initialCapacity > setSize) {
+        if(initialCapacity > primes[primesIndex])
             getNextPrime(initialCapacity);
-        }
-        set = new HashMap<>(setSize, loadFactor);
+        set = new HashMap<>(primes[primesIndex], loadFactor);
     }
 
     public boolean add(T t) {
@@ -55,8 +53,7 @@ public class CustomSet<T> implements SetInterface<T> {
 
     public void clear() {
         primesIndex = 0;
-        setSize = primes[primesIndex];
-        set = new HashMap<>(setSize, 0.75f);
+        set = new HashMap<>(primes[primesIndex], 0.75f);
         size = 0;
     }
 
@@ -69,8 +66,9 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public boolean remove(final T item) {
-        if(contains(item)) {
-            set.remove(item.hashCode());
+        if(item == null)
+            return false;
+        if(set.remove(item.hashCode()) != null) {
             size--;
             return true;
         }
@@ -95,15 +93,14 @@ public class CustomSet<T> implements SetInterface<T> {
         if(initialCapacity > primes[primesIndex])
             for (int i = primesIndex + 1; i < primes.length; i++)
                 if (primes[i] > initialCapacity) {
-                    setSize = primes[i];
                     primesIndex = i - 1;
-                    break;
+                    return;
                 }
     }
 
     protected static final int[] primes = { 3, 7, 11, 17, 23, 29, 37, 47, 59, 71, 89, 107, 131, 163, 197, 239, 293, 353, 431, 521, 631, 761, 919,
-            1103, 1327, 1597, 1931, 2333, 2801, 3371, 4049, 4861, 5839, 7013, 8419, 10103, 12143, 14591,
-            17519, 21023, 25229, 30293, 36353, 43627, 52361, 62851, 75431, 90523, 108631, 130363, 156437,
-            187751, 225307, 270371, 324449, 389357, 467237, 560689, 672827, 807403, 968897, 1162687, 1395263,
-            1674319, 2009191, 2411033, 2893249, 3471899, 4166287, 4999559, 5999471, 7199369 };
+                                            1103, 1327, 1597, 1931, 2333, 2801, 3371, 4049, 4861, 5839, 7013, 8419, 10103, 12143, 14591,
+                                            17519, 21023, 25229, 30293, 36353, 43627, 52361, 62851, 75431, 90523, 108631, 130363, 156437,
+                                            187751, 225307, 270371, 324449, 389357, 467237, 560689, 672827, 807403, 968897, 1162687, 1395263,
+                                            1674319, 2009191, 2411033, 2893249, 3471899, 4166287, 4999559, 5999471, 7199369 };
 }
