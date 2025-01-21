@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -71,6 +72,12 @@ class CustomSetTest {
         assertTrue(customSet.contains(40));
         assertTrue(customSet.contains(50));
         assertFalse(customSet.contains(100));
+    }
+
+    @Test
+    public void onAddingToSet_null_throws_NullPointerException() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        assertThrows(NullPointerException.class, ()-> customSet.add(null));
     }
 
     @Test
@@ -164,6 +171,48 @@ class CustomSetTest {
         assertTrue(customSet.remove(10));
         assertEquals(1, customSet.size());
     }
+
+    @Test
+    public void givenSetOfValue_10_20_30_onAddAllForCollection_withNullValue_throw_NullPointerException() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+
+        Collection<Integer> c = new ArrayList<>();;
+        c.add(null);
+        assertThrows(NullPointerException.class, ()-> customSet.addAll(c));
+    }
+
+    @Test
+    public void givenSetOfValue_10_20_30_onAddAllForCollectionOf_10_20_returns_false() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+
+        Collection<Integer> c = new ArrayList<>();
+        c.add(10);
+        c.add(20);
+        assertFalse(customSet.addAll(c));
+    }
+
+    @Test
+    public void givenSetOfValue_10_20_30_onAddAllForCollectionOf_40_50_returns_true() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+
+        Collection<Integer> c = new ArrayList<>();
+        c.add(40);
+        c.add(50);
+        assertTrue(customSet.addAll(c));
+    }
+
+
+
+
 
     @Test
     public void onAddingToSet_50_items_andClearingSet_returns_newSet() {

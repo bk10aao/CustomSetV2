@@ -1,12 +1,22 @@
+import java.util.Collection;
+
 public interface SetInterface<T> {
 
     /**
      * Add item to Set.
      * @param item - item to be added to List.
+     * @throws NullPointerException - on null valye
      * @return boolean true if successful, else false.
      */
     boolean add(T item);
 
+    /**
+     * Add all items in collection to Set.
+     * @param c - Collection of items to be added to Set.
+     * @throws NullPointerException - on null element in collection.
+     * @return boolean true if successful, else false.
+     */
+    boolean addAll(final Collection<T> c)
     /**
      * Clear Set to new Empty Set
      */

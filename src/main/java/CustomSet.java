@@ -19,8 +19,7 @@ public class CustomSet<T> implements SetInterface<T> {
         if(c.size() > primes[primesIndex])
             getNextPrime(c.size());
         set = new HashMap<>(primes[primesIndex], 0.75f);
-        for(T t : c)
-            add(t);
+        addAll(c);
     }
 
     public CustomSet(final int initialCapacity) {
@@ -42,6 +41,8 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public boolean add(T t) {
+        if(t == null)
+            throw new NullPointerException();
         T previous = set.get(t.hashCode());
         if(previous == null) {
             size++;
@@ -50,7 +51,11 @@ public class CustomSet<T> implements SetInterface<T> {
         }
         return false;
     }
-
+    public boolean addAll(final Collection<T> c) {
+        int n = this.size;
+        c.forEach(this::add);
+        return size != n;
+    }
     public void clear() {
         primesIndex = 0;
         set = new HashMap<>(primes[primesIndex], 0.75f);
