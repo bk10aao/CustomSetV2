@@ -51,6 +51,12 @@ class CustomSetTest {
     }
 
     @Test
+    public void givenANewSet_onAddingValueOf_null_throws_NullPointerException() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        assertThrows(NullPointerException.class, () -> customSet.add(null));
+    }
+
+    @Test
     public void onConstructingSetWithOneItem_on_isEmpty_returnsFalse() {
         CustomSet<Integer> customSet = new CustomSet<>();
 

@@ -63,7 +63,13 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public boolean contains(T i) {
+        if(i == null)
+            throw new NullPointerException();
         return set.containsValue(i);
+    }
+
+    public boolean containsAll(Collection<?> c) {
+        return false;
     }
 
     public boolean isEmpty() {

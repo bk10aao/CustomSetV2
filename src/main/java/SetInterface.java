@@ -16,7 +16,7 @@ public interface SetInterface<T> {
      * @throws NullPointerException - on null element in collection.
      * @return boolean true if successful, else false.
      */
-    boolean addAll(final Collection<T> c)
+    boolean addAll(final Collection<T> c);
     /**
      * Clear Set to new Empty Set
      */
@@ -25,9 +25,17 @@ public interface SetInterface<T> {
     /**
      * Check if Set contains item
      * @param item - item to be searched for in List.
+     * @throws NullPointerException - on null item.
      * @return boolean true if contains, else false.
      */
     boolean contains(T item);
+
+    /**
+     * Check if Set contains all items in collection
+     * @param c  - collection of items to be checked to contain all.
+     * @return boolean true if contains, else false.
+     */
+    boolean containsAll(Collection<?> c);
 
     /**
      * Check if Set is Empty.
