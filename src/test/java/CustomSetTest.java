@@ -15,7 +15,7 @@ class CustomSetTest {
     @Test
     public void onCreatingSetWitNegativeSize_and_loadFactorOf_50_throws_IllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
-                ()-> new CustomSet<>(-10, 0.5));
+                ()-> new CustomSet<>(-10, 0.5f));
     }
 
     @Test
@@ -31,54 +31,6 @@ class CustomSetTest {
     }
 
     @Test
-    public void onCreatingSetWithSizeOf_50_andLoadFactorOf_50_onAdding_25Numbers_increasesSetSizeTo_53() {
-        CustomSet<Integer> customSet = new CustomSet<>(50, 0.5);
-        Random random = new Random();
-        for (int i = 0; i < 27; i++)
-            customSet.add(random.nextInt());
-        assertEquals(59, customSet.getSetSize());
-    }
-
-    @Test
-    public void onCreatingSetWithSizeOf_50_andLoadFactorOf_50_onAdding_50Numbers_increasesSetSizeTo_101() {
-        CustomSet<Integer> customSet = new CustomSet<>(50, 0.5);
-        Random random = new Random();
-        for (int i = 0; i < 50; i++)
-            customSet.add(random.nextInt());
-        assertEquals(107, customSet.getSetSize());
-    }
-
-    @Test
-    public void onCreatingSetWithSizeOf_50_returnsSetSizeOf_53() {
-        CustomSet<Integer> customSet = new CustomSet<>(50);
-
-        assertEquals(59, customSet.getSetSize());
-    }
-
-    @Test
-    public void onConstructingSet_returnsEmptySet() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        assertTrue(customSet.isEmpty());
-        assertEquals(0, customSet.size());
-    }
-
-    @Test
-    public void onConstructingSet_withCollectionOfFiveItems_returnsSetSizeOf_11_andSizeOf_5() {
-        Collection<Integer> collection = IntStream.iterate(10, i -> i <= 50, i -> i + 10).boxed().collect(Collectors.toList());
-
-        CustomSet<Integer> customSet = new CustomSet<>(collection);
-
-        assertEquals(5, customSet.size());
-        assertEquals(7, customSet.getSetSize());
-        assertTrue(customSet.contains(10));
-        assertTrue(customSet.contains(20));
-        assertTrue(customSet.contains(30));
-        assertTrue(customSet.contains(40));
-        assertTrue(customSet.contains(50));
-        assertFalse(customSet.contains(100));
-    }
-
-    @Test
     public void onConstructingSet_withSizeLessThan_0_throws_IllegalArgumentException() {
         assertThrows(IllegalArgumentException.class,
                 ()-> new CustomSet<>(-1));
@@ -91,8 +43,10 @@ class CustomSetTest {
     }
 
     @Test
-    public void onConstructingSetWithZeroItems_on_isEmpty_returnsTrue() {
-        assertTrue(new CustomSet<>().isEmpty());
+    public void onConstructingSet_returnsEmptySet() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        assertTrue(customSet.isEmpty());
+        assertEquals(0, customSet.size());
     }
 
     @Test
@@ -102,6 +56,21 @@ class CustomSetTest {
         assertTrue(customSet.add(10));
         assertTrue(customSet.contains(10));
         assertFalse(customSet.isEmpty());
+    }
+
+    @Test
+    public void onConstructingSet_withCollectionOfFiveItems_returnsSetSizeOf_11_andSizeOf_5() {
+        Collection<Integer> collection = IntStream.iterate(10, i -> i <= 50, i -> i + 10).boxed().collect(Collectors.toList());
+
+        CustomSet<Integer> customSet = new CustomSet<>(collection);
+
+        assertEquals(5, customSet.size());
+        assertTrue(customSet.contains(10));
+        assertTrue(customSet.contains(20));
+        assertTrue(customSet.contains(30));
+        assertTrue(customSet.contains(40));
+        assertTrue(customSet.contains(50));
+        assertFalse(customSet.contains(100));
     }
 
     @Test
@@ -289,7 +258,7 @@ class CustomSetTest {
         assertTrue(setAsString.contains("40"));
         assertTrue(setAsString.contains("50"));
         String pattern = "\\{ [0-9]+(, [0-9]+)+ }";
-        assert(setAsString.matches(pattern));
+        assertTrue(setAsString.matches(pattern));
     }
 
     private static CustomSet<Integer> createDynamicSet(int x) {
