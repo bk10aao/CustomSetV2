@@ -2,6 +2,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class CustomSet<T> implements SetInterface<T> {
 
     private int primesIndex = 0;
@@ -93,9 +94,22 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public boolean retainAll(Collection<T> c) {
-        CustomSet copy = this;
-        for(T t : c) {
-
+        if(c.size() == 0) {
+            return true;
+        }
+        if(c.contains(null)) {
+            throw new NullPointerException();
+        }
+        CustomSet<T> temp = new CustomSet<>();
+        for(T t : set.values()) {
+            if(c.contains(t)) {
+                temp.add(t);
+            }
+        }
+        if(temp.size() > 0) {
+            set = temp.set;
+            size = temp.size;
+            return true;
         }
         return false;
     }

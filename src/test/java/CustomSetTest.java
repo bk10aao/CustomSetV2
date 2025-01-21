@@ -193,6 +193,62 @@ class CustomSetTest {
     }
 
     @Test
+    public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollection_withNullValue_throw_NullPointerException() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+        customSet.add(40);
+        customSet.add(50);
+        Collection<Integer> c = new ArrayList<>();;
+        c.add(null);
+        assertThrows(NullPointerException.class, ()-> customSet.retainAll(c));
+    }
+
+    @Test
+    public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollection_20_30_returnsSetOf_20_30() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+        customSet.add(40);
+        customSet.add(50);
+
+        Collection<Integer> c = new ArrayList<>();;
+        c.add(20);
+        c.add(30);
+        assertTrue(customSet.retainAll(c));
+        assertFalse(customSet.contains(10));
+        assertFalse(customSet.contains(40));
+        assertFalse(customSet.contains(50));
+        assertTrue(customSet.contains(20));
+        assertTrue(customSet.contains(30));
+        assertEquals(2, customSet.size());
+    }
+
+    @Test
+    public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollection_20_30_60_returnsSetOf_20_30() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+        customSet.add(40);
+        customSet.add(50);
+
+        Collection<Integer> c = new ArrayList<>();;
+        c.add(20);
+        c.add(30);
+        c.add(60);
+        assertTrue(customSet.retainAll(c));
+        assertFalse(customSet.contains(10));
+        assertFalse(customSet.contains(40));
+        assertFalse(customSet.contains(50));
+        assertTrue(customSet.contains(20));
+        assertTrue(customSet.contains(30));
+        assertEquals(2, customSet.size());
+    }
+
+    @Test
     public void givenSetOfValue_10_20_30_onContainsAllForCollection_20_30_40_returns_false() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
