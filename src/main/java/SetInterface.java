@@ -35,7 +35,7 @@ public interface SetInterface<T> {
      * @param c  - collection of items to be checked to contain all.
      * @return boolean true if contains, else false.
      */
-    boolean containsAll(Collection<?> c);
+    boolean containsAll(Collection<T> c);
 
     /**
      * Check if Set is Empty.
@@ -49,6 +49,13 @@ public interface SetInterface<T> {
      * @return true if successful.
      */
     boolean remove(T item);
+
+    /**
+     * Remove all items from set that does not exist in collection
+     * @param c  - collection of items to be checked to retain.
+     * @return boolean true if contains, else false.
+     */
+    boolean retainAll(Collection<T> c);
 
     /**
      * Get size of set

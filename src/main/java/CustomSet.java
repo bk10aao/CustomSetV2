@@ -56,6 +56,7 @@ public class CustomSet<T> implements SetInterface<T> {
         c.forEach(this::add);
         return size != n;
     }
+
     public void clear() {
         primesIndex = 0;
         set = new HashMap<>(primes[primesIndex], 0.75f);
@@ -68,8 +69,13 @@ public class CustomSet<T> implements SetInterface<T> {
         return set.containsValue(i);
     }
 
-    public boolean containsAll(Collection<?> c) {
-        return false;
+    public boolean containsAll(Collection<T> c) {
+        for(T t : c) {
+            if(!contains(t)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isEmpty() {
@@ -82,6 +88,14 @@ public class CustomSet<T> implements SetInterface<T> {
         if(set.remove(item.hashCode()) != null) {
             size--;
             return true;
+        }
+        return false;
+    }
+
+    public boolean retainAll(Collection<T> c) {
+        CustomSet copy = this;
+        for(T t : c) {
+
         }
         return false;
     }

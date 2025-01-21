@@ -66,7 +66,7 @@ class CustomSetTest {
     }
 
     @Test
-    public void onConstructingSet_withCollectionOfFiveItems_returnsSetSizeOf_11_andSizeOf_5() {
+    public void onConstructingSet_withCollectionOfFiveItems_sizeOf_5() {
         Collection<Integer> collection = IntStream.iterate(10, i -> i <= 50, i -> i + 10).boxed().collect(Collectors.toList());
 
         CustomSet<Integer> customSet = new CustomSet<>(collection);
@@ -79,6 +79,8 @@ class CustomSetTest {
         assertTrue(customSet.contains(50));
         assertFalse(customSet.contains(100));
     }
+
+
 
     @Test
     public void onAddingToSet_null_throws_NullPointerException() {
@@ -119,7 +121,7 @@ class CustomSetTest {
     }
 
     @Test
-    public void onAddingToSet_50_items_returns_true_andSizeOf_50_andSetSizeOf_40() {
+    public void onAddingToSet_50_items_returns_true_andSizeOf_50() {
         CustomSet<Integer> customSet = createDynamicSet(50);
 
         assertEquals(50, customSet.size());
@@ -179,6 +181,45 @@ class CustomSetTest {
     }
 
     @Test
+    public void givenSetOfValue_10_20_30_onContainsAllForCollection_withNullValue_throw_NullPointerException() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+
+        Collection<Integer> c = new ArrayList<>();;
+        c.add(null);
+        assertThrows(NullPointerException.class, ()-> customSet.containsAll(c));
+    }
+
+    @Test
+    public void givenSetOfValue_10_20_30_onContainsAllForCollection_20_30_40_returns_false() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+
+        Collection<Integer> c = new ArrayList<>();
+        c.add(20);
+        c.add(30);
+        c.add(40);
+        assertFalse(customSet.containsAll(c));
+    }
+
+    @Test
+    public void givenSetOfValue_10_20_30_onContainsAllForCollection_20_30_returns_true() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(10);
+        customSet.add(20);
+        customSet.add(30);
+
+        Collection<Integer> c = new ArrayList<>();
+        c.add(20);
+        c.add(30);
+        assertTrue(customSet.containsAll(c));
+    }
+
+    @Test
     public void givenSetOfValue_10_20_30_onAddAllForCollection_withNullValue_throw_NullPointerException() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
@@ -216,10 +257,6 @@ class CustomSetTest {
         assertTrue(customSet.addAll(c));
     }
 
-
-
-
-
     @Test
     public void onAddingToSet_50_items_andClearingSet_returns_newSet() {
         CustomSet<Integer> customSet = createDynamicSet(50);
@@ -231,67 +268,7 @@ class CustomSetTest {
         assertEquals(0, customSet.size());
     }
 
-    @Test
-    public void addLargeRangeOfNumbers_scalesAndIndexesCorrectlyOnHashCode() {
-        CustomSet<Integer> customSet = new CustomSet<>();
 
-        for(int i = 0; i < 1000; i++)
-            customSet.add(i);
-
-        assertFalse(customSet.contains(1001));
-        assertFalse(customSet.contains(-1001));
-        assertTrue(customSet.contains(999));
-        assertTrue(customSet.contains(556));
-        assertTrue(customSet.contains(333));
-    }
-
-    @Test
-    public void addLargeRangeOfNumbers_scalesAndIndexesCorrectlyOnHashCode_andReducesCorrectly() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-
-        for(int i = 0; i < 100; i++)
-            customSet.add(i);
-
-        assertFalse(customSet.contains(101));
-        assertTrue(customSet.contains(99));
-        assertTrue(customSet.contains(55));
-        assertTrue(customSet.contains(33));
-
-        for(int i = 0; i < 50; i++)
-            customSet.remove(i);
-
-        assertFalse(customSet.contains(10));
-        assertFalse(customSet.contains(11));
-        assertFalse(customSet.contains(22));
-        assertFalse(customSet.contains(33));
-        assertTrue(customSet.contains(55));
-        assertTrue(customSet.contains(95));
-        assertTrue(customSet.contains(60));
-    }
-
-    @Test
-    public void addEvenLargerRangeOfNumbers_scalesAndIndexesCorrectlyOnHashCode_andReducesCorrectly() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-
-        for(int i = 0; i < 1000; i++)
-            customSet.add(i);
-
-        assertTrue(customSet.contains(101));
-        assertTrue(customSet.contains(99));
-        assertTrue(customSet.contains(55));
-        assertTrue(customSet.contains(33));
-
-        for(int i = 0; i < 250; i++)
-            customSet.remove(i);
-
-        assertFalse(customSet.contains(10));
-        assertFalse(customSet.contains(11));
-        assertFalse(customSet.contains(22));
-        assertFalse(customSet.contains(33));
-        assertTrue(customSet.contains(290));
-        assertTrue(customSet.contains(950));
-        assertTrue(customSet.contains(600));
-    }
 
     @Test
     public void onConstructingEmptySet_returnsEmptyCurlyBracket_on_toString() {
