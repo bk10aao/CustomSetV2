@@ -360,7 +360,6 @@ class CustomSetTest {
         Collection<Integer> collection = IntStream.iterate(0, i -> i <= 50, i -> i + 10).boxed().collect(Collectors.toList());
         CustomSet<Integer> customSet = new CustomSet<>(collection);
         String setAsString = customSet.toString();
-        assertTrue(setAsString.contains("0"));
         assertTrue(setAsString.contains("10"));
         assertTrue(setAsString.contains("20"));
         assertTrue(setAsString.contains("30"));
