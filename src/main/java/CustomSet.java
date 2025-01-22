@@ -1,7 +1,11 @@
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Objects;
+
+import static java.util.Objects.hash;
 
 
 @SuppressWarnings("unchecked")
@@ -9,7 +13,7 @@ public class CustomSet<T> implements SetInterface<T> {
 
     private int size = 0;
 
-    private Map<Integer, T> set = new HashMap<>(primes[0], 0.75f);
+    private Map<Integer, LinkedList<T>> set = new HashMap<>(primes[0], 0.75f);
 
     public CustomSet() {
         this.set = new HashMap<>(primes[0], 0.75f);
@@ -18,7 +22,6 @@ public class CustomSet<T> implements SetInterface<T> {
     public CustomSet(final Collection<T> c) {
         if(c == null)
             throw new NullPointerException();
-
         set = new HashMap<>(getNextPrime(c.size()), 0.75f);
         addAll(c);
     }
@@ -40,10 +43,17 @@ public class CustomSet<T> implements SetInterface<T> {
     public boolean add(T t) {
         if(t == null)
             throw new NullPointerException();
-        T previous = set.get(t.hashCode());
-        if(previous == null) {
+        LinkedList<T> previous = set.get(hash(t));
+        if(previous != null && !previous.contains(t)) {
+            previous.add(t);
+            set.put(hash(t), previous);
             size++;
-            set.put(t.hashCode(), t);
+            return true;
+        } else if(previous == null){
+            previous = new LinkedList<>();
+            previous.add(t);
+            set.put(hash(t), previous);
+            size++;
             return true;
         }
         return false;
@@ -59,13 +69,13 @@ public class CustomSet<T> implements SetInterface<T> {
         size = 0;
     }
 
-    public boolean contains(T i) {
+    public boolean contains(final T i) {
         if(i == null)
             throw new NullPointerException();
-        return set.containsValue(i);
+        return set.values().stream().filter(Objects::nonNull).anyMatch(l -> l.contains(i));
     }
 
-    public boolean containsAll(Collection<T> c) {
+    public boolean containsAll(final Collection<T> c) {
         return c.stream().allMatch(this::contains);
     }
 
@@ -76,26 +86,25 @@ public class CustomSet<T> implements SetInterface<T> {
     public boolean remove(final T item) {
         if(item == null)
             throw new NullPointerException();
-        if(set.remove(item.hashCode()) != null) {
+        if(set.remove(hash(item)) != null) {
             size--;
             return true;
         }
         return false;
     }
 
-    public boolean removeAll(Collection<T> c) {
+    public boolean removeAll(final Collection<T> c) {
         int n = size;
         c.forEach(this::remove);
         return n != size;
     }
 
-    public boolean retainAll(Collection<T> c) {
+    public boolean retainAll(final Collection<T> c) {
         if(c.isEmpty())
             return true;
         if(c.contains(null))
             throw new NullPointerException();
-        CustomSet<T> temp = new CustomSet<>();
-        set.values().stream().filter(c::contains).forEach(temp::add);
+        CustomSet<T> temp = retain(c);
         if(temp.size() > 0) {
             set = temp.set;
             size = temp.size;
@@ -104,12 +113,29 @@ public class CustomSet<T> implements SetInterface<T> {
         return false;
     }
 
+    private CustomSet<T> retain(final Collection<T> c) {
+        CustomSet<T> temp = new CustomSet<>();
+        for(T value : c) {
+            LinkedList<T> v = set.get(hash(value));
+            if(v != null)
+                if (set.get(hash(value)).contains(value))
+                    temp.add(value);
+        }
+        return temp;
+    }
+
     public int size() {
         return size;
     }
 
     public T[] toArray() {
-        return  (T[]) Arrays.stream(set.values().toArray()).sorted().toArray();
+        Object[] arr = new Object[size];
+        int insertIndex = 0;
+        for(LinkedList<T> l : set.values())
+            for (T t : l)
+                arr[insertIndex++] = t;
+        Arrays.sort(arr);
+        return (T[])arr;
     }
 
     @Override
@@ -117,8 +143,7 @@ public class CustomSet<T> implements SetInterface<T> {
         if(size == 0)
             return "{ }";
         StringBuilder sb = new StringBuilder("{ ");
-        for(T value : set.values())
-            sb.append(value).append(", ");
+        set.values().forEach(values -> values.forEach(value -> sb.append(value).append(", ")));
         return sb.substring(0, sb.length() - 2) + " }";
     }
 

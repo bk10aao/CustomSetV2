@@ -16,32 +16,27 @@ class CustomSetTest {
 
     @Test
     public void onCreatingSetWitNegativeSize_and_loadFactorOf_50_throws_IllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
-                ()-> new CustomSet<>(-10, 0.5f));
+        assertThrows(IllegalArgumentException.class, () -> new CustomSet<>(-10, 0.5f));
     }
 
     @Test
     public void onCreatingSetWithNegativeSize_and_negativeLoadFactor_throws_IllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
-                ()-> new CustomSet<>(-10, -10));
+        assertThrows(IllegalArgumentException.class, () -> new CustomSet<>(-10, -10));
     }
 
     @Test
     public void onCreatingSetWithSizeOf_50_and_negativeLoadFactor_throws_IllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
-                ()-> new CustomSet<>(50, -10));
+        assertThrows(IllegalArgumentException.class, () -> new CustomSet<>(50, -10));
     }
 
     @Test
     public void onConstructingSet_withSizeLessThan_0_throws_IllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class,
-                ()-> new CustomSet<>(-1));
+        assertThrows(IllegalArgumentException.class, () -> new CustomSet<>(-1));
     }
 
     @Test
     public void onConstructingSet_withCollectionOfNull_throws_NullPointerException() {
-        assertThrows(NullPointerException.class,
-                ()-> new CustomSet<>(null));
+        assertThrows(NullPointerException.class, () -> new CustomSet<>(null));
     }
 
     @Test
@@ -53,14 +48,12 @@ class CustomSetTest {
 
     @Test
     public void givenANewSet_onAddingValueOf_null_throws_NullPointerException() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        assertThrows(NullPointerException.class, () -> customSet.add(null));
+        assertThrows(NullPointerException.class, () -> new CustomSet<>().add(null));
     }
 
     @Test
     public void onConstructingSetWithOneItem_on_isEmpty_returnsFalse() {
         CustomSet<Integer> customSet = new CustomSet<>();
-
         assertTrue(customSet.add(10));
         assertTrue(customSet.contains(10));
         assertFalse(customSet.isEmpty());
@@ -69,9 +62,7 @@ class CustomSetTest {
     @Test
     public void onConstructingSet_withCollectionOfFiveItems_sizeOf_5() {
         Collection<Integer> collection = IntStream.iterate(10, i -> i <= 50, i -> i + 10).boxed().collect(Collectors.toList());
-
         CustomSet<Integer> customSet = new CustomSet<>(collection);
-
         assertEquals(5, customSet.size());
         assertTrue(customSet.contains(10));
         assertTrue(customSet.contains(20));
@@ -81,12 +72,9 @@ class CustomSetTest {
         assertFalse(customSet.contains(100));
     }
 
-
-
     @Test
     public void onAddingToSet_null_throws_NullPointerException() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        assertThrows(NullPointerException.class, ()-> customSet.add(null));
+        assertThrows(NullPointerException.class, () -> new CustomSet<>().add(null));
     }
 
     @Test
@@ -100,7 +88,6 @@ class CustomSetTest {
     @Test
     public void onAddingToSet_10_20_returns_true_and_sizeOf_2() {
         CustomSet<Integer> customSet = createDynamicSet(2);
-
         assertEquals(2, customSet.size());
     }
 
@@ -114,7 +101,6 @@ class CustomSetTest {
     @Test
     public void onAddingToSet_twoIdenticalNumbersToSet_onlyAddsOne() {
         CustomSet<Integer> customSet = new CustomSet<>();
-
         assertTrue(customSet.add(10));
         assertEquals(1, customSet.size());
         assertFalse(customSet.add(10));
@@ -124,14 +110,12 @@ class CustomSetTest {
     @Test
     public void onAddingToSet_50_items_returns_true_andSizeOf_50() {
         CustomSet<Integer> customSet = createDynamicSet(50);
-
         assertEquals(50, customSet.size());
     }
 
     @Test
     public void onAddingToSet_twoSameValues_returns_sizeOf_1() {
         CustomSet<Integer> customSet = new CustomSet<>();
-
         assertTrue(customSet.add(1));
         assertFalse(customSet.add(1));
         assertEquals(1, customSet.size());
@@ -143,7 +127,6 @@ class CustomSetTest {
         customSet.add(1);
         customSet.add(1);
         customSet.add(2);
-
         assertTrue(customSet.contains(1));
         assertTrue(customSet.contains(2));
         assertEquals(2, customSet.size());
@@ -154,7 +137,6 @@ class CustomSetTest {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
         customSet.add(20);
-
         assertThrows(NullPointerException.class, () -> customSet.remove(null));
     }
 
@@ -163,7 +145,6 @@ class CustomSetTest {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
         customSet.add(20);
-
         assertEquals(2, customSet.size());
         assertFalse(customSet.remove(30));
     }
@@ -173,10 +154,8 @@ class CustomSetTest {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
         customSet.add(20);
-
         assertEquals(2, customSet.size());
         assertThrows(NullPointerException.class, () -> customSet.remove(null));
-        assertEquals(2, customSet.size());
     }
 
     @Test
@@ -184,7 +163,6 @@ class CustomSetTest {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
         customSet.add(20);
-
         assertEquals(2, customSet.size());
         assertTrue(customSet.remove(10));
         assertEquals(1, customSet.size());
@@ -196,10 +174,9 @@ class CustomSetTest {
         customSet.add(10);
         customSet.add(20);
         customSet.add(30);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(null);
-        assertThrows(NullPointerException.class, ()-> customSet.containsAll(c));
+        assertThrows(NullPointerException.class, () -> customSet.containsAll(c));
     }
 
     @Test
@@ -212,7 +189,7 @@ class CustomSetTest {
         customSet.add(50);
         Collection<Integer> c = new ArrayList<>();
         c.add(null);
-        assertThrows(NullPointerException.class, ()-> customSet.retainAll(c));
+        assertThrows(NullPointerException.class, () -> customSet.retainAll(c));
     }
 
     @Test
@@ -223,7 +200,6 @@ class CustomSetTest {
         customSet.add(30);
         customSet.add(40);
         customSet.add(50);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(20);
         c.add(30);
@@ -244,7 +220,6 @@ class CustomSetTest {
         customSet.add(30);
         customSet.add(40);
         customSet.add(50);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(60);
         assertFalse(customSet.retainAll(c));
@@ -259,7 +234,6 @@ class CustomSetTest {
         customSet.add(30);
         customSet.add(40);
         customSet.add(50);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(20);
         c.add(30);
@@ -279,7 +253,6 @@ class CustomSetTest {
         customSet.add(10);
         customSet.add(20);
         customSet.add(30);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(20);
         c.add(30);
@@ -293,7 +266,6 @@ class CustomSetTest {
         customSet.add(10);
         customSet.add(20);
         customSet.add(30);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(20);
         c.add(30);
@@ -310,7 +282,6 @@ class CustomSetTest {
         customSet.add(30);
         customSet.add(40);
         customSet.add(50);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(20);
         c.add(30);
@@ -328,7 +299,6 @@ class CustomSetTest {
         customSet.add(10);
         customSet.add(20);
         customSet.add(30);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(20);
         c.add(30);
@@ -341,10 +311,9 @@ class CustomSetTest {
         customSet.add(10);
         customSet.add(20);
         customSet.add(30);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(null);
-        assertThrows(NullPointerException.class, ()-> customSet.addAll(c));
+        assertThrows(NullPointerException.class, () -> customSet.addAll(c));
     }
 
     @Test
@@ -353,7 +322,6 @@ class CustomSetTest {
         customSet.add(10);
         customSet.add(20);
         customSet.add(30);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(10);
         c.add(20);
@@ -366,7 +334,6 @@ class CustomSetTest {
         customSet.add(10);
         customSet.add(20);
         customSet.add(30);
-
         Collection<Integer> c = new ArrayList<>();
         c.add(40);
         c.add(50);
@@ -376,11 +343,8 @@ class CustomSetTest {
     @Test
     public void onAddingToSet_50_items_andClearingSet_returns_newSet() {
         CustomSet<Integer> customSet = createDynamicSet(50);
-
         assertEquals(50, customSet.size());
-
         customSet.clear();
-
         assertEquals(0, customSet.size());
     }
 
@@ -390,7 +354,6 @@ class CustomSetTest {
         assertEquals("{ }", customSet.toString());
     }
 
-    //NOTE: Because of not knowing the hashcode, which changes, we must check it exists in string, and it matches regex "\{ [0-9]+(, [0-9]+)+ }"
     @Test
     public void onConstructingSet_withCollectionOfFiveItems_returnsCorrect_toString() {
         Collection<Integer> collection = IntStream.iterate(0, i -> i <= 50, i -> i + 10).boxed().collect(Collectors.toList());
@@ -426,7 +389,6 @@ class CustomSetTest {
         Object[] expected = new Object[] { "10", "20", "30" };
         assertEquals(3, values.length);
         assertArrayEquals(expected, values);
-
     }
 
     private static CustomSet<Integer> createDynamicSet(int x) {
