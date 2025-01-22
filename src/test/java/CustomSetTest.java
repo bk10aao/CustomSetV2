@@ -391,6 +391,14 @@ class CustomSetTest {
         assertArrayEquals(expected, values);
     }
 
+    @Test
+    public void onAdding_1_000_000_values_causesNoIndexOverwritingIssues_andAdds_1_000_000_values() {
+        CustomSet<Long> customSet = new CustomSet<>();
+        for (long i = 0; i < 1_000_000; i++)
+            customSet.add(i);
+        assertEquals(1_000_000, customSet.size());
+    }
+
     private static CustomSet<Integer> createDynamicSet(int x) {
         CustomSet<Integer> customSet = new CustomSet<>();
         Random random = new Random();
