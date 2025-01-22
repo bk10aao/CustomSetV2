@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -359,7 +360,6 @@ class CustomSetTest {
         Collection<Integer> collection = IntStream.iterate(0, i -> i <= 50, i -> i + 10).boxed().collect(Collectors.toList());
         CustomSet<Integer> customSet = new CustomSet<>(collection);
         String setAsString = customSet.toString();
-        System.out.println(setAsString);
         assertTrue(setAsString.contains("0"));
         assertTrue(setAsString.contains("10"));
         assertTrue(setAsString.contains("20"));
@@ -394,8 +394,7 @@ class CustomSetTest {
     @Test
     public void onAdding_1_000_000_values_causesNoIndexOverwritingIssues_andAdds_1_000_000_values() {
         CustomSet<Long> customSet = new CustomSet<>();
-        for (long i = 0; i < 1_000_000; i++)
-            customSet.add(i);
+        LongStream.range(0, 1_000_000).forEach(customSet::add);
         assertEquals(1_000_000, customSet.size());
     }
 

@@ -8,7 +8,7 @@ public interface SetInterface<T> {
      * @throws NullPointerException - on null value
      * @return boolean true if successful, else false.
      */
-    boolean add(T item);
+    boolean add(final T item);
 
     /**
      * Add all items in collection to Set.
@@ -28,14 +28,14 @@ public interface SetInterface<T> {
      * @throws NullPointerException - on null item.
      * @return boolean true if contains, else false.
      */
-    boolean contains(T item);
+    boolean contains(final T item);
 
     /**
      * Check if Set contains all items in collection
      * @param c  - collection of items to be checked to contain all.
      * @return boolean true if contains, else false.
      */
-    boolean containsAll(Collection<T> c);
+    boolean containsAll(final Collection<T> c);
 
     /**
      * Check if Set is Empty.
@@ -48,21 +48,21 @@ public interface SetInterface<T> {
      * @param item to be removed
      * @return true if successful.
      */
-    boolean remove(T item);
+    boolean remove(final T item);
 
     /**
      * Remove all items from set that does not exist in collection
      * @param c - collection of items to be checked to retain.
      * @return boolean true if set is modified, else false.
      */
-    boolean removeAll(Collection<T> c);
+    boolean removeAll(final Collection<T> c);
 
     /**
      * retail all items from set that does not exist in collection
      * @param c - collection of items to be checked to retain.
      * @return boolean true if contains, else false.
      */
-    boolean retainAll(Collection<T> c);
+    boolean retainAll(final Collection<T> c);
 
     /**
      * Get size of set

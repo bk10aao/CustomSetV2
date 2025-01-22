@@ -40,7 +40,7 @@ public class CustomSet<T> implements SetInterface<T> {
         set = new HashMap<>(getNextPrime(initialCapacity), loadFactor);
     }
 
-    public boolean add(T t) {
+    public boolean add(final T t) {
         if(t == null)
             throw new NullPointerException();
         LinkedList<T> previous = set.get(hash(t));
