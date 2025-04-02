@@ -102,16 +102,6 @@ public class CustomSet<T> implements SetInterface<T> {
         return false;
     }
 
-    private CustomSet<T> retain(final Collection<T> c) {
-        CustomSet<T> temp = new CustomSet<>();
-        for(T value : c) {
-            if(set.get(hashObject(value)) != null) {
-                temp.add(value);
-            }
-        }
-        return temp;
-    }
-
     public int size() {
         return size;
     }
@@ -130,9 +120,8 @@ public class CustomSet<T> implements SetInterface<T> {
         if(size == 0)
             return "{ }";
         StringBuilder sb = new StringBuilder("{ ");
-        for(T t : set.values()) {
+        for(T t : set.values())
             sb.append(t).append(", ");
-        }
         return sb.substring(0, sb.length() - 2) + " }";
     }
 
@@ -147,6 +136,14 @@ public class CustomSet<T> implements SetInterface<T> {
 
     private String hashObject(T item) {
         return DigestUtils.sha256Hex(item.toString());
+    }
+
+    private CustomSet<T> retain(final Collection<T> c) {
+        CustomSet<T> temp = new CustomSet<>();
+        for(T value : c)
+            if (set.get(hashObject(value)) != null)
+                temp.add(value);
+        return temp;
     }
 
     protected static final int[] primes = { 3, 7, 11, 17, 23, 29, 37, 47, 59, 71, 89, 107, 131, 163, 197, 239, 293, 353, 431, 521, 631, 761, 919,

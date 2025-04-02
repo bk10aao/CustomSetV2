@@ -397,6 +397,20 @@ class CustomSetTest {
         assertEquals(1_000_000, customSet.size());
     }
 
+    @Test
+    public void onAdding_2_000_000_values_causesNoIndexOverwritingIssues_andAdds_2_000_000_values() {
+        CustomSet<Long> customSet = new CustomSet<>();
+        LongStream.range(0, 2_000_000).forEach(customSet::add);
+        assertEquals(2_000_000, customSet.size());
+    }
+
+    @Test
+    public void onAdding_3_000_000_values_causesNoIndexOverwritingIssues_andAdds_3_000_000_values() {
+        CustomSet<Long> customSet = new CustomSet<>();
+        LongStream.range(0, 3_000_000).forEach(customSet::add);
+        assertEquals(3_000_000, customSet.size());
+    }
+
     private static CustomSet<Integer> createDynamicSet(int x) {
         CustomSet<Integer> customSet = new CustomSet<>();
         Random random = new Random();
