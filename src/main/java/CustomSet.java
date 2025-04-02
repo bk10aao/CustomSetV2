@@ -1,11 +1,9 @@
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Objects;
-
-import static java.util.Objects.hash;
 
 
 @SuppressWarnings("unchecked")
@@ -13,7 +11,7 @@ public class CustomSet<T> implements SetInterface<T> {
 
     private int size = 0;
 
-    private Map<Integer, LinkedList<T>> set = new HashMap<>(primes[0], 0.75f);
+    private Map<String, T> set = new HashMap<>(primes[0], 0.75f);
 
     public CustomSet() {
         this.set = new HashMap<>(primes[0], 0.75f);
@@ -43,20 +41,11 @@ public class CustomSet<T> implements SetInterface<T> {
     public boolean add(final T t) {
         if(t == null)
             throw new NullPointerException();
-        LinkedList<T> previous = set.get(hash(t));
-        if(previous != null && !previous.contains(t)) {
-            previous.add(t);
-            set.put(hash(t), previous);
-            size++;
-            return true;
-        } else if(previous == null){
-            previous = new LinkedList<>();
-            previous.add(t);
-            set.put(hash(t), previous);
-            size++;
-            return true;
-        }
-        return false;
+        if(contains(t))
+            return false;
+        set.put(hashObject(t), t);
+        size++;
+        return true;
     }
     public boolean addAll(final Collection<T> c) {
         int n = this.size;
@@ -72,7 +61,7 @@ public class CustomSet<T> implements SetInterface<T> {
     public boolean contains(final T i) {
         if(i == null)
             throw new NullPointerException();
-        return set.values().stream().filter(Objects::nonNull).anyMatch(l -> l.contains(i));
+        return set.get(hashObject(i)) != null;
     }
 
     public boolean containsAll(final Collection<T> c) {
@@ -86,7 +75,7 @@ public class CustomSet<T> implements SetInterface<T> {
     public boolean remove(final T item) {
         if(item == null)
             throw new NullPointerException();
-        if(set.remove(hash(item)) != null) {
+        if(set.remove(hashObject(item)) != null) {
             size--;
             return true;
         }
@@ -116,10 +105,9 @@ public class CustomSet<T> implements SetInterface<T> {
     private CustomSet<T> retain(final Collection<T> c) {
         CustomSet<T> temp = new CustomSet<>();
         for(T value : c) {
-            LinkedList<T> v = set.get(hash(value));
-            if(v != null)
-                if (set.get(hash(value)).contains(value))
-                    temp.add(value);
+            if(set.get(hashObject(value)) != null) {
+                temp.add(value);
+            }
         }
         return temp;
     }
@@ -131,9 +119,8 @@ public class CustomSet<T> implements SetInterface<T> {
     public T[] toArray() {
         Object[] arr = new Object[size];
         int insertIndex = 0;
-        for(LinkedList<T> l : set.values())
-            for (T t : l)
-                arr[insertIndex++] = t;
+        for(T t : set.values())
+            arr[insertIndex++] = t;
         Arrays.sort(arr);
         return (T[])arr;
     }
@@ -143,7 +130,9 @@ public class CustomSet<T> implements SetInterface<T> {
         if(size == 0)
             return "{ }";
         StringBuilder sb = new StringBuilder("{ ");
-        set.values().forEach(values -> values.forEach(value -> sb.append(value).append(", ")));
+        for(T t : set.values()) {
+            sb.append(t).append(", ");
+        }
         return sb.substring(0, sb.length() - 2) + " }";
     }
 
@@ -154,6 +143,10 @@ public class CustomSet<T> implements SetInterface<T> {
                 if (primes[i] > initialCapacity)
                     return primes[i];
         return 0;
+    }
+
+    private String hashObject(T item) {
+        return DigestUtils.sha256Hex(item.toString());
     }
 
     protected static final int[] primes = { 3, 7, 11, 17, 23, 29, 37, 47, 59, 71, 89, 107, 131, 163, 197, 239, 293, 353, 431, 521, 631, 761, 919,
