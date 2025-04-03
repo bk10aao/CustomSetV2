@@ -19,3 +19,19 @@ Implementation of a Set using a Map. This was based off of my initial version us
 15. `T[] toArray()` - returns values in set as Array.
 16. `String toString()` - returns String representation of Set.
 
+<br/>
+
+|            Method            |        V1 LinkedList-Based       |          V2 HashMap-Based          |            Java HashSet           |          Winner         |
+|:----------------------------:|:--------------------------------:|:----------------------------------:|:---------------------------------:|:-----------------------:|
+| add(T item)                  | O(n)     | O(1) avg, O(n) worst | O(1) avg, O(n) worst | HashSet & HashMap-Based |
+| addAll(Collection<T> c)      | O(m * n)  | O(m)         | O(m)        | HashSet & HashMap-Based |
+| clear()                      | O(1)                             | O(1)               | O(1)            | Tie                     |
+| contains(T item)             | O(n)            | O(1) avg, O(n) worst               | O(1) avg, O(n) worst              | HashSet & HashMap-Based |
+| containsAll(Collection<T> c) | O(n * m)          | O(m)       | O(m)     | HashSet & HashMap-Based |
+| isEmpty()                    | O(1)                             | O(1)                               | O(1)                              | Tie                     |
+| remove(T item)               | O(n)  | O(1) avg, O(n) worst               | O(1) avg, O(n) worst              | HashSet & HashMap-Based |
+| removeAll(Collection<T> c)   | O(n * m)   | O(m) avg                           | O(m) avg                          | HashSet & HashMap-Based |
+| retainAll(Collection<T> c)   | O(n * m)     | O(n) avg | O(n) avg                          | HashSet & HashMap-Based |
+| size()                       | O(1)                             | O(1)                               | O(1)                              | Tie                     |
+| toArray()                    | O(n)                             | O(n)                               | O(n)                              | Tie                     |
+| toString()                   | O(n)                             | O(n)                               | O(n)                              | Tie                     |
