@@ -97,9 +97,7 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public T[] toArray() {
-        T[] arr = set.values().toArray((T[]) new Object[0]);
-        Arrays.sort(arr);
-        return arr;
+        return set.values().toArray((T[]) new Object[0]);
     }
 
     @Override

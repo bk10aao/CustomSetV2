@@ -385,7 +385,7 @@ class CustomSetTest {
         customSet.add("20");
         customSet.add("30");
         Object[] values = customSet.toArray();
-        Object[] expected = new Object[] { "10", "20", "30" };
+        Object[] expected = new Object[] { "10", "30", "20" }; //ordered for hashing
         assertEquals(3, values.length);
         assertArrayEquals(expected, values);
     }
