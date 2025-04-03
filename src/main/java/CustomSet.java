@@ -110,7 +110,7 @@ public class CustomSet<T> implements SetInterface<T> {
 
     @Override
     public String toString() {
-        if(set.size() == 0)
+        if(set.isEmpty())
             return "{ }";
         StringBuilder sb = new StringBuilder("{ ");
         for(T t : set.values())
@@ -119,12 +119,11 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     private int getNextPrime(final int initialCapacity) {
-        int primesIndex = 0;
-        if(initialCapacity > primes[primesIndex])
-            for (int i = primesIndex + 1; i < primes.length; i++)
-                if (primes[i] > initialCapacity)
-                    return primes[i];
-        return 0;
+        for (int prime : primes) {
+            if (prime >= initialCapacity)
+                return prime;
+        }
+        return primes[primes.length - 1]; // Return largest prime if no match
     }
 
     private String hashObject(T item) {
