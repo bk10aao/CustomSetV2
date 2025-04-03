@@ -38,9 +38,7 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public boolean add(final T t) {
-        if(t == null)
-            throw new NullPointerException();
-        return set.putIfAbsent(hashObject(t), t) == null;
+        return set.put(hashObject(t), t) == null;
     }
 
     public boolean addAll(final Collection<T> c) {
