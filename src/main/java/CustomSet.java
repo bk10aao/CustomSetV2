@@ -9,7 +9,6 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class CustomSet<T> implements SetInterface<T> {
 
-    private int size = 0;
 
     private Map<String, T> set = new HashMap<>(primes[0], 0.75f);
 
@@ -44,18 +43,17 @@ public class CustomSet<T> implements SetInterface<T> {
         if(contains(t))
             return false;
         set.put(hashObject(t), t);
-        size++;
         return true;
     }
+
     public boolean addAll(final Collection<T> c) {
-        int n = this.size;
+        int n = set.size();
         c.forEach(this::add);
-        return size != n;
+        return set.size() != n;
     }
 
     public void clear() {
         set = new HashMap<>(primes[0], 0.75f);
-        size = 0;
     }
 
     public boolean contains(final T i) {
@@ -69,23 +67,19 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public boolean isEmpty() {
-        return size == 0;
+        return set.size() == 0;
     }
 
     public boolean remove(final T item) {
         if(item == null)
             throw new NullPointerException();
-        if(set.remove(hashObject(item)) != null) {
-            size--;
-            return true;
-        }
-        return false;
+        return set.remove(hashObject(item)) != null;
     }
 
     public boolean removeAll(final Collection<T> c) {
-        int n = size;
+        int n = set.size();
         c.forEach(this::remove);
-        return n != size;
+        return n != set.size();
     }
 
     public boolean retainAll(final Collection<T> c) {
@@ -96,18 +90,17 @@ public class CustomSet<T> implements SetInterface<T> {
         CustomSet<T> temp = retain(c);
         if(temp.size() > 0) {
             set = temp.set;
-            size = temp.size;
             return true;
         }
         return false;
     }
 
     public int size() {
-        return size;
+        return set.size();
     }
 
     public T[] toArray() {
-        Object[] arr = new Object[size];
+        Object[] arr = new Object[set.size()];
         int insertIndex = 0;
         for(T t : set.values())
             arr[insertIndex++] = t;
@@ -117,7 +110,7 @@ public class CustomSet<T> implements SetInterface<T> {
 
     @Override
     public String toString() {
-        if(size == 0)
+        if(set.size() == 0)
             return "{ }";
         StringBuilder sb = new StringBuilder("{ ");
         for(T t : set.values())
