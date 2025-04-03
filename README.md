@@ -25,7 +25,7 @@ Implementation of a Set using a Map. This was based off of my initial version us
 
 |            Method            |        V1 LinkedList-Based       |          V2 HashMap-Based          |            Java HashSet           |          Winner         |
 |:----------------------------:|:--------------------------------:|:----------------------------------:|:---------------------------------:|:-----------------------:|
-| add(T item)                  | O(n)     | O(1) avgerage, O(n) worst | O(1) avgerage, O(n) worst | HashSet & HashMap-Based |
+| add(T item)                  | O(n)     | O(1) average, O(n) worst | O(1) average, O(n) worst | HashSet & HashMap-Based |
 | addAll(Collection<T> c)      | O(m * n)  | O(m)         | O(m)        | HashSet & HashMap-Based |
 | clear()                      | O(1)                             | O(1)               | O(1)            | Tie                     |
 | contains(T item)             | O(n)            | O(1) average, O(n) worst               | O(1) average, O(n) worst              | HashSet & HashMap-Based |
