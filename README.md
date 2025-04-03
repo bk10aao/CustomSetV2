@@ -28,12 +28,12 @@ Implementation of a Set using a Map. This was based off of my initial version us
 | add(T item)                  | O(n)     | O(1) avgerage, O(n) worst | O(1) avgerage, O(n) worst | HashSet & HashMap-Based |
 | addAll(Collection<T> c)      | O(m * n)  | O(m)         | O(m)        | HashSet & HashMap-Based |
 | clear()                      | O(1)                             | O(1)               | O(1)            | Tie                     |
-| contains(T item)             | O(n)            | O(1) avgerage, O(n) worst               | O(1) avgerage, O(n) worst              | HashSet & HashMap-Based |
+| contains(T item)             | O(n)            | O(1) average, O(n) worst               | O(1) average, O(n) worst              | HashSet & HashMap-Based |
 | containsAll(Collection<T> c) | O(n * m)          | O(m)       | O(m)     | HashSet & HashMap-Based |
 | isEmpty()                    | O(1)                             | O(1)                               | O(1)                              | Tie                     |
-| remove(T item)               | O(n)  | O(1) avgerage, O(n) worst               | O(1) avgerage, O(n) worst              | HashSet & HashMap-Based |
-| removeAll(Collection<T> c)   | O(n * m)   | O(m) avgerage                           | O(m) avgerage                          | HashSet & HashMap-Based |
-| retainAll(Collection<T> c)   | O(n * m)     | O(n) avgerage | O(n) avgerage                          | HashSet & HashMap-Based |
+| remove(T item)               | O(n)  | O(1) average, O(n) worst               | O(1) average, O(n) worst              | HashSet & HashMap-Based |
+| removeAll(Collection<T> c)   | O(n * m)   | O(m) average                           | O(m) average                          | HashSet & HashMap-Based |
+| retainAll(Collection<T> c)   | O(n * m)     | O(n) average | O(n) average                          | HashSet & HashMap-Based |
 | size()                       | O(1)                             | O(1)                               | O(1)                              | Tie                     |
 | toArray()                    | O(n)                             | O(n)                               | O(n)                              | Tie                     |
 | toString()                   | O(n)                             | O(n)                               | O(n)                              | Tie                     |
