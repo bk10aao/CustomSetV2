@@ -21,7 +21,7 @@ Implementation of a Set using a Map. This was based off of my initial version us
 
 <br/>
 
-# Performance Complexity
+## Performance Complexity
 
 |            Method            |        V1 LinkedList-Based       |          V2 HashMap-Based          |            Java HashSet           |          Winner         |
 |:----------------------------:|:--------------------------------:|:----------------------------------:|:---------------------------------:|:-----------------------:|
@@ -40,7 +40,7 @@ Implementation of a Set using a Map. This was based off of my initial version us
 
 <br/>
 
-# Space Complexity
+## Space Complexity
 
 |            Method            |        V1 LinkedList-Based        |          V2 HashMap-Based          |            Java HashSet            | Winner |
 |:----------------------------:|:---------------------------------:|:----------------------------------:|:----------------------------------:|:------:|
