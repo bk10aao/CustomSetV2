@@ -21,7 +21,7 @@ Implementation of a Set using a Map. This was based off of my initial version us
 
 <br/>
 
-# Performance
+# Performance Complexity
 
 |            Method            |        V1 LinkedList-Based       |          V2 HashMap-Based          |            Java HashSet           |          Winner         |
 |:----------------------------:|:--------------------------------:|:----------------------------------:|:---------------------------------:|:-----------------------:|
@@ -37,3 +37,22 @@ Implementation of a Set using a Map. This was based off of my initial version us
 | size()                       | O(1)                             | O(1)                               | O(1)                              | Tie                     |
 | toArray()                    | O(n)                             | O(n)                               | O(n)                              | Tie                     |
 | toString()                   | O(n)                             | O(n)                               | O(n)                              | Tie                     |
+
+<br/>
+
+# Space Complexity
+
+|            Method            |        V1 LinkedList-Based        |          V2 HashMap-Based          |            Java HashSet            | Winner |
+|:----------------------------:|:---------------------------------:|:----------------------------------:|:----------------------------------:|:------:|
+| add(T item)                  | O(n) | O(n) | O(n) | Tie    |
+| addAll(Collection<T> c)      | O(m + n)                          | O(m + n)                           | O(m + n)                           | Tie    |
+| clear()                      | O(1)           | O(1)             | O(1)              | Tie    |
+| contains(T item)             | O(1)                 | O(1)                   | O(1)                   | Tie    |
+| containsAll(Collection<T> c) | O(1)                              | O(1)                               | O(1)                               | Tie    |
+| isEmpty()                    | O(1)                              | O(1)                               | O(1)                               | Tie    |
+| remove(T item)               | O(1)                | O(1)                  | O(1)                  | Tie    |
+| removeAll(Collection<T> c)   | O(1)                              | O(1)                               | O(1)                               | Tie    |
+| retainAll(Collection<T> c)   | O(1)                              | O(1)                               | O(1)                               | Tie    |
+| size()                       | O(1)                              | O(1)                               | O(1)                               | Tie    |
+| toArray()                    | O(n)                              | O(n)                               | O(n)                               | Tie    |
+| toString()                   | O(n)        | O(n)         | O(n)         | Tie    |
