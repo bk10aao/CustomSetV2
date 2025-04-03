@@ -1,5 +1,5 @@
 # Set
-Implementation of a Set using a Map.
+Implementation of a Set using a Map. This was based off of my initial version using an array: https://github.com/bk10aao/CustomSet
 
 # Methods
 1. `CustomSet()` - default constructor.
@@ -18,3 +18,4 @@ Implementation of a Set using a Map.
 14. `int size()` - returns size of Set as Integer.
 15. `T[] toArray()` - returns values in set as Array.
 16. `String toString()` - returns String representation of Set.
+
