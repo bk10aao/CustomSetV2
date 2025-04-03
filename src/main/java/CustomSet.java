@@ -40,10 +40,7 @@ public class CustomSet<T> implements SetInterface<T> {
     public boolean add(final T t) {
         if(t == null)
             throw new NullPointerException();
-        if(contains(t))
-            return false;
-        set.put(hashObject(t), t);
-        return true;
+        return set.putIfAbsent(hashObject(t), t) == null;
     }
 
     public boolean addAll(final Collection<T> c) {
