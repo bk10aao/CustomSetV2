@@ -3,6 +3,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -64,7 +65,7 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public boolean isEmpty() {
-        return set.size() == 0;
+        return set.isEmpty();
     }
 
     public boolean remove(final T item) {
