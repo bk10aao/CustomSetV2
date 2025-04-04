@@ -5,7 +5,7 @@ Implementation of a Set using a Map. This was based off of my initial version us
 1. `CustomSet()` - default constructor.
 2. `CustomSet(final Collection<T> c)` - create set with items from given collection, throws NullPointerException on null collection.
 3. `CustomSet(final int initialCapacity)` - create a set with a given capacity, throws IllegalArgumentException on negative size.
-4. `CustomSet(final int initialCapacity, ginal double loadFactor)` - create a set with a given capacity and load factor, throws IllegalArgumentException on negative size or load factor less than 0 or larger than 1.
+4. `CustomSet(final int initialCapacity, final double loadFactor)` - create a set with a given capacity and load factor, throws IllegalArgumentException on negative size or load factor less than 0 or larger than 1.
 5. `boolean add(final T item)` - adds item to set if not currently present. Returns true if not already present in Set. 
 6. `boolean addAll(final Collection<T> c` - adds all items in collection to set. Throws NullPointerException on null item in set. Returns true if set is modified. 
 7. `void clear()` - clears the set back to an empty state.
