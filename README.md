@@ -9,12 +9,12 @@ Implementation of a Set using a Map. This was based off of my initial version us
 5. `boolean add(final T item)` - adds item to set if not currently present. Returns true if not already present in Set. 
 6. `boolean addAll(final Collection<T> c` - adds all items in collection to set. Throws NullPointerException on null item in set. Returns true if set is modified. 
 7. `void clear()` - clears the set back to an empty state.
-8. `boolean contains(T item)` - returns boolean determining if set contains item. 
-9. `boolean containsAll(Collection<T> c)` - returns boolean determining if all items in collection are contained within Set. Throws NullPointerException if collection contains null item.
+8. `boolean contains(final T item)` - returns boolean determining if set contains item. 
+9. `boolean containsAll(final Collection<T> c)` - returns boolean determining if all items in collection are contained within Set. Throws NullPointerException if collection contains null item.
 10. `boolean isEmpty()` - returns boolean determining if set is empty. 
-11. `boolean remove(T item)` - returns boolean determining if value existed and removed from set.
-12. `boolean removeAll(Collection<T> c)` - removes all items from set in collection. Returns true if Set is modified.
-13. `boolean retainAll(Collection<T> c)` - retains all items from set in collection and removes all others. Returns true if Set is modified.
+11. `boolean remove(final T item)` - returns boolean determining if value existed and removed from set.
+12. `boolean removeAll(final Collection<T> c)` - removes all items from set in collection. Returns true if Set is modified.
+13. `boolean retainAll(final Collection<T> c)` - retains all items from set in collection and removes all others. Returns true if Set is modified.
 14. `int size()` - returns size of Set as Integer.
 15. `T[] toArray()` - returns values in set as Array.
 16. `String toString()` - returns String representation of Set.
