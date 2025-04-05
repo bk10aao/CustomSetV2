@@ -22,37 +22,34 @@ Implementation of a Set using a Map. This was based off of my initial version us
 <br/>
 
 ## Performance Complexity
-
-|            Method            |        V1 LinkedList-Based       |          V2 HashMap-Based          |            Java HashSet           |          Winner         |
-|:----------------------------:|:--------------------------------:|:----------------------------------:|:---------------------------------:|:-----------------------:|
-| add(T item)                  | O(n)     | O(1) average, O(n) worst | O(1) average, O(n) worst | HashSet & HashMap-Based |
-| addAll(Collection<T> c)      | O(m * n)  | O(m)         | O(m)        | HashSet & HashMap-Based |
-| clear()                      | O(1)                             | O(1)               | O(1)            | Tie                     |
-| contains(T item)             | O(n)            | O(1) average, O(n) worst               | O(1) average, O(n) worst              | HashSet & HashMap-Based |
-| containsAll(Collection<T> c) | O(n * m)          | O(m)       | O(m)     | HashSet & HashMap-Based |
-| isEmpty()                    | O(1)                             | O(1)                               | O(1)                              | Tie                     |
-| remove(T item)               | O(n)  | O(1) average, O(n) worst               | O(1) average, O(n) worst              | HashSet & HashMap-Based |
-| removeAll(Collection<T> c)   | O(n * m)   | O(m) average                           | O(m) average                          | HashSet & HashMap-Based |
-| retainAll(Collection<T> c)   | O(n * m)     | O(n) average | O(n) average                          | HashSet & HashMap-Based |
-| size()                       | O(1)                             | O(1)                               | O(1)                              | Tie                     |
-| toArray()                    | O(n)                             | O(n)                               | O(n)                              | Tie                     |
-| toString()                   | O(n)                             | O(n)                               | O(n)                              | Tie                     |
-
+|          Method         | CustomSet V1 (LinkedList) | CustomSet V2 (HashMap) |     Java HashSet     |         Winner         |
+|:-----------------------:|:-------------------------:|:----------------------:|:--------------------:|:----------------------:|
+| add(T)                  | O(n)                      |  O(1) avg, O(n) worst  | O(1) avg, O(n) worst | CustomSet V2 & HashSet |
+| addAll(Collection)      | O(m * n)                  |          O(m)          |         O(m)         | CustomSet V2 & HashSet |
+| clear()                 | O(1)                      |          O(1)          |         O(1)         | Tie                    |
+| contains(T)             | O(n)                      |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
+| containsAll(Collection) | O(n * m)                  |          O(m)          |         O(m)         | CustomSet V2 & HashSet |
+| isEmpty()               | O(1)                      |          O(1)          |         O(1)         | Tie                    |
+| remove(T)               | O(n)                      |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
+| removeAll(Collection)   | O(n * m)                  |          O(m)          |         O(m)         | CustomSet V2 & HashSet |
+| retainAll(Collection)   | O(n * m)                  |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
+| size()                  | O(1)                      |          O(1)          |         O(1)         | Tie                    |
+| toArray()               | O(n)                      |          O(n)          |         O(n)         | Tie                    |
+| toString()              | O(n)                      |          O(n)          |         O(n)         | Tie                    |
 <br/>
 
 ## Space Complexity
-
-|            Method            |        V1 LinkedList-Based        |          V2 HashMap-Based          |            Java HashSet            | Winner |
-|:----------------------------:|:---------------------------------:|:----------------------------------:|:----------------------------------:|:------:|
-| add(T item)                  | O(n) | O(n) | O(n) | Tie    |
-| addAll(Collection<T> c)      | O(m + n)                          | O(m + n)                           | O(m + n)                           | Tie    |
-| clear()                      | O(1)           | O(1)             | O(1)              | Tie    |
-| contains(T item)             | O(1)                 | O(1)                   | O(1)                   | Tie    |
-| containsAll(Collection<T> c) | O(1)                              | O(1)                               | O(1)                               | Tie    |
-| isEmpty()                    | O(1)                              | O(1)                               | O(1)                               | Tie    |
-| remove(T item)               | O(1)                | O(1)                  | O(1)                  | Tie    |
-| removeAll(Collection<T> c)   | O(1)                              | O(1)                               | O(1)                               | Tie    |
-| retainAll(Collection<T> c)   | O(1)                              | O(1)                               | O(1)                               | Tie    |
-| size()                       | O(1)                              | O(1)                               | O(1)                               | Tie    |
-| toArray()                    | O(n)                              | O(n)                               | O(n)                               | Tie    |
-| toString()                   | O(n)        | O(n)         | O(n)         | Tie    |
+|          Method         |  CustomSet V1 (LinkedList)  | CustomSet V2 (HashMap) | Java HashSet |         Winner         |
+|:-----------------------:|:---------------------------:|:----------------------:|:------------:|:----------------------:|
+| add(T)                  | O(n) + chaining overhead    |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
+| addAll(Collection)      | O(n + m)                    |        O(n + m)        |   O(n + m)   | Tie                    |
+| clear()                 | O(1)                        |          O(1)          |     O(1)     | Tie                    |
+| contains(T)             | O(1) per bucket, O(n) worst |          O(1)          |     O(1)     | CustomSet V2 & HashSet |
+| containsAll(Collection) | O(n * m)                    |          O(m)          |     O(m)     | CustomSet V2 & HashSet |
+| isEmpty()               | O(1)                        |          O(1)          |     O(1)     | Tie                    |
+| remove(T)               | O(1) per bucket, O(n) worst |          O(1)          |     O(1)     | CustomSet V2 & HashSet |
+| removeAll(Collection)   | O(n * m)                    |          O(m)          |     O(m)     | CustomSet V2 & HashSet |
+| retainAll(Collection)   | O(n * m)                    |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
+| size()                  | O(1)                        |          O(1)          |     O(1)     | Tie                    |
+| toArray()               | O(n)                        |          O(n)          |     O(n)     | Tie                    |
+| toString()              | O(n)                        |          O(n)          |     O(n)     | Tie                    |

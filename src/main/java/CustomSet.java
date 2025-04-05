@@ -1,6 +1,5 @@
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
