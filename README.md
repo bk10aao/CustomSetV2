@@ -25,7 +25,7 @@ Implementation of a Set using a Map. This was based off of my initial version us
 |          Method         | CustomSet V1 (LinkedList) | CustomSet V2 (HashMap) |     Java HashSet     |         Winner         |
 |:-----------------------:|:-------------------------:|:----------------------:|:--------------------:|:----------------------:|
 | add(T)                  | O(n)                      |  O(1) avg, O(n) worst  | O(1) avg, O(n) worst | CustomSet V2 & HashSet |
-| addAll(Collection)      | O(m * n)                  |          O(m)          |         O(m)         | CustomSet V2 & HashSet |
+| addAll(Collection)      | O(n * m)                  |          O(m)          |         O(m)         | CustomSet V2 & HashSet |
 | clear()                 | O(1)                      |          O(1)          |         O(1)         | Tie                    |
 | contains(T)             | O(n)                      |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
 | containsAll(Collection) | O(n * m)                  |          O(m)          |         O(m)         | CustomSet V2 & HashSet |
