@@ -118,7 +118,7 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     private String hashObject(T item) {
-        return DigestUtils.sha256Hex(item.toString());
+        return new String(DigestUtils.md5(item.toString()));
     }
 
     private CustomSet<T> retain(final Collection<T> c) {
