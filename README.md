@@ -25,13 +25,13 @@ Implementation of a Set using a Map. This was based off of my initial version us
 |          Method         | CustomSet V1 (LinkedList) | CustomSet V2 (HashMap) |     Java HashSet     |         Winner         |
 |:-----------------------:|:-------------------------:|:----------------------:|:--------------------:|:----------------------:|
 | add(T)                  | O(n)                      |  O(1) avg, O(n) worst  | O(1) avg, O(n) worst | CustomSet V2 & HashSet |
-| addAll(Collection)      | O(m * n)                  |          O(m)          |         O(m)         | CustomSet V2 & HashSet |
+| addAll(Collection)      | O(n * m)                  |          O(m)          |         O(n)         | CustomSet V2 & HashSet |
 | clear()                 | O(1)                      |          O(1)          |         O(1)         | Tie                    |
 | contains(T)             | O(n)                      |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
-| containsAll(Collection) | O(n * m)                  |          O(m)          |         O(m)         | CustomSet V2 & HashSet |
+| containsAll(Collection) | O(n * m)                  |          O(m)          |         O(n)         | CustomSet V2 & HashSet |
 | isEmpty()               | O(1)                      |          O(1)          |         O(1)         | Tie                    |
 | remove(T)               | O(n)                      |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
-| removeAll(Collection)   | O(n * m)                  |          O(m)          |         O(m)         | CustomSet V2 & HashSet |
+| removeAll(Collection)   | O(n * m)                  |          O(m)          |         O(n)         | CustomSet V2 & HashSet |
 | retainAll(Collection)   | O(n * m)                  |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
 | size()                  | O(1)                      |          O(1)          |         O(1)         | Tie                    |
 | toArray()               | O(n)                      |          O(n)          |         O(n)         | Tie                    |
