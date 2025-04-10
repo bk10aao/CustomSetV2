@@ -55,4 +55,4 @@ Implementation of a Set using a Map. This was based off of my initial version us
 | toString()              | O(n)                        |          O(n)          |     O(n)     | Tie                    |
 
 
-![Combined Performance Charts](PerformanceTesting/CompareAll/combined_grid.png)
+![Combined Performance Charts](PerformanceTesting/CompareAll/combined_grid.jpg)
