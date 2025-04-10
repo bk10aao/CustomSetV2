@@ -55,4 +55,11 @@ Implementation of a Set using a Map. This was based off of my initial version us
 | toString()              | O(n)                        |          O(n)          |     O(n)     | Tie                    |
 
 
+# Performance Testing
+
+The following charts were geenrated using the following values:
+```
+int[] sizes = {1, 10, 50, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000, 25000, 50000, 100000, 250000, 500000, 750000, 1000000 };
+```
+
 ![Combined Performance Charts](PerformanceTesting/CompareAll/combined_grid.jpg)
