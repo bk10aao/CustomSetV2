@@ -8,8 +8,7 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class CustomSet<T> implements SetInterface<T> {
 
-
-    private Map<String, T> set = new HashMap<>(primes[0], 0.75f);
+    private Map<Integer, T> set;
 
     public CustomSet() {
         this.set = new HashMap<>(primes[0], 0.75f);
@@ -37,6 +36,8 @@ public class CustomSet<T> implements SetInterface<T> {
     }
 
     public boolean add(final T t) {
+        if(t == null)
+            throw new NullPointerException();
         return set.put(hashObject(t), t) == null;
     }
 
@@ -117,8 +118,9 @@ public class CustomSet<T> implements SetInterface<T> {
         return primes[primes.length - 1]; // Return largest prime if no match
     }
 
-    private String hashObject(T item) {
-        return new String(DigestUtils.md5(item.toString()));
+    private int hashObject(T item) {
+        int h;
+        return (item == null) ? 0 : (h = item.hashCode()) ^ (h >>> 16);
     }
 
     private CustomSet<T> retain(final Collection<T> c) {

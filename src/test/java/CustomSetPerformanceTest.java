@@ -15,6 +15,7 @@ public class CustomSetPerformanceTest {
         Random random = new Random();
 
         for (int size : sizes) {
+            System.out.println(size);
             // Pre-generate data for consistent testing
             Collection<Integer> collection = generateCollection(size, random);
             CustomSet<Integer> set = new CustomSet<>();
@@ -41,7 +42,7 @@ public class CustomSetPerformanceTest {
         }
 
         // Write results to CSV
-        try (FileWriter writer = new FileWriter("V2_performance_data_1.csv")) {
+        try (FileWriter writer = new FileWriter("V2_Hash_2_performance_data.csv")) {
             writer.write("Size,AddTime,AddAllTime,ClearTime,ContainsTime,ContainsAllTime," +
                     "IsEmptyTime,RemoveTime,RemoveAllTime,RetainAllTime,SizeTime," +
                     "ToArrayTime,ToStringTime\n");
