@@ -52,8 +52,8 @@ def read_csv(filename):
     }
 
 # Load data for both implementations
-version_1 = read_csv('V1_performance_data.csv')
-version_2 = read_csv('V2_performance_data.csv')
+version_1 = read_csv('CustomSetV1 - V1_performance_average.csv')
+version_2 = read_csv('CustomSetV2 - V2_performance_average.csv')
 # hashset_data = read_csv('hashset.csv')
 
 # List of methods to compare
@@ -63,8 +63,8 @@ methods = ['add', 'addAll', 'clear', 'contains', 'containsAll', 'isEmpty',
 # Generate comparison plots
 for method in methods:
     plt.figure(figsize=(10, 6))
-    plt.plot(version_1['sizes'], version_1[method], marker='', linestyle='-', label='CustomSetV1', linewidth=0.8)
-    plt.plot(version_2['sizes'], version_2[method], marker='', linestyle='-', label='CustomSetV2', linewidth=0.8)
+    plt.plot(version_1['sizes'], version_1[method], marker='', linestyle='-', label='CustomSetV1', linewidth=1.5)
+    plt.plot(version_2['sizes'], version_2[method], marker='', linestyle='-', label='CustomSetV2', linewidth=1.5)
 
     plt.xlabel('Input Size')
     plt.ylabel('Time (ns)')

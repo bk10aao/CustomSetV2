@@ -52,9 +52,9 @@ def read_csv(filename):
     }
 
 # Load data for both implementations
-array_data = read_csv('V1_performance_data.csv')
-hashmap_data = read_csv('V2_performance_data.csv')
-hashset_data = read_csv('V2_performance_data.csv')
+array_data = read_csv('CustomSetV1 - V1_performance_average.csv')
+hashmap_data = read_csv('CustomSetV2 - V2_performance_average.csv')
+hashset_data = read_csv('HashSet - performance_average.csv')
 
 # List of methods to compare
 methods = ['add', 'addAll', 'clear', 'contains', 'containsAll', 'isEmpty',

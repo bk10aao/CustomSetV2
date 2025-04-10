@@ -17,7 +17,7 @@ size_times = []
 to_array_times = []
 to_string_times = []
 
-with open('V1_performance_data.csv', 'r') as csvfile:
+with open('CustomSetV1 - V1_performance_average.csv', 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         sizes.append(int(row['Size']))
@@ -68,7 +68,7 @@ methods = [
 # Generate a plot for each method
 for method_name, times in methods:
     plt.figure(figsize=(10, 6))
-    plt.plot(sizes, times, marker='', linestyle='-', label=method_name, linewidth=0.8)
+    plt.plot(sizes, times, marker='', linestyle='-', label=method_name, linewidth=1.5)
     plt.xlabel('Input Size')
     plt.ylabel('Time (ns)')
     plt.title(f'CustomSetV1.{method_name} Performance')

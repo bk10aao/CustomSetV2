@@ -17,7 +17,7 @@ size_times = []
 to_array_times = []
 to_string_times = []
 
-with open('V2_performance_data.csv', 'r') as csvfile:
+with open('CustomSetV2 - V2_performance_average.csv', 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         sizes.append(int(row['Size']))
