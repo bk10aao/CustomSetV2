@@ -53,3 +53,6 @@ Implementation of a Set using a Map. This was based off of my initial version us
 | size()                  | O(1)                        |          O(1)          |     O(1)     | Tie                    |
 | toArray()               | O(n)                        |          O(n)          |     O(n)     | Tie                    |
 | toString()              | O(n)                        |          O(n)          |     O(n)     | Tie                    |
+
+
+![Combined Performance Charts](PerformanceTesting/CompareAll/combined.png)
