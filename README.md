@@ -57,7 +57,7 @@ Implementation of a Set using a Map. This was based off of my initial version us
 
 # Performance Testing
 
-The following charts were geenrated using the following values:
+The following charts were geenrated using the following values, this was ran 5 times with the average of these runs used to plot the performance:
 ```
 int[] sizes = {1, 10, 50, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000, 25000, 50000, 100000, 250000, 500000, 750000, 1000000 };
 ```
