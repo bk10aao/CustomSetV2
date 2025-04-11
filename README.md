@@ -4,7 +4,7 @@ Implementation of a Set using a Map. This was based off of my initial version us
 1. [methods](https://github.com/bk10aao/CustomSetV2/tree/main?tab=readme-ov-file#methods)
 2. [time complexity](https://github.com/bk10aao/CustomSetV2/tree/main?tab=readme-ov-file#performance-complexity)
 3. [space complexity](https://github.com/bk10aao/CustomSetV2/tree/main?tab=readme-ov-file#space-complexity)
-4. [performance graphs]()
+4. [performance testing](https://github.com/bk10aao/CustomSetV2/blob/main/README.md#space-complexity)
 
    
 # Methods
