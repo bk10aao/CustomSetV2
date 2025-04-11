@@ -1,6 +1,9 @@
 # Set
 Implementation of a Set using a Map. This was based off of my initial version using an array: https://github.com/bk10aao/CustomSet
 
+1. [methods](https://github.com/bk10aao/CustomSetV2/tree/main?tab=readme-ov-file#methods)
+
+   
 # Methods
 1. `CustomSet()` - default constructor.
 2. `CustomSet(final Collection<T> c)` - create set with items from given collection, throws NullPointerException on null collection.
