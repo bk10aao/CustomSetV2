@@ -45,10 +45,10 @@ Implementation of a Set using a Map. This was based off of my initial version us
 | addAll(Collection)      | O(n + m)                    |        O(n + m)        |   O(n + m)   | Tie                    |
 | clear()                 | O(1)                        |          O(1)          |     O(1)     | Tie                    |
 | contains(T)             | O(1) per bucket, O(n) worst |          O(1)          |     O(1)     | CustomSet V2 & HashSet |
-| containsAll(Collection) | O(n * m)                    |          O(m)          |     O(m)     | CustomSet V2 & HashSet |
+| containsAll(Collection) | O(n * m)                    |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
 | isEmpty()               | O(1)                        |          O(1)          |     O(1)     | Tie                    |
 | remove(T)               | O(1) per bucket, O(n) worst |          O(1)          |     O(1)     | CustomSet V2 & HashSet |
-| removeAll(Collection)   | O(n * m)                    |          O(m)          |     O(m)     | CustomSet V2 & HashSet |
+| removeAll(Collection)   | O(n * m)                    |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
 | retainAll(Collection)   | O(n * m)                    |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
 | size()                  | O(1)                        |          O(1)          |     O(1)     | Tie                    |
 | toArray()               | O(n)                        |          O(n)          |     O(n)     | Tie                    |
