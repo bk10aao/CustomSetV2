@@ -1,5 +1,3 @@
-import org.apache.commons.codec.digest.DigestUtils;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -111,10 +109,9 @@ public class CustomSet<T> implements SetInterface<T> {
     private int getNextPrime(final int initialCapacity) {
         if (initialCapacity <= 0)
             return primes[0];
-        for (int prime : primes) {
+        for (int prime : primes)
             if (prime >= initialCapacity)
                 return prime;
-        }
         return primes[primes.length - 1]; // Return largest prime if no match
     }
 
