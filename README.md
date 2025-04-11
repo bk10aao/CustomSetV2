@@ -70,6 +70,6 @@ The following charts were geenrated using the following values, this was ran 5 t
 
 Larger values were tested for Version 1 and Version 2 but when testing HashSet with those it became very slow and have therefore been scaled down. This happened predominantely by the method `removeAll` suggesting that this is caused by the HashSet resizing. 
 
-These values and seperate charts comparing each can be found in the [PerformanceTesting](https://github.com/bk10aao/CustomSetV2/tree/main/PerformanceTesting) directory.
+These values and seperate charts comparing each can be found in the [Performance Testing](https://github.com/bk10aao/CustomSetV2/tree/main/PerformanceTesting) directory.
 
 ![Combined Performance Charts](PerformanceTesting/CompareAll/combined_grid.jpg)
