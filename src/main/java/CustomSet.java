@@ -4,15 +4,15 @@ import java.util.Map;
 
 
 @SuppressWarnings("unchecked")
-public class CustomSet<T> implements SetInterface<T> {
+public class CustomSet<E> implements SetInterface<E> {
 
-    private Map<Integer, T> set;
+    private Map<Integer, E> set;
 
     public CustomSet() {
         this.set = new HashMap<>(primes[0], 0.75f);
     }
 
-    public CustomSet(final Collection<T> c) {
+    public CustomSet(final Collection<E> c) {
         if(c == null)
             throw new NullPointerException();
         set = new HashMap<>(getNextPrime(c.size()), 0.75f);
@@ -33,13 +33,13 @@ public class CustomSet<T> implements SetInterface<T> {
         set = new HashMap<>(getNextPrime(initialCapacity), loadFactor);
     }
 
-    public boolean add(final T t) {
+    public boolean add(final E t) {
         if(t == null)
             throw new NullPointerException();
         return set.put(hashObject(t), t) == null;
     }
 
-    public boolean addAll(final Collection<T> c) {
+    public boolean addAll(final Collection<E> c) {
         int n = set.size();
         c.forEach(this::add);
         return set.size() != n;
@@ -49,13 +49,13 @@ public class CustomSet<T> implements SetInterface<T> {
         set = new HashMap<>(primes[0], 0.75f);
     }
 
-    public boolean contains(final T i) {
+    public boolean contains(final E i) {
         if(i == null)
             throw new NullPointerException();
         return set.get(hashObject(i)) != null;
     }
 
-    public boolean containsAll(final Collection<T> c) {
+    public boolean containsAll(final Collection<E> c) {
         return c.stream().allMatch(this::contains);
     }
 
@@ -63,24 +63,24 @@ public class CustomSet<T> implements SetInterface<T> {
         return set.isEmpty();
     }
 
-    public boolean remove(final T item) {
+    public boolean remove(final E item) {
         if(item == null)
             throw new NullPointerException();
         return set.remove(hashObject(item)) != null;
     }
 
-    public boolean removeAll(final Collection<T> c) {
+    public boolean removeAll(final Collection<E> c) {
         int n = set.size();
         c.forEach(this::remove);
         return n != set.size();
     }
 
-    public boolean retainAll(final Collection<T> c) {
+    public boolean retainAll(final Collection<E> c) {
         if(c.isEmpty())
             return true;
         if(c.contains(null))
             throw new NullPointerException();
-        CustomSet<T> temp = retain(c);
+        CustomSet<E> temp = retain(c);
         if(temp.size() > 0) {
             set = temp.set;
             return true;
@@ -92,8 +92,8 @@ public class CustomSet<T> implements SetInterface<T> {
         return set.size();
     }
 
-    public T[] toArray() {
-        return set.values().toArray((T[]) new Object[0]);
+    public E[] toArray() {
+        return set.values().toArray((E[]) new Object[0]);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class CustomSet<T> implements SetInterface<T> {
         if(set.isEmpty())
             return "{ }";
         StringBuilder sb = new StringBuilder("{ ");
-        for(T t : set.values())
+        for(E t : set.values())
             sb.append(t).append(", ");
         return sb.substring(0, sb.length() - 2) + " }";
     }
@@ -115,14 +115,14 @@ public class CustomSet<T> implements SetInterface<T> {
         return primes[primes.length - 1]; // Return largest prime if no match
     }
 
-    private int hashObject(T item) {
+    private int hashObject(E item) {
         int h;
         return (item == null) ? 0 : (h = item.hashCode()) ^ (h >>> 16);
     }
 
-    private CustomSet<T> retain(final Collection<T> c) {
-        CustomSet<T> temp = new CustomSet<>();
-        for(T value : c)
+    private CustomSet<E> retain(final Collection<E> c) {
+        CustomSet<E> temp = new CustomSet<>();
+        for(E value : c)
             if (set.get(hashObject(value)) != null)
                 temp.add(value);
         return temp;
