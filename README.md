@@ -30,40 +30,40 @@ Implementation of a Set using a Map. This was based off of my initial version us
 ## Time Complexity
 |         Method          | CustomSet V1 (LinkedList) | CustomSet V2 (HashMap) |     Java HashSet     |         Winner         |
 |:-----------------------:|:-------------------------:|:----------------------:|:--------------------:|:----------------------:|
-|         add(E)          | O(n)                      |  O(1) avg, O(n) worst  | O(1) avg, O(n) worst | CustomSet V2 & HashSet |
-|   addAll(Collection)    | O(n * m)                  |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
-|         clear()         | O(1)                      |          O(1)          |         O(1)         | Tie                    |
-|       contains(E)       | O(n)                      |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
-| containsAll(Collection) | O(n * m)                  |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
-|        isEmpty()        | O(1)                      |          O(1)          |         O(1)         | Tie                    |
-|        remove(E)        | O(n)                      |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
-|  removeAll(Collection)  | O(n * m)                  |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
-|  retainAll(Collection)  | O(n * m)                  |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
-|         size()          | O(1)                      |          O(1)          |         O(1)         | Tie                    |
-|        toArray()        | O(n)                      |          O(n)          |         O(n)         | Tie                    |
-|       toString()        | O(n)                      |          O(n)          |         O(n)         | Tie                    |
+|         add(E)          |           O(n)            |  O(1) avg, O(n) worst  | O(1) avg, O(n) worst | CustomSet V2 & HashSet |
+|   addAll(Collection)    |         O(n * m)          |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
+|         clear()         |           O(1)            |          O(1)          |         O(1)         |          Tie           |
+|       contains(E)       |           O(n)            |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
+| containsAll(Collection) |         O(n * m)          |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
+|        isEmpty()        |           O(1)            |          O(1)          |         O(1)         |          Tie           |
+|        remove(E)        |           O(n)            |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
+|  removeAll(Collection)  |         O(n * m)          |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
+|  retainAll(Collection)  |         O(n * m)          |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
+|         size()          |           O(1)            |          O(1)          |         O(1)         |          Tie           |
+|        toArray()        |           O(n)            |          O(n)          |         O(n)         |          Tie           |
+|       toString()        |           O(n)            |          O(n)          |         O(n)         |          Tie           |
 <br/>
 
 ## Space Complexity
 |         Method          |  CustomSet V1 (LinkedList)  | CustomSet V2 (HashMap) | Java HashSet |         Winner         |
 |:-----------------------:|:---------------------------:|:----------------------:|:------------:|:----------------------:|
-|         add(E)          | O(n) + chaining overhead    |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
-|   addAll(Collection)    | O(n + m)                    |        O(n + m)        |   O(n + m)   | Tie                    |
-|         clear()         | O(1)                        |          O(1)          |     O(1)     | Tie                    |
+|         add(E)          |  O(n) + chaining overhead   |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
+|   addAll(Collection)    |          O(n + m)           |        O(n + m)        |   O(n + m)   |          Tie           |
+|         clear()         |            O(1)             |          O(1)          |     O(1)     |          Tie           |
 |       contains(E)       | O(1) per bucket, O(n) worst |          O(1)          |     O(1)     | CustomSet V2 & HashSet |
-| containsAll(Collection) | O(n * m)                    |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
-|        isEmpty()        | O(1)                        |          O(1)          |     O(1)     | Tie                    |
+| containsAll(Collection) |          O(n * m)           |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
+|        isEmpty()        |            O(1)             |          O(1)          |     O(1)     |          Tie           |
 |        remove(E)        | O(1) per bucket, O(n) worst |          O(1)          |     O(1)     | CustomSet V2 & HashSet |
-|  removeAll(Collection)  | O(n * m)                    |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
-|  retainAll(Collection)  | O(n * m)                    |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
-|         size()          | O(1)                        |          O(1)          |     O(1)     | Tie                    |
-|        toArray()        | O(n)                        |          O(n)          |     O(n)     | Tie                    |
-|       toString()        | O(n)                        |          O(n)          |     O(n)     | Tie                    |
+|  removeAll(Collection)  |          O(n * m)           |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
+|  retainAll(Collection)  |          O(n * m)           |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
+|         size()          |            O(1)             |          O(1)          |     O(1)     |          Tie           |
+|        toArray()        |            O(n)             |          O(n)          |     O(n)     |          Tie           |
+|       toString()        |            O(n)             |          O(n)          |     O(n)     |          Tie           |
 
 
 # Performance Testing
 
-The following charts were geenrated using the following values, this was ran 5 times with the average of these runs used to plot the performance:
+The following charts were generated using the following values, this was ran 5 times with the average of these runs used to plot the performance:
 ```
 1, 10, 50, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000, 25000, 50000, 100000, 250000, 500000, 750000, 1000000
 ```
