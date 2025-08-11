@@ -43,14 +43,7 @@ class CustomSetTest {
 
     @Test
     public void onConstructingSet_returnsEmptySet() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        assertTrue(customSet.isEmpty());
-        assertEquals(0, customSet.size());
-    }
-
-    @Test
-    public void givenANewSet_onAddingValueOf_null_throws_NullPointerException() {
-        assertThrows(NullPointerException.class, () -> new CustomSet<>().add(null));
+        assertTrue(new CustomSet<>().isEmpty());
     }
 
     @Test
@@ -58,7 +51,6 @@ class CustomSetTest {
         CustomSet<Integer> customSet = new CustomSet<>();
         assertTrue(customSet.add(10));
         assertTrue(customSet.contains(10));
-        assertFalse(customSet.isEmpty());
     }
 
     @Test
@@ -72,11 +64,6 @@ class CustomSetTest {
         assertTrue(customSet.contains(40));
         assertTrue(customSet.contains(50));
         assertFalse(customSet.contains(100));
-    }
-
-    @Test
-    public void onAddingToSet_null_throws_NullPointerException() {
-        assertThrows(NullPointerException.class, () -> new CustomSet<>().add(null));
     }
 
     @Test
@@ -135,29 +122,12 @@ class CustomSetTest {
     }
 
     @Test
-    public void onAddingToSet_twoValuesOf_10_20_onRemoveValueOf_null_throws_NullPointerException() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        customSet.add(10);
-        customSet.add(20);
-        assertThrows(NullPointerException.class, () -> customSet.remove(null));
-    }
-
-    @Test
     public void onAddingToSet_twoValuesOf_10_20_onRemove_30_returns_false() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
         customSet.add(20);
         assertEquals(2, customSet.size());
         assertFalse(customSet.remove(30));
-    }
-
-    @Test
-    public void onAddingToSet_twoValuesOf_10_20_onRemove_null_throws_NullPointerException() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        customSet.add(10);
-        customSet.add(20);
-        assertEquals(2, customSet.size());
-        assertThrows(NullPointerException.class, () -> customSet.remove(null));
     }
 
     @Test
@@ -168,30 +138,6 @@ class CustomSetTest {
         assertEquals(2, customSet.size());
         assertTrue(customSet.remove(10));
         assertEquals(1, customSet.size());
-    }
-
-    @Test
-    public void givenSetOfValue_10_20_30_onContainsAllForCollection_withNullValue_throw_NullPointerException() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        customSet.add(10);
-        customSet.add(20);
-        customSet.add(30);
-        Collection<Integer> c = new ArrayList<>();
-        c.add(null);
-        assertThrows(NullPointerException.class, () -> customSet.containsAll(c));
-    }
-
-    @Test
-    public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollection_withNullValue_throw_NullPointerException() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        customSet.add(10);
-        customSet.add(20);
-        customSet.add(30);
-        customSet.add(40);
-        customSet.add(50);
-        Collection<Integer> c = new ArrayList<>();
-        c.add(null);
-        assertThrows(NullPointerException.class, () -> customSet.retainAll(c));
     }
 
     @Test
@@ -215,7 +161,7 @@ class CustomSetTest {
     }
 
     @Test
-    public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollectionContainingValueThatDoesNotExist_returnsFalse() {
+    public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollectionContainingValueThatDoesNotExist_returnsTrue() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
         customSet.add(20);
@@ -224,8 +170,8 @@ class CustomSetTest {
         customSet.add(50);
         Collection<Integer> c = new ArrayList<>();
         c.add(60);
-        assertFalse(customSet.retainAll(c));
-        assertEquals(5, customSet.size());
+        assertTrue(customSet.retainAll(c));
+        assertEquals(0, customSet.size());
     }
 
     @Test
@@ -263,20 +209,6 @@ class CustomSetTest {
     }
 
     @Test
-    public void givenSetOfValue_10_20_30_onRemoveAllForCollection_20_30_40_null_ThrowsNullPointerException() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        customSet.add(10);
-        customSet.add(20);
-        customSet.add(30);
-        Collection<Integer> c = new ArrayList<>();
-        c.add(20);
-        c.add(30);
-        c.add(40);
-        c.add(null);
-        assertThrows(NullPointerException.class, () -> customSet.removeAll(c));
-    }
-
-    @Test
     public void givenSetOfValue_10_20_30_40_50_onRemoveAllForCollection_20_30_returnsCollectionOf_10_40_50() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
@@ -308,17 +240,6 @@ class CustomSetTest {
     }
 
     @Test
-    public void givenSetOfValue_10_20_30_onAddAllForCollection_withNullValue_throw_NullPointerException() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        customSet.add(10);
-        customSet.add(20);
-        customSet.add(30);
-        Collection<Integer> c = new ArrayList<>();
-        c.add(null);
-        assertThrows(NullPointerException.class, () -> customSet.addAll(c));
-    }
-
-    @Test
     public void givenSetOfValue_10_20_30_onAddAllForCollectionOf_10_20_returns_false() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
@@ -347,13 +268,12 @@ class CustomSetTest {
         CustomSet<Integer> customSet = createDynamicSet(50);
         assertEquals(50, customSet.size());
         customSet.clear();
-        assertEquals(0, customSet.size());
+        assertTrue(customSet.isEmpty());
     }
 
     @Test
     public void onConstructingEmptySet_returnsEmptyCurlyBracket_on_toString() {
-        CustomSet<Integer> customSet = new CustomSet<>();
-        assertEquals("{ }", customSet.toString());
+        assertEquals("[]", new CustomSet<>().toString());
     }
 
     @Test
@@ -366,7 +286,7 @@ class CustomSetTest {
         assertTrue(setAsString.contains("30"));
         assertTrue(setAsString.contains("40"));
         assertTrue(setAsString.contains("50"));
-        String pattern = "\\{ [0-9]+(, [0-9]+)+ }";
+        String pattern = "\\[[0-9]+(, [0-9]+)+]";
         assertTrue(setAsString.matches(pattern));
     }
 

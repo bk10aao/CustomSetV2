@@ -1,12 +1,16 @@
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
+import java.util.Spliterator;
 
 
 @SuppressWarnings("unchecked")
-public class CustomSet<E> implements SetInterface<E> {
+public class CustomSet<E> implements Set<E> {
 
-    private Map<Integer, E> set;
+    private final Map<E, Object> set;
+    private static final Object PRESENT = new Object();
 
     public CustomSet() {
         this.set = new HashMap<>(primes[0], 0.75f);
@@ -33,77 +37,88 @@ public class CustomSet<E> implements SetInterface<E> {
         set = new HashMap<>(getNextPrime(initialCapacity), loadFactor);
     }
 
+    @Override
     public boolean add(final E t) {
-        if(t == null)
-            throw new NullPointerException();
-        return set.put(hashObject(t), t) == null;
+        return set.put(t, PRESENT) == null;
     }
 
-    public boolean addAll(final Collection<E> c) {
-        int n = set.size();
-        c.forEach(this::add);
-        return set.size() != n;
+    @Override
+    public boolean addAll(final Collection<? extends E> c) {
+        boolean modified = false;
+        for (E e : c) {
+            if (add(e)) {
+                modified = true;
+            }
+        }
+        return modified;
     }
 
+    @Override
     public void clear() {
-        set = new HashMap<>(primes[0], 0.75f);
+        set.clear();
     }
 
-    public boolean contains(final E i) {
-        if(i == null)
-            throw new NullPointerException();
-        return set.get(hashObject(i)) != null;
+    @Override
+    public boolean contains(final Object o) {
+        return set.containsKey(o);
     }
 
-    public boolean containsAll(final Collection<E> c) {
+    @Override
+    public boolean containsAll(final Collection<?> c) {
         return c.stream().allMatch(this::contains);
     }
 
+    @Override
     public boolean isEmpty() {
         return set.isEmpty();
     }
 
-    public boolean remove(final E item) {
-        if(item == null)
-            throw new NullPointerException();
-        return set.remove(hashObject(item)) != null;
+    @Override
+    public Iterator<E> iterator() {
+        return set.keySet().iterator();
     }
 
-    public boolean removeAll(final Collection<E> c) {
+    @Override
+    public boolean remove(final Object o) {
+        return set.remove(o) != null;
+    }
+
+    @Override
+    public boolean 	removeAll(final Collection<?> c) {
         int n = set.size();
-        c.forEach(this::remove);
+        for (Object o : c)
+            remove(o);
         return n != set.size();
     }
 
-    public boolean retainAll(final Collection<E> c) {
-        if(c.isEmpty())
-            return true;
-        if(c.contains(null))
-            throw new NullPointerException();
-        CustomSet<E> temp = retain(c);
-        if(temp.size() > 0) {
-            set = temp.set;
-            return true;
-        }
-        return false;
+    @Override
+    public boolean retainAll(final Collection<?> c) {
+        return set.keySet().retainAll(c);
     }
 
+    @Override
     public int size() {
         return set.size();
     }
 
-    public E[] toArray() {
-        return set.values().toArray((E[]) new Object[0]);
+    @Override
+    public Spliterator<E> spliterator() {
+        return set.keySet().spliterator();
+    }
+
+    @Override
+    public Object[] toArray() {
+        return set.keySet().toArray();
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return set.keySet().toArray(a);
     }
 
     @Override
     public String toString() {
-        if(set.isEmpty())
-            return "{ }";
-        StringBuilder sb = new StringBuilder("{ ");
-        for(E t : set.values())
-            sb.append(t).append(", ");
-        return sb.substring(0, sb.length() - 2) + " }";
+        return set.keySet().toString();
     }
 
     private int getNextPrime(final int initialCapacity) {
@@ -113,19 +128,6 @@ public class CustomSet<E> implements SetInterface<E> {
             if (prime >= initialCapacity)
                 return prime;
         return primes[primes.length - 1]; // Return largest prime if no match
-    }
-
-    private int hashObject(E item) {
-        int h;
-        return (item == null) ? 0 : (h = item.hashCode()) ^ (h >>> 16);
-    }
-
-    private CustomSet<E> retain(final Collection<E> c) {
-        CustomSet<E> temp = new CustomSet<>();
-        for(E value : c)
-            if (set.get(hashObject(value)) != null)
-                temp.add(value);
-        return temp;
     }
 
     protected static final int[] primes = { 3, 7, 11, 17, 23, 29, 37, 47, 59, 71, 89, 107, 131, 163, 197, 239, 293, 353, 431, 521, 631, 761, 919,
