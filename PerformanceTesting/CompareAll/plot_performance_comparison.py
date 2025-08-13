@@ -65,17 +65,19 @@ def read_csv(filename):
     }
 
 # Check command-line arguments
-if len(sys.argv) != 3:
-    print("Usage: python plot_performance_comparison.py <customset_v1_csv> <customset_v2_csv>")
+if len(sys.argv) != 4:
+    print("Usage: python plot_performance_comparison.py <customset_v1_csv> <customset_v2_csv> <hashset_csv>")
     sys.exit(1)
 
 customset_v1_file = sys.argv[1]
 customset_v2_file = sys.argv[2]
+hashset_file = sys.argv[3]
 
 # Load data for all three implementations
 try:
     customset_v1_data = read_csv(customset_v1_file)
     customset_v2_data = read_csv(customset_v2_file)
+    hashset_data = read_csv(hashset_file)
 except Exception as e:
     print(f"Error loading data: {e}")
     sys.exit(1)
@@ -98,6 +100,7 @@ for idx, method in enumerate(methods):
     ax = fig.add_subplot(12, 1, idx + 1)  # 12 rows, 1 column
     ax.plot(customset_v1_data['sizes'], customset_v1_data[method], marker='', linestyle='-', label='CustomSetV1', linewidth=1.5)
     ax.plot(customset_v2_data['sizes'], customset_v2_data[method], marker='', linestyle='-', label='CustomSetV2', linewidth=1.5)
+    ax.plot(hashset_data['sizes'], hashset_data[method], marker='', linestyle='-', label='HashSet', linewidth=1.5)
 
     ax.set_xlabel('Input Size')
     ax.set_ylabel('Time (ns)')
@@ -105,7 +108,7 @@ for idx, method in enumerate(methods):
     ax.set_xlim(100, 100000)  # Set x-axis limits
     ax.set_xticks([100, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000])  # Explicit tick positions
     # Enhanced dynamic y-axis limits with tighter buffer
-    all_values = np.concatenate([customset_v1_data[method], customset_v2_data[method]])
+    all_values = np.concatenate([customset_v1_data[method], customset_v2_data[method], hashset_data[method]])
     if method in ['removeAll', 'retainAll']:  # Logarithmic scale
         min_val = max(1, np.min(all_values[all_values > 0]))  # Smallest positive value, capped at 1
         max_val = np.max(all_values) * 1.02  # 2% buffer above max

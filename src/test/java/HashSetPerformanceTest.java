@@ -8,9 +8,9 @@ import java.util.Set;
 
 public class HashSetPerformanceTest {
     public static void main(String[] args) {
-        // Input sizes to test (matching previous tests)
+        // Input sizes to test
         int[] sizes = {1, 10, 50, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000,
-                25000, 50000, 100000, 250000, 500000, 750000, 1000000 };
+                25000, 50000, 100000, 250000, 500000, 1000000 };
         // Store results
         ArrayList<long[]> results = new ArrayList<>();
         Random random = new Random();

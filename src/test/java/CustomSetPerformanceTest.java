@@ -8,8 +8,7 @@ public class CustomSetPerformanceTest {
     public static void main(String[] args) {
         // Input sizes to test
         int[] sizes = {1, 10, 50, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000,
-                25000, 50000, 100000, 250000, 500000, 1000000, 2000000, 4000000,
-                7199369, 8000000, 10000000};
+                25000, 50000, 100000, 250000, 500000, 1000000 };
         // Store results
         ArrayList<long[]> results = new ArrayList<>();
         Random random = new Random();
@@ -22,17 +21,40 @@ public class CustomSetPerformanceTest {
             set.addAll(collection); // Populate set for methods needing data
 
             // Benchmark each method
+            System.out.println("add");
             long addTime = benchmarkAdd(new CustomSet<>(), size, random);
+            System.out.println("addAll");
+
             long addAllTime = benchmarkAddAll(new CustomSet<>(), collection);
+            System.out.println("clean");
+
             long clearTime = benchmarkClear(new CustomSet<>(collection));
+            System.out.println("contains");
+
             long containsTime = benchmarkContains(set, random);
+            System.out.println("containsAll");
+
             long containsAllTime = benchmarkContainsAll(set, collection);
+            System.out.println("isEmpty");
+
             long isEmptyTime = benchmarkIsEmpty(set);
+            System.out.println("remove");
+
             long removeTime = benchmarkRemove(set, random);
+            System.out.println("removeAll");
+
             long removeAllTime = benchmarkRemoveAll(set, collection);
+            System.out.println("retainAll");
+
             long retainAllTime = benchmarkRetainAll(set, collection);
+            System.out.println("size");
+
             long sizeTime = benchmarkSize(set);
+            System.out.println("toArray");
+
             long toArrayTime = benchmarkToArray(set);
+            System.out.println("toString");
+
             long toStringTime = benchmarkToString(set);
 
             // Store results (in nanoseconds)

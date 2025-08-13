@@ -43,7 +43,9 @@ class CustomSetTest {
 
     @Test
     public void onConstructingSet_returnsEmptySet() {
-        assertTrue(new CustomSet<>().isEmpty());
+        CustomSet<Integer> customSet = new CustomSet<>();
+        assertTrue(customSet.isEmpty());
+        assertEquals(0, customSet.size());
     }
 
     @Test
@@ -51,6 +53,7 @@ class CustomSetTest {
         CustomSet<Integer> customSet = new CustomSet<>();
         assertTrue(customSet.add(10));
         assertTrue(customSet.contains(10));
+        assertFalse(customSet.isEmpty());
     }
 
     @Test
@@ -161,7 +164,7 @@ class CustomSetTest {
     }
 
     @Test
-    public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollectionContainingValueThatDoesNotExist_returnsTrue() {
+    public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollectionContainingValueThatDoesNotExist_returnsFalse() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
         customSet.add(20);
@@ -268,12 +271,13 @@ class CustomSetTest {
         CustomSet<Integer> customSet = createDynamicSet(50);
         assertEquals(50, customSet.size());
         customSet.clear();
-        assertTrue(customSet.isEmpty());
+        assertEquals(0, customSet.size());
     }
 
     @Test
     public void onConstructingEmptySet_returnsEmptyCurlyBracket_on_toString() {
-        assertEquals("[]", new CustomSet<>().toString());
+        CustomSet<Integer> customSet = new CustomSet<>();
+        assertEquals("[]", customSet.toString());
     }
 
     @Test
@@ -287,6 +291,7 @@ class CustomSetTest {
         assertTrue(setAsString.contains("40"));
         assertTrue(setAsString.contains("50"));
         String pattern = "\\[[0-9]+(, [0-9]+)+]";
+        System.out.println();
         assertTrue(setAsString.matches(pattern));
     }
 

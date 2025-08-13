@@ -69,7 +69,12 @@ The following charts were generated using the following values, this was ran 5 t
 ```
 
 Larger values were tested for Version 1 and Version 2 but when testing HashSet with those it became very slow and have therefore been scaled down. This happened predominantely by the method `removeAll` suggesting that this is caused by the HashSet resizing. 
+## CustomSet V1 vs CustomSet V2 vs HashSet Performance
 
-These values and seperate charts comparing each can be found in the [Performance Testing](https://github.com/bk10aao/CustomSetV2/tree/main/PerformanceTesting) directory.
+![Combined Performance Charts](PerformanceTesting/CompareAll/performance_comparison.jpg)
 
-![Combined Performance Charts](PerformanceTesting/CompareAll/combined_grid.jpg)
+## CustomSet V2 vs HashSet Performance
+![CustomSet V2 vs HashSet](PerformanceTesting/CompareV2ToHashSet/performance_comparison.jpg)
+
+## CustomSet V1 vs CustomSet V2 Performance
+![CustomSet V2 vs HashSet](PerformanceTesting/CompareV1ToV2/performance_comparison.jpg)
