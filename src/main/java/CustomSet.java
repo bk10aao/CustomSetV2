@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Spliterator;
 
-
 /**
  * A custom implementation of the {@link Set} interface backed by a <a href="https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html"/>}.
  * This set does not allow duplicate elements and permits null elements, like {@link HashSet}}.
