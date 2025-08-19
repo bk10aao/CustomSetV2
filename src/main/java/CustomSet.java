@@ -76,7 +76,6 @@ public class CustomSet<E> implements Set<E> {
      * @param e element to be added to this set
      * @return {@code true} if this set did not already contain the specified element
      */
-    @Override
     public boolean add(final E e) {
         return set.put(e, PRESENT) == null;
     }
@@ -91,14 +90,15 @@ public class CustomSet<E> implements Set<E> {
      * @return {@code true} if this set changed as a result of the call
      * @throws NullPointerException if the specified collection is null
      */
-    @Override
     public boolean addAll(final Collection<? extends E> c) {
         if (c == null)
             throw new NullPointerException();
         boolean modified = false;
-        for (E e : c)
-            if (add(e))
+        for (E e : c) {
+            Object o = set.put(e, PRESENT);
+            if (o == null)
                 modified = true;
+        }
         return modified;
     }
 
@@ -106,7 +106,6 @@ public class CustomSet<E> implements Set<E> {
      * Removes all the elements from this set.
      * The set will be empty after this call returns.
      */
-    @Override
     public void clear() {
         set.clear();
     }
@@ -118,7 +117,6 @@ public class CustomSet<E> implements Set<E> {
      * @param o element whose presence in this set is to be tested
      * @return {@code true} if this set contains the specified element
      */
-    @Override
     public boolean contains(final Object o) {
         return set.containsKey(o);
     }
@@ -131,11 +129,13 @@ public class CustomSet<E> implements Set<E> {
      * @return {@code true} if this set contains all the elements of the specified collection
      * @throws NullPointerException if the specified collection is null
      */
-    @Override
     public boolean containsAll(final Collection<?> c) {
         if (c == null)
             throw new NullPointerException();
-        return c.stream().allMatch(this::contains);
+        for (Object o : c)
+            if (!contains(o))
+                return false;
+        return true;
     }
 
     /**
@@ -172,7 +172,6 @@ public class CustomSet<E> implements Set<E> {
      *
      * @return {@code true} if this set contains no elements
      */
-    @Override
     public boolean isEmpty() {
         return set.isEmpty();
     }
@@ -183,7 +182,6 @@ public class CustomSet<E> implements Set<E> {
      *
      * @return an iterator over the elements in this set
      */
-    @Override
     public Iterator<E> iterator() {
         return set.keySet().iterator();
     }
@@ -196,7 +194,6 @@ public class CustomSet<E> implements Set<E> {
      * @param o object to be removed from this set, if present
      * @return {@code true} if this set contained the specified element
      */
-    @Override
     public boolean remove(final Object o) {
         return set.remove(o) != null;
     }
@@ -212,7 +209,6 @@ public class CustomSet<E> implements Set<E> {
      * @return {@code true} if this set changed as a result of the call
      * @throws NullPointerException if the specified collection is null
      */
-    @Override
     public boolean 	removeAll(final Collection<?> c) {
         if (c == null)
             throw new NullPointerException();
@@ -231,7 +227,6 @@ public class CustomSet<E> implements Set<E> {
      * @return {@code true} if this set changed as a result of the call
      * @throws NullPointerException if the specified collection is null
      */
-    @Override
     public boolean retainAll(final Collection<?> c) {
         if (c == null)
             throw new NullPointerException();
@@ -243,7 +238,6 @@ public class CustomSet<E> implements Set<E> {
      *
      * @return the number of elements in this set (its cardinality)
      */
-    @Override
     public int size() {
         return set.size();
     }
@@ -254,7 +248,6 @@ public class CustomSet<E> implements Set<E> {
      *
      * @return a {@code Spliterator} over the elements in this set
      */
-    @Override
     public Spliterator<E> spliterator() {
         return set.keySet().spliterator();
     }
@@ -266,7 +259,6 @@ public class CustomSet<E> implements Set<E> {
      *
      * @return an array containing all the elements in this set
      */
-    @Override
     public Object[] toArray() {
         return set.keySet().toArray();
     }
@@ -285,7 +277,6 @@ public class CustomSet<E> implements Set<E> {
      *         of the runtime type of every element in this set
      * @throws NullPointerException if the specified array is null
      */
-    @Override
     public <T> T[] toArray(T[] a) {
         return set.keySet().toArray(a);
     }
@@ -298,5 +289,4 @@ public class CustomSet<E> implements Set<E> {
     public String toString() {
         return set.keySet().toString();
     }
-
 }

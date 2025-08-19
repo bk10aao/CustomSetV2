@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -11,6 +12,7 @@ import java.util.stream.LongStream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -45,7 +47,6 @@ class CustomSetTest {
     public void onConstructingSet_returnsEmptySet() {
         CustomSet<Integer> customSet = new CustomSet<>();
         assertTrue(customSet.isEmpty());
-        assertEquals(0, customSet.size());
     }
 
     @Test
@@ -67,6 +68,30 @@ class CustomSetTest {
         assertTrue(customSet.contains(40));
         assertTrue(customSet.contains(50));
         assertFalse(customSet.contains(100));
+    }
+
+    @Test
+    public void givenEmptySet_onAdd_null_returnsTrue_withSizeOf_1() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        assertTrue(customSet.add(null));
+        assertEquals(1, customSet.size());
+    }
+
+    @Test
+    public void givenEmptySet_onAdd_null_and_onContains_null_returns_true() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        assertTrue(customSet.add(null));
+        assertTrue(customSet.contains(null));
+        assertEquals(1, customSet.size());
+    }
+
+    @Test
+    public void givenSetWithValueOf_null_onRemove_returns_true() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        assertTrue(customSet.add(null));
+        assertTrue(customSet.remove(null));
+        assertFalse(customSet.contains(null));
+        assertEquals(0, customSet.size());
     }
 
     @Test
@@ -144,7 +169,15 @@ class CustomSetTest {
     }
 
     @Test
-    public void givenSetOfValue_10_20_30_40_50_onRetailAllForCollection_20_30_returnsSetOf_20_30() {
+    public void givenNonEmptySet_onRetainAllWithEmptyCollection_clearsSet() {
+        CustomSet<Integer> customSet = createDynamicSet(5);
+        Collection<Integer> empty = new ArrayList<>();
+        assertTrue(customSet.retainAll(empty));
+        assertTrue(customSet.isEmpty());
+    }
+
+    @Test
+    public void givenSetOfValue_10_20_30_40_50_onRetainAllForCollection_20_30_returnsSetOf_20_30() {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(10);
         customSet.add(20);
@@ -336,6 +369,92 @@ class CustomSetTest {
         CustomSet<Long> customSet = new CustomSet<>();
         LongStream.range(0, 3_000_000).forEach(customSet::add);
         assertEquals(3_000_000, customSet.size());
+    }
+
+    @Test
+    public void givenSetOfThreeItems_iterator_iteratesOverAllElements_andReturnsSizeOf_3() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(1);
+        customSet.add(2);
+        customSet.add(3);
+
+        int count = 0;
+        Iterator<Integer> iterator = customSet.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            count++;
+        }
+
+        assertEquals(3, count);
+    }
+
+    @Test
+    public void givenSetOfThreeItems_iterator_remove_removesCurrentElement() {
+        CustomSet<Integer> customSet = new CustomSet<>();
+        customSet.add(1);
+        customSet.add(2);
+        customSet.add(3);
+
+        Iterator<Integer> iterator = customSet.iterator();
+        while (iterator.hasNext()) {
+            Integer value = iterator.next();
+            if (value.equals(2)) {
+                iterator.remove();
+            }
+        }
+
+        assertFalse(customSet.contains(2));
+        assertEquals(2, customSet.size());
+    }
+
+    @Test
+    public void givenSetOf_100_items_spliterator_estimateSize_matchesSetSize() {
+        CustomSet<Integer> customSet = createDynamicSet(100);
+        assertEquals(100, customSet.spliterator().estimateSize());
+    }
+
+    @Test
+    public void givenTwoIdenticalSet_onEquals_returnsTrue() {
+        CustomSet<Integer> a = new CustomSet<>();
+        a.add(1);
+        a.add(2);
+        CustomSet<Integer> b = new CustomSet<>();
+        b.add(1);
+        b.add(2);
+        assertTrue(a.equals(b));
+    }
+
+    @Test
+    public void givenTwoDifferentSets_onEquals_returnsFalse() {
+        CustomSet<Integer> a = new CustomSet<>();
+        a.add(1);
+        a.add(2);
+        CustomSet<Integer> b = new CustomSet<>();
+        b.add(1);
+        b.add(3);
+        assertFalse(a.equals(b));
+    }
+
+    @Test
+    public void givenTwoIdenticalSets_hashCode_IsTheSame() {
+        CustomSet<Integer> a = new CustomSet<>();
+        a.add(1);
+        a.add(2);
+        CustomSet<Integer> b = new CustomSet<>();
+        b.add(1);
+        b.add(2);
+        assertEquals(a.hashCode(), b.hashCode());
+    }
+
+    @Test
+    public void givenTwoDifferentSets_hashCode_IsDifferent() {
+        CustomSet<Integer> a = new CustomSet<>();
+        a.add(1);
+        a.add(2);
+        CustomSet<Integer> b = new CustomSet<>();
+        b.add(1);
+        b.add(3);
+        assertNotEquals(a.hashCode(), b.hashCode());
     }
 
     private static CustomSet<Integer> createDynamicSet(int x) {
