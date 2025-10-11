@@ -95,8 +95,7 @@ public class CustomSet<E> implements Set<E> {
             throw new NullPointerException();
         boolean modified = false;
         for (E e : c) {
-            Object o = set.put(e, PRESENT);
-            if (o == null)
+            if (set.put(e, PRESENT) == null)
                 modified = true;
         }
         return modified;
@@ -150,8 +149,10 @@ public class CustomSet<E> implements Set<E> {
      */
     @Override
     public boolean equals(Object o) {
-        if (o == this) return true;
-        if (!(o instanceof Set<?> other)) return false;
+        if (o == this)
+            return true;
+        if (!(o instanceof Set<?> other))
+            return false;
         return size() == other.size() && containsAll(other);
     }
 
