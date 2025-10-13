@@ -94,10 +94,9 @@ public class CustomSet<E> implements Set<E> {
         if (c == null)
             throw new NullPointerException();
         boolean modified = false;
-        for (E e : c) {
+        for (E e : c)
             if (set.put(e, PRESENT) == null)
                 modified = true;
-        }
         return modified;
     }
 
