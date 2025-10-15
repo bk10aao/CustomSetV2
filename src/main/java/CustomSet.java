@@ -108,6 +108,10 @@ public class CustomSet<E> implements Set<E> {
         set.clear();
     }
 
+    public CustomSet<E> clone() {
+        return new CustomSet<>(this);
+    }
+
     /**
      * Returns {@code true} if this set contains the specified element.
      * This set permits null elements.
@@ -278,6 +282,8 @@ public class CustomSet<E> implements Set<E> {
      * @throws NullPointerException if the specified array is null
      */
     public <T> T[] toArray(T[] a) {
+        if (a == null)
+            throw new NullPointerException();
         return set.keySet().toArray(a);
     }
 
@@ -287,6 +293,6 @@ public class CustomSet<E> implements Set<E> {
      * @return String representation of CustomSet
      */
     public String toString() {
-        return set.keySet().toString();
+        return set.keySet().toString().replace("[", "{").replace("]", "}");
     }
 }

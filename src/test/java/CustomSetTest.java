@@ -310,7 +310,7 @@ class CustomSetTest {
     @Test
     public void onConstructingEmptySet_returnsEmptyCurlyBracket_on_toString() {
         CustomSet<Integer> customSet = new CustomSet<>();
-        assertEquals("[]", customSet.toString());
+        assertEquals("{}", customSet.toString());
     }
 
     @Test
@@ -323,7 +323,7 @@ class CustomSetTest {
         assertTrue(setAsString.contains("30"));
         assertTrue(setAsString.contains("40"));
         assertTrue(setAsString.contains("50"));
-        String pattern = "\\[[0-9]+(, [0-9]+)+]";
+        String pattern = "\\{[0-9]+(, [0-9]+)+}";
         System.out.println();
         assertTrue(setAsString.matches(pattern));
     }
