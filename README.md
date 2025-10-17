@@ -1,12 +1,17 @@
 # Set
 Implementation of a Set using a Map. This was based off of my initial version using an array: https://github.com/bk10aao/CustomSet
 
-1. [methods](https://github.com/bk10aao/CustomSetV2/tree/main?tab=readme-ov-file#methods)
-2. [time complexity](https://github.com/bk10aao/CustomSetV2/tree/main?tab=readme-ov-file#performance-complexity)
-3. [space complexity](https://github.com/bk10aao/CustomSetV2/tree/main?tab=readme-ov-file#space-complexity)
-4. [performance testing](https://github.com/bk10aao/CustomSetV2/blob/main/README.md#performance-testing)
+1. [time complexity](https://github.com/bk10aao/CustomSetV2/tree/main?tab=readme-ov-file#performance-complexity)
+2. [space complexity](https://github.com/bk10aao/CustomSetV2/tree/main?tab=readme-ov-file#space-complexity)
+3. [performance testing](https://github.com/bk10aao/CustomSetV2/blob/main/README.md#performance-testing)
 
 All methods implemented are identical to those found in the Java [Set](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html) interface.
+
+
+## Build and Test
+
+1. To build and test the project run command `./gradlew clean build`
+2. To test the project run command `gradle test --tests CustomSetTest`
 
 ## Time Complexity
 |         Method          | CustomSet V1 (LinkedList) | CustomSet V2 (HashMap) |     Java HashSet     |         Winner         |
