@@ -8,8 +8,6 @@ Implementation of a Set using a Map. This was based off of my initial version us
 
 All methods implemented are identical to those found in the Java [Set](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html) interface.
 
-<br/>
-
 ## Time Complexity
 |         Method          | CustomSet V1 (LinkedList) | CustomSet V2 (HashMap) |     Java HashSet     |         Winner         |
 |:-----------------------:|:-------------------------:|:----------------------:|:--------------------:|:----------------------:|
@@ -43,6 +41,9 @@ All methods implemented are identical to those found in the Java [Set](https://d
 |        toArray()        |            O(n)             |          O(n)          |     O(n)     |          Tie           |
 |       toString()        |            O(n)             |          O(n)          |     O(n)     |          Tie           |
 
+**Legend**:
+- `n`: Number of elements in the Set.
+- `m`: Number of elements in the input collection.
 
 # Performance Testing
 
