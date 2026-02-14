@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterator;
 
@@ -35,8 +36,7 @@ public class CustomSet<E> implements Set<E> {
      * @throws NullPointerException if the specified collection is null
      */
     public CustomSet(final Collection<E> c) {
-        if(c == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(c);
         set = new HashMap<>(Math.max(16, (int) (c.size() / 0.75f) + 1));
         addAll(c);
     }
@@ -61,9 +61,7 @@ public class CustomSet<E> implements Set<E> {
      * @throws IllegalArgumentException if the initial capacity is negative or the load factor is non-positive or NaN
      */
     public CustomSet(final int initialCapacity, final float loadFactor) {
-        if(initialCapacity < 0)
-            throw new IllegalArgumentException();
-        if (loadFactor <= 0 || Float.isNaN(loadFactor))
+        if (initialCapacity < 0 || loadFactor <= 0 || Float.isNaN(loadFactor))
             throw new IllegalArgumentException();
         set = new HashMap<>(Math.max(16, initialCapacity), loadFactor);
     }
@@ -91,8 +89,7 @@ public class CustomSet<E> implements Set<E> {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean addAll(final Collection<? extends E> c) {
-        if (c == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(c);
         boolean modified = false;
         for (E e : c)
             if (set.put(e, PRESENT) == null)
@@ -132,8 +129,7 @@ public class CustomSet<E> implements Set<E> {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean containsAll(final Collection<?> c) {
-        if (c == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(c);
         for (Object o : c)
             if (!contains(o))
                 return false;
@@ -150,7 +146,6 @@ public class CustomSet<E> implements Set<E> {
      * @param o object to be compared for equality with this set
      * @return {@code true} if the specified object is equal to this set
      */
-    @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;
@@ -166,7 +161,6 @@ public class CustomSet<E> implements Set<E> {
      *
      * @return the hash code value for this set
      */
-    @Override
     public int hashCode() {
         return set.keySet().hashCode();
     }
@@ -214,8 +208,7 @@ public class CustomSet<E> implements Set<E> {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean 	removeAll(final Collection<?> c) {
-        if (c == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(c);
         return set.keySet().removeAll(c);
     }
 
@@ -232,8 +225,7 @@ public class CustomSet<E> implements Set<E> {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean retainAll(final Collection<?> c) {
-        if (c == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(c);
         return set.keySet().retainAll(c);
     }
 
@@ -282,8 +274,7 @@ public class CustomSet<E> implements Set<E> {
      * @throws NullPointerException if the specified array is null
      */
     public <T> T[] toArray(T[] a) {
-        if (a == null)
-            throw new NullPointerException();
+        Objects.requireNonNull(a);
         return set.keySet().toArray(a);
     }
 
