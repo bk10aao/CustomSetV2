@@ -271,10 +271,8 @@ public class CustomSet<E> implements Set<E> {
      * @return an array containing all the elements in this set
      * @throws ArrayStoreException if the runtime type of the specified array is not a supertype
      *         of the runtime type of every element in this set
-     * @throws NullPointerException if the specified array is null
      */
     public <T> T[] toArray(T[] a) {
-        Objects.requireNonNull(a);
         return set.keySet().toArray(a);
     }
 
