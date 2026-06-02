@@ -8,8 +8,9 @@ import java.util.Set;
 import java.util.Spliterator;
 
 /**
- * A custom implementation of the {@link Set} interface backed by a <a href="https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html"/>}.
- * This set does not allow duplicate elements and permits null elements, like {@link HashSet}}.
+ Java
+ * A custom implementation of the {@link Set} interface backed by a {@link HashMap}.
+ * This set does not allow duplicate elements and permits null elements, like {@link HashSet}
  *
  * @param <E> the type of elements maintained by this set
  * @author Benjamin Kane
@@ -17,7 +18,7 @@ import java.util.Spliterator;
  * GitHub account bk10aao - <a href="https://github.com/bk10aao"/>
  * Repository - <a href="https://github.com/bk10aao/CustomSetV2"/>
  */
-public class CustomSet<E> implements Set<E> {
+public class CustomSet<E> implements Set<E>, Cloneable {
 
     private final Map<E, Object> set;
     private static final Object PRESENT = new Object();
@@ -91,7 +92,7 @@ public class CustomSet<E> implements Set<E> {
     public boolean addAll(final Collection<? extends E> c) {
         Objects.requireNonNull(c);
         boolean modified = false;
-        for (E e : c)
+        for (var e : c)
             if (set.put(e, PRESENT) == null)
                 modified = true;
         return modified;
@@ -106,7 +107,9 @@ public class CustomSet<E> implements Set<E> {
     }
 
     public CustomSet<E> clone() {
-        return new CustomSet<>(this);
+        CustomSet<E> clonedSet = new CustomSet<>();
+        clonedSet.set.putAll(this.set);
+        return clonedSet;
     }
 
     /**
@@ -162,7 +165,11 @@ public class CustomSet<E> implements Set<E> {
      * @return the hash code value for this set
      */
     public int hashCode() {
-        return set.keySet().hashCode();
+        int h = 0;
+        for (E e : set.keySet())
+            if (e != null)
+                h += e.hashCode();
+        return h;
     }
 
     /**
