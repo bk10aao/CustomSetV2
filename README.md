@@ -63,7 +63,7 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 
 ## CustomSet V1 vs CustomSet V2 vs HashSet Performance
 
-#### Note: The following performance charts designed to be viewed in dark mode.
+#### Note: The following performance charts are designed to be viewed in dark mode.
 
 ![Combined Performance Charts](PerformanceTesting/CompareAll/add.png)
 ![Combined Performance Charts](PerformanceTesting/CompareAll/addAll.png)
