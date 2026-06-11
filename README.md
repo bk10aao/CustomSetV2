@@ -14,6 +14,7 @@ All methods implemented are identical to those found in the Java [Set](https://d
 2. To test the project run command `gradle test --tests CustomSetTest`
 
 ## Time Complexity
+
 |         Method          | CustomSet V1 (LinkedList) | CustomSet V2 (HashMap) |     Java HashSet     |         Winner         |
 |:-----------------------:|:-------------------------:|:----------------------:|:--------------------:|:----------------------:|
 |         add(E)          |           O(n)            |  O(1) avg, O(n) worst  | O(1) avg, O(n) worst | CustomSet V2 & HashSet |
@@ -31,6 +32,7 @@ All methods implemented are identical to those found in the Java [Set](https://d
 <br/>
 
 ## Space Complexity
+
 |         Method          |  CustomSet V1 (LinkedList)  | CustomSet V2 (HashMap) | Java HashSet |         Winner         |
 |:-----------------------:|:---------------------------:|:----------------------:|:------------:|:----------------------:|
 |         add(E)          |  O(n) + chaining overhead   |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
@@ -58,7 +60,10 @@ The following charts were generated using the following values, this was ran 5 t
 ```
 
 Larger values were tested for Version 1 and Version 2 but when testing HashSet with those it became very slow and have therefore been scaled down. This happened predominantely by the method `removeAll` suggesting that this is caused by the HashSet resizing. 
+
 ## CustomSet V1 vs CustomSet V2 vs HashSet Performance
+
+#### Note: The following performance charts designed to be viewed in dark mode.
 
 ![Combined Performance Charts](PerformanceTesting/CompareAll/add.png)
 ![Combined Performance Charts](PerformanceTesting/CompareAll/addAll.png)
