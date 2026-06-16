@@ -108,3 +108,4 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/size.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/toArray.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/toString.png)
+![Heatmap](PerformanceTesting/CompareV1ToV2/heatmap.png)
