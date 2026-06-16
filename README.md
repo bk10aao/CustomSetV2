@@ -61,6 +61,8 @@ The following charts were generated using the following values, this was ran 5 t
 
 Larger values were tested for Version 1 and Version 2 but when testing HashSet with those it became very slow and have therefore been scaled down. This happened predominantely by the method `removeAll` suggesting that this is caused by the HashSet resizing. 
 
+
+
 ## CustomSet V1 vs CustomSet V2 vs HashSet Performance
 
 #### Note: The following performance charts are designed to be viewed in dark mode.
@@ -91,6 +93,7 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/size.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/toArray.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/toString.png)
+![Heatmap](PerformanceTesting/CompareV2ToHashSet/heatmap.png)
 
 ## CustomSet V1 vs CustomSet V2 Performance
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/add.png)
