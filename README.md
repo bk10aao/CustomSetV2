@@ -59,9 +59,7 @@ The following charts were generated using the following values, this was ran 5 t
 1, 10, 50, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000, 25000, 50000, 100000, 250000, 500000, 750000, 1000000
 ```
 
-Larger values were tested for Version 1 and Version 2 but when testing HashSet with those it became very slow and have therefore been scaled down. This happened predominantely by the method `removeAll` suggesting that this is caused by the HashSet resizing. 
-
-
+Larger values were tested for Version 1 and Version 2 but when testing HashSet with those it became very slow and have therefore been scaled down. This happened predominantely by the method `removeAll` suggesting that this is caused by the HashSet resizing.
 
 ## CustomSet V1 vs CustomSet V2 vs HashSet Performance
 
@@ -81,6 +79,7 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 ![Combined Performance Charts](PerformanceTesting/CompareAll/toString.png)
 
 ## CustomSet V2 vs HashSet Performance
+![Heatmap](PerformanceTesting/CompareV2ToHashSet/heatmap.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/add.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/clear.png)
@@ -93,9 +92,9 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/size.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/toArray.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/toString.png)
-![Heatmap](PerformanceTesting/CompareV2ToHashSet/heatmap.png)
 
 ## CustomSet V1 vs CustomSet V2 Performance
+![Heatmap](PerformanceTesting/CompareV1ToV2/heatmap.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/add.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/clear.png)
@@ -108,4 +107,3 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/size.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/toArray.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/toString.png)
-![Heatmap](PerformanceTesting/CompareV1ToV2/heatmap.png)
