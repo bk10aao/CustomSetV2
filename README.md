@@ -64,7 +64,7 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 ## CustomSet V1 vs CustomSet V2 vs HashSet Performance
 
 #### Note: The following performance charts are designed to be viewed in dark mode.
-
+![Heatmap](PerformanceTesting/CompareV2ToHashSet/heatmap.png)
 ![Combined Performance Charts](PerformanceTesting/CompareAll/add.png)
 ![Combined Performance Charts](PerformanceTesting/CompareAll/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/CompareAll/clear.png)
@@ -79,7 +79,6 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 ![Combined Performance Charts](PerformanceTesting/CompareAll/toString.png)
 
 ## CustomSet V2 vs HashSet Performance
-![Heatmap](PerformanceTesting/CompareV2ToHashSet/heatmap.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/add.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/clear.png)
