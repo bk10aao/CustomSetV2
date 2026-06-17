@@ -61,10 +61,14 @@ The following charts were generated using the following values, this was ran 5 t
 
 Larger values were tested for Version 1 and Version 2 but when testing HashSet with those it became very slow and have therefore been scaled down. This happened predominantely by the method `removeAll` suggesting that this is caused by the HashSet resizing.
 
-## CustomSet V1 vs CustomSet V2 vs HashSet Performance
-
 #### Note: The following performance charts are designed to be viewed in dark mode.
+
+### Heat Maps
 ![Heatmap](PerformanceTesting/CompareV2ToHashSet/heatmap.png)
+![Heatmap](PerformanceTesting/CompareV1ToV2/heatmap.png)
+
+### CustomSet V1 vs CustomSet V2 vs HashSet Performance
+
 ![Combined Performance Charts](PerformanceTesting/CompareAll/add.png)
 ![Combined Performance Charts](PerformanceTesting/CompareAll/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/CompareAll/clear.png)
@@ -78,7 +82,7 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 ![Combined Performance Charts](PerformanceTesting/CompareAll/toArray.png)
 ![Combined Performance Charts](PerformanceTesting/CompareAll/toString.png)
 
-## CustomSet V2 vs HashSet Performance
+### CustomSet V2 vs HashSet Performance
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/add.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/clear.png)
@@ -92,8 +96,7 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/toArray.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/toString.png)
 
-## CustomSet V1 vs CustomSet V2 Performance
-![Heatmap](PerformanceTesting/CompareV1ToV2/heatmap.png)
+### CustomSet V1 vs CustomSet V2 Performance
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/add.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/clear.png)
