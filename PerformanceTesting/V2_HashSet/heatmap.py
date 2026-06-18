@@ -3,103 +3,87 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# 1. Load the benchmark data files
+# 1. Load and prepare data
 custom_set_df = pd.read_csv('V2_performance_data.csv').sort_values('Size').reset_index(drop=True)
 hash_set_df = pd.read_csv('HashSet_performance_data.csv').sort_values('Size').reset_index(drop=True)
 
-# 2. Extract methods from Custom V2 data (Excluding 'Size' and 'ClearTime')
 methods = [col for col in custom_set_df.columns if col != 'Size' and col.lower() != 'cleartime']
-
-# Use row mapping to dynamically align datasets regardless of differences in size keys
 num_rows = min(len(custom_set_df), len(hash_set_df))
 custom_set_df = custom_set_df.iloc[:num_rows]
 hash_set_df = hash_set_df.iloc[:num_rows]
 
-# UPDATED: Use only the Size value for x-axis labels
-display_size_labels = custom_set_df['Size'].tolist()
+# 2. Calculate data and annotations
+heatmap_data = []
+annot_data = []
 
-# 3. Construct the relative performance matrix (Log2 ratios)
-heatmap_data = np.zeros((len(methods), num_rows))
-text_labels = []
-
-for i, m in enumerate(methods):
-    row_labels = []
+for m in methods:
+    row_vals = []
+    row_annots = []
     for j in range(num_rows):
         c_val = custom_set_df.loc[j, m]
         j_val = hash_set_df.loc[j, m]
+        c_val, j_val = (1 if v == 0 else v for v in (c_val, j_val))
 
-        # Prevent division by zero errors
-        if c_val == 0: c_val = 1
-        if j_val == 0: j_val = 1
-
-        # Log2 ratio calculation (Positive values indicate V2 is faster)
+        # Ratio
         ratio = np.log2(j_val / c_val)
-        heatmap_data[i, j] = ratio
+        row_vals.append(ratio)
 
-        if j_val > c_val:
-            factor = j_val / c_val
-            row_labels.append(f"+{factor:.1f}x")
-        else:
-            factor = c_val / j_val
-            row_labels.append(f"-{factor:.1f}x")
-    text_labels.append(row_labels)
+        # Annotation string
+        factor = j_val / c_val if j_val > c_val else c_val / j_val
+        prefix = "+" if j_val > c_val else "-"
+        row_annots.append(f"{prefix}{factor:.1f}x")
 
-text_labels = np.array(text_labels)
+    heatmap_data.append(row_vals)
+    annot_data.append(row_annots)
 
-# 4. Sort methods from top to bottom by their geometric trends
-avg_ratios = np.mean(heatmap_data, axis=1)
-sorted_idx = np.argsort(avg_ratios)
+# 3. Create a DataFrame for the heatmap
+df_heatmap = pd.DataFrame(heatmap_data, index=methods, columns=custom_set_df['Size'])
+df_annot = pd.DataFrame(annot_data, index=methods, columns=custom_set_df['Size'])
 
-heatmap_data = heatmap_data[sorted_idx]
-text_labels = text_labels[sorted_idx]
-sorted_methods = [methods[idx] for idx in sorted_idx]
+# 4. Sort the DataFrame by geometric mean (Reversed: True = Lowest/Regressions at top)
+df_heatmap['mean_perf'] = df_heatmap.mean(axis=1)
+df_heatmap = df_heatmap.sort_values(by='mean_perf', ascending=True)
 
-# 5. Initialize figure with a fully transparent background canvas
+# Apply same sort to annotations
+df_annot = df_annot.reindex(df_heatmap.index)
+# Drop sorting column
+df_heatmap = df_heatmap.drop(columns=['mean_perf'])
+
+# 5. Initialize figure
 fig, ax = plt.subplots(figsize=(14, 11), facecolor='none')
 ax.set_facecolor('none')
 
-# 6. Clip the log2 ratios to [-3.0, 3.0] (maps color range bounds to 8x variations)
-clipped_heatmap_data = np.clip(heatmap_data, -3.0, 3.0)
+# 6. Clip data
+clipped_data = np.clip(df_heatmap.values, -3.0, 3.0)
 
-# 7. Create a custom divergent colormap (Red = HashSet Faster, Blue = Custom V2 Faster)
-cmap = sns.diverging_palette(15, 240, as_cmap=True)
-
-# 8. Render the Seaborn Heatmap
-sns.heatmap(clipped_heatmap_data,
-            annot=text_labels,
+# 7. Render Heatmap
+sns.heatmap(clipped_data,
+            annot=df_annot.values,
             fmt="",
-            cmap=cmap,
+            cmap=sns.diverging_palette(15, 240, as_cmap=True),
             center=0,
-            xticklabels=display_size_labels,
-            yticklabels=sorted_methods,
+            xticklabels=df_heatmap.columns,
+            yticklabels=df_heatmap.index,
             ax=ax,
-            cbar_kws={
-                'label': '← JDK Faster (HashSet)  |  Relative Speedup Scale (Clipped at 8x)  |  V2 Faster (Custom Set) →'
-            },
+            cbar_kws={'label': '← JDK Faster (HashSet)  |  Relative Speedup Scale  |  V2 Faster (Custom Set) →'},
             linewidths=0.8,
             linecolor='#555555',
             annot_kws={'size': 9, 'weight': 'bold'})
 
-# 9. Format Title, Labels, and Colorbar styling to match transparent aesthetics
-ax.set_title(
-    'Java Set Performance Speedup Matrix Heatmap Across Sizes\n(Positive/Blue = V2 Faster, Negative/Red = HashSet Faster)',
-    color='#ffffff', fontsize=16, fontweight='bold', pad=20)
+# 8. Styling
+ax.set_title('Java Set Performance Speedup Matrix (V2 vs HashSet)\n(Sorted in Reverse)', color='#ffffff', fontsize=16,
+             fontweight='bold', pad=20)
 ax.set_ylabel('Set Interface Methods', color='#aaaaaa', fontsize=13, labelpad=10)
 ax.set_xlabel('Collection Size (Elements)', color='#aaaaaa', fontsize=13, labelpad=10)
-
 ax.tick_params(colors='#ffffff', labelsize=10)
-plt.xticks(rotation=45) # Rotation set to 45 to keep size labels readable
+
+plt.xticks(rotation=45)
 plt.yticks(rotation=0)
 
-# Style colorbar elements to blend with clean background pages
 cbar = ax.collections[0].colorbar
 cbar.ax.tick_params(colors='#ffffff', labelsize=10)
 cbar.ax.yaxis.label.set_color('#ffffff')
-cbar.ax.yaxis.label.set_fontsize(12)
 
-# 10. Process tight constraints and write to disc
 plt.tight_layout()
-plt.savefig('charts/v2_hashset_performance_heatmap.png', dpi=300, transparent=True)
+plt.savefig('charts/v2_hashset_performance_heatmap_reversed.png', dpi=300, transparent=True)
 plt.close()
-
-print("Heatmap successfully generated with size-only x-axis labels!")
