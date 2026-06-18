@@ -8,16 +8,16 @@ v1_df = pd.read_csv('V1_performance_data.csv').sort_values('Size').reset_index(d
 v2_df = pd.read_csv('V2_performance_data.csv').sort_values('Size').reset_index(drop=True)
 
 # Define your desired vertical order here (Top to Bottom)
-# Adjust this list to place 'containsTime' or any other method exactly where you want it
+# Adjust this list to place 'contains' or any other method exactly where you want it
 ordered_methods = [
-    'AddTime', 'AddAllTime', 'ContainsTime', 'ContainsAllTime',
-    'RemoveTime', 'RemoveAllTime', 'RetainAllTime',
-    'SizeTime', 'ToArrayTime', 'ToStringTime', 'IsEmptyTime'
+    'Add', 'AddAll', 'Clear', 'Contains', 'ContainsAll', 'IsEmpty',
+    'Remove', 'RemoveAll', 'RetainAll',
+    'Size', 'ToArray', 'ToString'
 ]
 
 # Get common sizes and filter operations
 common_sizes = sorted(list(set(v1_df['Size']).intersection(set(v2_df['Size']))))
-available_methods = [col for col in v1_df.columns if col != 'Size' and col.lower() != 'cleartime']
+available_methods = [col for col in v1_df.columns]
 methods = [m for m in ordered_methods if m in available_methods]
 
 # 2. Construct DataFrames
@@ -82,5 +82,5 @@ cbar.ax.tick_params(colors='#ffffff', labelsize=10)
 cbar.ax.yaxis.label.set_color('#ffffff')
 
 plt.tight_layout()
-plt.savefig('heatmap.png', dpi=300, transparent=True)
+plt.savefig('v1_v2_performance_heatmap_final.png', dpi=300, transparent=True)
 plt.close()

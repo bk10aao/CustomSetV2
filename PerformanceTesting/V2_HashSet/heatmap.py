@@ -4,38 +4,42 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # 1. Load and prepare data
-custom_set_df = pd.read_csv('V2_performance_data.csv').sort_values('Size').reset_index(drop=True)
-hash_set_df = pd.read_csv('HashSet_performance_data.csv').sort_values('Size').reset_index(drop=True)
+custom_set_df = pd.read_csv('V2_performance_data.csv')
+hash_set_df = pd.read_csv('HashSet_performance_data.csv')
 
-# Define your strict vertical order here (Top to Bottom)
+# Ensure 'Size' is numeric
+custom_set_df['Size'] = pd.to_numeric(custom_set_df['Size'])
+hash_set_df['Size'] = pd.to_numeric(hash_set_df['Size'])
+
+# 2. Define the exact order and names matching your CSV columns
+# Note: 'Size.1' is likely a duplicate of 'Size', so we exclude it.
 ordered_methods = [
-    'AddTime', 'AddAllTime', 'ContainsTime', 'ContainsAllTime',
-    'RemoveTime', 'RemoveAllTime', 'RetainAllTime',
-    'SizeTime', 'ToArrayTime', 'ToStringTime', 'IsEmptyTime'
+    'Add', 'AddAll', 'Clear', 'Contains', 'ContainsAll',
+    'IsEmpty', 'Remove', 'RemoveAll', 'RetainAll',
+    'ToArray', 'ToString', 'Size'
 ]
 
-# Filter methods based on the CSV and ensure they exist in our ordering list
-available_methods = [col for col in custom_set_df.columns if col != 'Size' and col.lower() != 'cleartime']
-methods = [m for m in ordered_methods if m in available_methods]
+# Get common sizes
+common_sizes = sorted(list(set(custom_set_df['Size']).intersection(set(hash_set_df['Size']))))
 
-num_rows = min(len(custom_set_df), len(hash_set_df))
-custom_set_df = custom_set_df.iloc[:num_rows]
-hash_set_df = hash_set_df.iloc[:num_rows]
+# Filter methods: ensure the method exists in the CSV and is in our ordered list
+cols_in_df = set(custom_set_df.columns).intersection(set(hash_set_df.columns))
+methods = [m for m in ordered_methods if m in cols_in_df]
 
-# 2. Calculate data and annotations
-heatmap_values = []
-annot_values = []
+# 3. Construct DataFrames
+heatmap_data = []
+text_labels = []
 
 for m in methods:
     row_vals = []
     row_annots = []
-    for j in range(num_rows):
-        c_val = custom_set_df.loc[j, m]
-        j_val = hash_set_df.loc[j, m]
+    for size in common_sizes:
+        c_val = custom_set_df.loc[custom_set_df['Size'] == size, m].values[0]
+        j_val = hash_set_df.loc[hash_set_df['Size'] == size, m].values[0]
 
-        c_val, j_val = (1 if v == 0 else v for v in (c_val, j_val))
+        # Avoid division by zero
+        c_val, j_val = (1 if v <= 0 else v for v in (c_val, j_val))
 
-        # Ratio: positive indicates V2 is faster
         ratio = np.log2(j_val / c_val)
         row_vals.append(ratio)
 
@@ -43,40 +47,34 @@ for m in methods:
         prefix = "+" if j_val > c_val else "-"
         row_annots.append(f"{prefix}{factor:.1f}x")
 
-    heatmap_values.append(row_vals)
-    annot_values.append(row_annots)
+    heatmap_data.append(row_vals)
+    text_labels.append(row_annots)
 
-# 3. Create DataFrames
-df_heatmap = pd.DataFrame(heatmap_values, index=methods, columns=custom_set_df['Size'])
-df_annot = pd.DataFrame(annot_values, index=methods, columns=custom_set_df['Size'])
+df_heatmap = pd.DataFrame(heatmap_data, index=methods, columns=common_sizes)
+df_annot = pd.DataFrame(text_labels, index=methods, columns=common_sizes)
 
-# 4. Enforce categorical ordering to lock the sequence
+# 4. Enforce categorical ordering
 df_heatmap.index = pd.Categorical(df_heatmap.index, categories=methods, ordered=True)
 df_heatmap = df_heatmap.sort_index()
 df_annot = df_annot.reindex(df_heatmap.index)
 
-# 5. Initialize figure
+# 5. Render Heatmap
 fig, ax = plt.subplots(figsize=(14, 11), facecolor='none')
 ax.set_facecolor('none')
 
-# 6. Clip values for visual range consistency
-clipped_data = np.clip(df_heatmap.values, -3.0, 3.0)
-
-# 7. Render Heatmap (Pass DataFrames directly)
 sns.heatmap(df_heatmap,
             annot=df_annot.values,
             fmt="",
             cmap=sns.diverging_palette(15, 240, as_cmap=True),
             center=0,
             ax=ax,
-            cbar_kws={'label': '← JDK Faster (HashSet)  |  Relative Speedup Scale  |  V2 Faster (Custom Set) →'},
+            cbar_kws={'label': '← JDK Faster  |  Relative Speedup Scale  |  V2 Faster →'},
             linewidths=0.8,
             linecolor='#555555',
             annot_kws={'size': 9, 'weight': 'bold'})
 
-# 8. Styling
-ax.set_title('Java Set Performance Speedup Matrix (V2 vs HashSet)',
-             color='#ffffff', fontsize=16, fontweight='bold', pad=20)
+# 6. Styling
+ax.set_title('Performance Speedup Matrix', color='#ffffff', fontsize=16, fontweight='bold', pad=20)
 ax.set_ylabel('Set Interface Methods', color='#aaaaaa', fontsize=13, labelpad=10)
 ax.set_xlabel('Collection Size (Elements)', color='#aaaaaa', fontsize=13, labelpad=10)
 ax.tick_params(colors='#ffffff', labelsize=10)
@@ -84,10 +82,6 @@ ax.tick_params(colors='#ffffff', labelsize=10)
 plt.xticks(rotation=45)
 plt.yticks(rotation=0)
 
-cbar = ax.collections[0].colorbar
-cbar.ax.tick_params(colors='#ffffff', labelsize=10)
-cbar.ax.yaxis.label.set_color('#ffffff')
-
 plt.tight_layout()
-plt.savefig('charts/v2_hashset_performance_heatmap_final.png', dpi=300, transparent=True)
+plt.savefig('heatmap.png', dpi=300, transparent=True)
 plt.close()

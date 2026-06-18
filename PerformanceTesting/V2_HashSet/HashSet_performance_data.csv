@@ -1,4 +1,4 @@
-Size,AddTime,AddAllTime,ClearTime,ContainsTime,ContainsAllTime,IsEmptyTime,RemoveTime,RemoveAllTime,RetainAllTime,SizeTime,ToArrayTime,ToStringTime
+Size,Add,AddAll,Clear,Contains,ContainsAll,IsEmpty,Remove,RemoveAll,RetainAll,Size,ToArray,ToString
 16,6292,6250,1458,44,5000,29,103,27541,13541,31,3458,36833
 32,9542,12750,875,42,5458,15,41,19541,15166,14,2291,15792
 64,9916,9250,1375,41,3917,14,39,60666,50167,14,3750,13292
