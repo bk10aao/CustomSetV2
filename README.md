@@ -80,6 +80,7 @@ The following charts were generated using the following values, this was ran 5 t
 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
 ```
 
+
 Larger values were tested for Version 1 and Version 2 but when testing HashSet with those it became very slow and have therefore been scaled down. This happened predominantely by the method `removeAll` suggesting that this is caused by the HashSet resizing.
 
 #### Note: The following performance charts are designed to be viewed in dark mode.
