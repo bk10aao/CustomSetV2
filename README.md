@@ -52,6 +52,27 @@ All methods implemented are identical to those found in the Java [Set](https://d
 - `n`: Number of elements in the Set.
 - `m`: Number of elements in the input collection.
 
+# Performance 
+
+Below performance is a comparison made at 65,536 operations per method.
+
+Note: all data is an average of 100,000 runs.
+
+| Method      | HashSet (ns) | Custom Set V2 (ns) |   Winner    | Margin |
+|:------------|:-------------|:-------------------|:-----------:|:-------|
+| Add         | 94922        | 87398              |   **V2**    | 1.09×  |
+| AddAll      | 107375       | 112398             | **HashSet** | 1.05×  |
+| Clear       | 16769        | 15264              |   **V2**    | 1.10×  |
+| Contains    | 26           | 21                 |   **V2**    | 1.24×  |
+| ContainsAll | 60989        | 58433              |   **V2**    | 1.04×  |
+| IsEmpty     | 8            | 8                  |   **Tie**   | 1.00×  |
+| Remove      | 21           | 21                 |   **Tie**   | 1.00×  |
+| RemoveAll   | 1730896      | 1911580            | **HashSet** | 1.10×  |
+| RetainAll   | 1333035      | 1391203            | **HashSet** | 1.04×  |
+| Size        | 6            | 7                  | **HashSet** | 1.14×  |
+| ToArray     | 50461        | 52070              | **HashSet** | 1.03×  |
+| ToString    | 125984       | 148609             | **HashSet** | 1.18×  |
+
 # Performance Testing
 
 The following charts were generated using the following values, this was ran 5 times with the average of these runs used to plot the performance:
