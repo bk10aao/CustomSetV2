@@ -74,7 +74,7 @@ sns.heatmap(df_heatmap,
             annot_kws={'size': 9, 'weight': 'bold'})
 
 # 6. Styling
-ax.set_title('Performance Speedup Matrix', color='#ffffff', fontsize=16, fontweight='bold', pad=20)
+ax.set_title('V2 vs JDK HashSet Performance Speedup Matrix', color='#ffffff', fontsize=16, fontweight='bold', pad=20)
 ax.set_ylabel('Set Interface Methods', color='#aaaaaa', fontsize=13, labelpad=10)
 ax.set_xlabel('Collection Size (Elements)', color='#aaaaaa', fontsize=13, labelpad=10)
 ax.tick_params(colors='#ffffff', labelsize=10)
@@ -83,5 +83,5 @@ plt.xticks(rotation=45)
 plt.yticks(rotation=0)
 
 plt.tight_layout()
-plt.savefig('heatmap.png', dpi=300, transparent=True)
+plt.savefig('v2_hashset_performance_heatmap.png', dpi=300, transparent=True)
 plt.close()
