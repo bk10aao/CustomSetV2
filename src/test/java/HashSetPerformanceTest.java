@@ -4,145 +4,195 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 public class HashSetPerformanceTest {
+
+    // Volatile field to sink values into, preventing Dead Code Elimination (DCE)
+    private static volatile Object blackHole;
+    private static final int BATCH_RUNS = 10000; // Batch operations to drown out nanoTime() overhead
+
     public static void main(String[] args) {
-        // Input sizes to test
-        int[] sizes = {1, 10, 50, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000,
-                25000, 50000, 100000, 250000, 500000, 1000000 };
-        // Store results
+        int[] sizes = {16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536 };
         ArrayList<long[]> results = new ArrayList<>();
         Random random = new Random();
 
-        for (int size : sizes) {
-            System.out.println(size);
-            // Pre-generate data for consistent testing
-            Collection<Integer> collection = generateCollection(size, random);
-            Set<Integer> set = new HashSet<>();
-            set.addAll(collection); // Populate set for methods needing data
+        // --- 1. JVM WARM-UP PHASE ---
+        System.out.println("Warming up JVM to trigger JIT compilation...");
+        for (int i = 0; i < 500; i++) {
+            HashSet<Integer> warmUpSet = new HashSet<>();
+            for (int j = 0; j < 100; j++) warmUpSet.add(j);
+            blackHole = warmUpSet.contains(50);
+            blackHole = warmUpSet.toString();
+        }
 
-            // Benchmark each method
-            long addTime = benchmarkAdd(new HashSet<>(), size, random);
-            long addAllTime = benchmarkAddAll(new HashSet<>(), collection);
-            long clearTime = benchmarkClear(new HashSet<>(collection));
-            long containsTime = benchmarkContains(set, random);
+        // --- 2. ACTIVE CRITICAL TIMING PHASE ---
+        for (int size : sizes) {
+            System.out.println("Profiling size: " + size);
+            Collection<Integer> collection = generateCollection(size, random);
+            HashSet<Integer> set = new HashSet<>();
+            set.addAll(collection);
+
+            long addTime = benchmarkAdd(size, random);
+            long addAllTime = benchmarkAddAll(collection);
+            long clearTime = benchmarkClear(collection, size);
+            long containsTime = benchmarkContains(set, size, random);
             long containsAllTime = benchmarkContainsAll(set, collection);
             long isEmptyTime = benchmarkIsEmpty(set);
-            long removeTime = benchmarkRemove(set, random);
-            long removeAllTime = benchmarkRemoveAll(set, collection);
-            long retainAllTime = benchmarkRetainAll(set, collection);
+            long removeTime = benchmarkRemove(set, size, random);
+            long removeAllTime = benchmarkRemoveAll(collection);
+            long retainAllTime = benchmarkRetainAll(collection);
             long sizeTime = benchmarkSize(set);
             long toArrayTime = benchmarkToArray(set);
             long toStringTime = benchmarkToString(set);
 
-            // Store results (in nanoseconds)
             results.add(new long[]{size, addTime, addAllTime, clearTime, containsTime,
                     containsAllTime, isEmptyTime, removeTime, removeAllTime,
                     retainAllTime, sizeTime, toArrayTime, toStringTime});
         }
 
-        // Write results to CSV
-        writeToCSV("hashset_performance_data.csv", results, sizes);
-
-        System.out.println("Performance data written to hashset_performance_data.csv");
-    }
-
-    private static long benchmarkAdd(Set<Integer> set, int size, Random random) {
-        System.out.println("add");
-        long start = System.nanoTime();
-        for (int i = 0; i < size; i++) {
-            set.add(random.nextInt());
+        // Write Results
+        try (FileWriter writer = new FileWriter("HashSet - performance_average.csv")) {
+            writer.write("Size,AddTime,AddAllTime,ClearTime,ContainsTime,ContainsAllTime," +
+                    "IsEmptyTime,RemoveTime,RemoveAllTime,RetainAllTime,SizeTime," +
+                    "ToArrayTime,ToStringTime\n");
+            for (long[] result : results) {
+                writer.write(String.format("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+                        result[0], result[1], result[2], result[3], result[4], result[5],
+                        result[6], result[7], result[8], result[9], result[10], result[11],
+                        result[12]));
+            }
+            System.out.println("Accurate performance diagnostics exported successfully.");
+        } catch (IOException e) {
+            System.err.println("Error writing CSV: " + e.getMessage());
         }
-
-        return System.nanoTime() - start;
     }
 
-    private static long benchmarkAddAll(Set<Integer> set, Collection<Integer> collection) {
-        System.out.println("addAll");
+    private static long benchmarkAdd(int size, Random random) {
+        // Pre-generate input array to remove random generation overhead from inside the clock
+        int[] items = new int[size];
+        for (int i = 0; i < size; i++) items[i] = random.nextInt();
 
         long start = System.nanoTime();
-        set.addAll(collection);
-
-        return System.nanoTime() - start;
+        HashSet<Integer> set = new HashSet<>();
+        for (int i = 0; i < size; i++) {
+            set.add(items[i]);
+        }
+        long duration = System.nanoTime() - start;
+        blackHole = set; // Prevent optimization discarding the set instance
+        return duration;
     }
 
-    private static long benchmarkClear(Set<Integer> set) {
-        System.out.println("clear");
+    private static long benchmarkAddAll(Collection<Integer> collection) {
+        long start = System.nanoTime();
+        HashSet<Integer> set = new HashSet<>();
+        set.addAll(collection);
+        long duration = System.nanoTime() - start;
+        blackHole = set;
+        return duration;
+    }
+
+    private static long benchmarkClear(Collection<Integer> initialData, int size) {
+        // Create an isolated instance strictly to measure clear execution speed
+        HashSet<Integer> set = new HashSet<>(initialData);
         long start = System.nanoTime();
         set.clear();
-        return System.nanoTime() - start;
+        long duration = System.nanoTime() - start;
+        blackHole = set;
+        return duration;
     }
 
-    private static long benchmarkContains(Set<Integer> set, Random random) {
-        System.out.println("contains");
-        int item = random.nextInt();
+    private static long benchmarkContains(HashSet<Integer> set, int size, Random random) {
+        int[] queries = new int[BATCH_RUNS];
+        for (int i = 0; i < BATCH_RUNS; i++) queries[i] = random.nextInt(size * 2);
+
+        boolean checksum = false;
         long start = System.nanoTime();
-        set.contains(item);
-        return System.nanoTime() - start;
+        for (int i = 0; i < BATCH_RUNS; i++) {
+            checksum ^= set.contains(queries[i]); // accumulate state
+        }
+        long duration = System.nanoTime() - start;
+        blackHole = checksum;
+        return duration / BATCH_RUNS; // Average out to isolate method time
     }
 
-    private static long benchmarkContainsAll(Set<Integer> set, Collection<Integer> collection) {
-        System.out.println("containsAll");
+    private static long benchmarkContainsAll(HashSet<Integer> set, Collection<Integer> collection) {
         long start = System.nanoTime();
-        set.containsAll(collection);
-        return System.nanoTime() - start;
+        boolean res = set.containsAll(collection);
+        long duration = System.nanoTime() - start;
+        blackHole = res;
+        return duration;
     }
 
-    private static long benchmarkIsEmpty(Set<Integer> set) {
-        System.out.println("isEmpty");
+    private static long benchmarkIsEmpty(HashSet<Integer> set) {
+        boolean res = false;
         long start = System.nanoTime();
-        set.isEmpty();
-        return System.nanoTime() - start;
+        for (int i = 0; i < BATCH_RUNS; i++) {
+            res ^= set.isEmpty();
+        }
+        long duration = System.nanoTime() - start;
+        blackHole = res;
+        return duration / BATCH_RUNS;
     }
 
-    private static long benchmarkRemove(Set<Integer> set, Random random) {
-        System.out.println("remove");
+    private static long benchmarkRemove(HashSet<Integer> set, int size, Random random) {
+        int[] targets = new int[BATCH_RUNS];
+        for (int i = 0; i < BATCH_RUNS; i++) targets[i] = random.nextInt(size * 2);
 
-        int item = random.nextInt();
+        // Work on a throwaway clone instance to avoid permanently exhausting elements during testing loop
+        HashSet<Integer> workingCopy = new HashSet<>(set);
+        boolean res = false;
         long start = System.nanoTime();
-        set.remove(item);
-        return System.nanoTime() - start;
+        for (int i = 0; i < BATCH_RUNS; i++) {
+            res ^= workingCopy.remove(targets[i]);
+        }
+        long duration = System.nanoTime() - start;
+        blackHole = res;
+        return duration / BATCH_RUNS;
     }
 
-    private static long benchmarkRemoveAll(Set<Integer> set, Collection<Integer> collection) {
-        System.out.println("removeAll");
-
+    private static long benchmarkRemoveAll(Collection<Integer> collection) {
+        HashSet<Integer> workingCopy = new HashSet<>(collection);
         long start = System.nanoTime();
-        set.removeAll(collection);
-        return System.nanoTime() - start;
+        workingCopy.removeAll(collection);
+        long duration = System.nanoTime() - start;
+        blackHole = workingCopy;
+        return duration;
     }
 
-    private static long benchmarkRetainAll(Set<Integer> set, Collection<Integer> collection) {
-        System.out.println("retainAll:" );
-
+    private static long benchmarkRetainAll(Collection<Integer> collection) {
+        HashSet<Integer> workingCopy = new HashSet<>(collection);
         long start = System.nanoTime();
-        set.retainAll(collection);
-        return System.nanoTime() - start;
+        workingCopy.retainAll(collection);
+        long duration = System.nanoTime() - start;
+        blackHole = workingCopy;
+        return duration;
     }
 
-    private static long benchmarkSize(Set<Integer> set) {
-        System.out.println("size");
-
+    private static long benchmarkSize(HashSet<Integer> set) {
+        int finalSize = 0;
         long start = System.nanoTime();
-        set.size();
-        return System.nanoTime() - start;
+        for (int i = 0; i < BATCH_RUNS; i++) {
+            finalSize += set.size();
+        }
+        long duration = System.nanoTime() - start;
+        blackHole = finalSize;
+        return duration / BATCH_RUNS;
     }
 
-    private static long benchmarkToArray(Set<Integer> set) {
-        System.out.println("toArray");
-
+    private static long benchmarkToArray(HashSet<Integer> set) {
         long start = System.nanoTime();
-        set.toArray();
-        return System.nanoTime() - start;
+        Object[] array = set.toArray();
+        long duration = System.nanoTime() - start;
+        blackHole = array;
+        return duration;
     }
 
-    private static long benchmarkToString(Set<Integer> set) {
-        System.out.println("toString");
-
+    private static long benchmarkToString(HashSet<Integer> set) {
         long start = System.nanoTime();
-        set.toString();
-        return System.nanoTime() - start;
+        String str = set.toString();
+        long duration = System.nanoTime() - start;
+        blackHole = str;
+        return duration;
     }
 
     private static Collection<Integer> generateCollection(int size, Random random) {
@@ -151,22 +201,5 @@ public class HashSetPerformanceTest {
             collection.add(random.nextInt());
         }
         return collection;
-    }
-
-    private static void writeToCSV(String filename, ArrayList<long[]> results, int[] sizes) {
-        try (FileWriter writer = new FileWriter(filename)) {
-            writer.write("Size,AddTime,AddAllTime,ClearTime,ContainsTime,ContainsAllTime," +
-                    "IsEmptyTime,RemoveTime,RemoveAllTime,RetainAllTime,SizeTime," +
-                    "ToArrayTime,ToStringTime\n");
-            for (int i = 0; i < results.size(); i++) {
-                long[] result = results.get(i);
-                writer.write(String.format("%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
-                        sizes[i], result[1], result[2], result[3], result[4], result[5],
-                        result[6], result[7], result[8], result[9], result[10], result[11],
-                        result[12]));
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing CSV " + filename + ": " + e.getMessage());
-        }
     }
 }

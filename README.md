@@ -56,7 +56,7 @@ All methods implemented are identical to those found in the Java [Set](https://d
 
 The following charts were generated using the following values, this was ran 5 times with the average of these runs used to plot the performance:
 ```
-1, 10, 50, 100, 250, 500, 750, 1000, 2500, 5000, 7500, 10000, 25000, 50000, 100000, 250000, 500000, 750000, 1000000
+16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
 ```
 
 Larger values were tested for Version 1 and Version 2 but when testing HashSet with those it became very slow and have therefore been scaled down. This happened predominantely by the method `removeAll` suggesting that this is caused by the HashSet resizing.
@@ -64,48 +64,53 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 #### Note: The following performance charts are designed to be viewed in dark mode.
 
 ### Heat Maps
-![Heatmap](PerformanceTesting/CompareV2ToHashSet/heatmap.png)
-![Heatmap](PerformanceTesting/CompareV1ToV2/heatmap.png)
+![Heatmap](PerformanceTesting/V2_HashSet/charts/heatmap.png)
+![Heatmap](PerformanceTesting/V1_V2/charts/heatmap.png)
+
+### Geometric
+![Geometric](PerformanceTesting/V2_HashSet/charts/geometric.png)
+![Geometric](PerformanceTesting/V1_V2/charts/geometric.png)
+
 
 ### CustomSet V1 vs CustomSet V2 vs HashSet Performance
 
-![Combined Performance Charts](PerformanceTesting/CompareAll/add.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/addAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/clear.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/contains.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/containsAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/isEmpty.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/remove.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/removeAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/retainAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/size.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/toArray.png)
-![Combined Performance Charts](PerformanceTesting/CompareAll/toString.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/add.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/addAll.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/clear.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/contains.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/containsAll.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/isEmpty.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/remove.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/removeAll.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/retainAll.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/size.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/toArray.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/toString.png)
 
 ### CustomSet V2 vs HashSet Performance
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/add.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/addAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/clear.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/contains.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/containsAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/isEmpty.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/remove.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/removeAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/retainAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/size.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/toArray.png)
-![Combined Performance Charts](PerformanceTesting/CompareV2ToHashSet/toString.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/add.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/addAll.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/clear.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/contains.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/containsAll.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/isEmpty.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/remove.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/removeAll.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/retainAll.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/size.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/toArray.png)
+![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/toString.png)
 
 ### CustomSet V1 vs CustomSet V2 Performance
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/add.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/addAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/clear.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/contains.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/containsAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/isEmpty.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/remove.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/removeAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/retainAll.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/size.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/toArray.png)
-![Combined Performance Charts](PerformanceTesting/CompareV1ToV2/toString.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/add.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/addAll.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/clear.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/contains.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/containsAll.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/isEmpty.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/remove.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/removeAll.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/retainAll.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/size.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/toArray.png)
+![Combined Performance Charts](PerformanceTesting/V1_V2/charts/toString.png)
