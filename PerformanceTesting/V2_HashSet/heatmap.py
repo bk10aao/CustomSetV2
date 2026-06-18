@@ -15,11 +15,8 @@ num_rows = min(len(custom_set_df), len(hash_set_df))
 custom_set_df = custom_set_df.iloc[:num_rows]
 hash_set_df = hash_set_df.iloc[:num_rows]
 
-# Generate labels showing Custom V2's sizes vs JDK HashSet's matching row sizes
-display_size_labels = [
-    f"V2: {c_sz} \n(JDK: {j_sz})"
-    for c_sz, j_sz in zip(custom_set_df['Size'], hash_set_df['Size'])
-]
+# UPDATED: Use only the Size value for x-axis labels
+display_size_labels = custom_set_df['Size'].tolist()
 
 # 3. Construct the relative performance matrix (Log2 ratios)
 heatmap_data = np.zeros((len(methods), num_rows))
@@ -88,10 +85,10 @@ ax.set_title(
     'Java Set Performance Speedup Matrix Heatmap Across Sizes\n(Positive/Blue = V2 Faster, Negative/Red = HashSet Faster)',
     color='#ffffff', fontsize=16, fontweight='bold', pad=20)
 ax.set_ylabel('Set Interface Methods', color='#aaaaaa', fontsize=13, labelpad=10)
-ax.set_xlabel('Collection Size Index Pairings (Elements)', color='#aaaaaa', fontsize=13, labelpad=10)
+ax.set_xlabel('Collection Size (Elements)', color='#aaaaaa', fontsize=13, labelpad=10)
 
 ax.tick_params(colors='#ffffff', labelsize=10)
-plt.xticks(rotation=0)
+plt.xticks(rotation=45) # Rotation set to 45 to keep size labels readable
 plt.yticks(rotation=0)
 
 # Style colorbar elements to blend with clean background pages
@@ -102,7 +99,7 @@ cbar.ax.yaxis.label.set_fontsize(12)
 
 # 10. Process tight constraints and write to disc
 plt.tight_layout()
-plt.savefig('charts/heatmap.png', dpi=300, transparent=True)
+plt.savefig('charts/v2_hashset_performance_heatmap.png', dpi=300, transparent=True)
 plt.close()
 
-print("Heatmap successfully generated displaying all tracking operational methods!")
+print("Heatmap successfully generated with size-only x-axis labels!")
