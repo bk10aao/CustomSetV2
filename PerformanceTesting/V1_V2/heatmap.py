@@ -3,77 +3,75 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-v1_df = pd.read_csv('V1_performance_data.csv')
-v2_df = pd.read_csv('V2_performance_data.csv')
+# 1. Load data
+v1_df = pd.read_csv('V1_performance_data.csv').sort_values('Size').reset_index(drop=True)
+v2_df = pd.read_csv('V2_performance_data.csv').sort_values('Size').reset_index(drop=True)
 
+# Define your desired vertical order here (Top to Bottom)
+# Adjust this list to place 'containsTime' or any other method exactly where you want it
+ordered_methods = [
+    'AddTime', 'AddAllTime', 'ContainsTime', 'ContainsAllTime',
+    'RemoveTime', 'RemoveAllTime', 'RetainAllTime',
+    'SizeTime', 'ToArrayTime', 'ToStringTime', 'IsEmptyTime'
+]
+
+# Get common sizes and filter operations
 common_sizes = sorted(list(set(v1_df['Size']).intersection(set(v2_df['Size']))))
-methods = [col for col in v1_df.columns if col != 'Size' and col.lower() != 'cleartime']
+available_methods = [col for col in v1_df.columns if col != 'Size' and col.lower() != 'cleartime']
+methods = [m for m in ordered_methods if m in available_methods]
 
-print("Common sizes:", common_sizes)
-print("Methods:", methods)
-
-# Construct relative performance matrix (Log2 ratios)
-# ratio = log2(V1_time / V2_time) -> positive means V2 is faster (takes less time)
-heatmap_data = np.zeros((len(methods), len(common_sizes)))
+# 2. Construct DataFrames
+heatmap_data = []
 text_labels = []
 
-for i, m in enumerate(methods):
-    row_labels = []
-    for j, size in enumerate(common_sizes):
+for m in methods:
+    row_vals = []
+    row_annots = []
+    for size in common_sizes:
         v1_val = v1_df.loc[v1_df['Size'] == size, m].values[0]
         v2_val = v2_df.loc[v2_df['Size'] == size, m].values[0]
 
-        if v1_val == 0: v1_val = 1
-        if v2_val == 0: v2_val = 1
+        c_val, j_val = (1 if v == 0 else v for v in (v1_val, v2_val))
 
-        ratio = np.log2(v1_val / v2_val)
-        heatmap_data[i, j] = ratio
+        ratio = np.log2(c_val / j_val)  # Log2(V1/V2): Positive = V2 faster
+        row_vals.append(ratio)
 
-        if v1_val > v2_val:
-            factor = v1_val / v2_val
-            row_labels.append(f"+{factor:.1f}x")
-        else:
-            factor = v2_val / v1_val
-            row_labels.append(f"-{factor:.1f}x")
-    text_labels.append(row_labels)
+        factor = c_val / j_val if c_val > j_val else j_val / c_val
+        prefix = "+" if j_val < c_val else "-"  # "+" indicates V2 took less time
+        row_annots.append(f"{prefix}{factor:.1f}x")
 
-text_labels = np.array(text_labels)
+    heatmap_data.append(row_vals)
+    text_labels.append(row_annots)
 
-# Sort methods by average performance trend
-avg_ratios = np.mean(heatmap_data, axis=1)
-sorted_idx = np.argsort(avg_ratios)
+df_heatmap = pd.DataFrame(heatmap_data, index=methods, columns=common_sizes)
+df_annot = pd.DataFrame(text_labels, index=methods, columns=common_sizes)
 
-heatmap_data = heatmap_data[sorted_idx]
-text_labels = text_labels[sorted_idx]
-sorted_methods = [methods[idx] for idx in sorted_idx]
+# 3. Lock the ordering via Categorical Indexing
+df_heatmap.index = pd.Categorical(df_heatmap.index, categories=methods, ordered=True)
+df_heatmap = df_heatmap.sort_index()
+df_annot = df_annot.reindex(df_heatmap.index)
 
-# Clip the log2 ratios to [-3.0, 3.0] (8x variations)
-clipped_heatmap_data = np.clip(heatmap_data, -3.0, 3.0)
-
-fig, ax = plt.subplots(figsize=(12, 9), facecolor='none')
+# 4. Render Heatmap
+fig, ax = plt.subplots(figsize=(14, 11), facecolor='none')
 ax.set_facecolor('none')
 
-cmap = sns.diverging_palette(15, 240, as_cmap=True)
+clipped_data = np.clip(df_heatmap.values, -3.0, 3.0)
 
-sns.heatmap(clipped_heatmap_data,
-            annot=text_labels,
+sns.heatmap(df_heatmap,
+            annot=df_annot.values,
             fmt="",
-            cmap=cmap,
+            cmap=sns.diverging_palette(15, 240, as_cmap=True),
             center=0,
-            xticklabels=common_sizes,
-            yticklabels=sorted_methods,
             ax=ax,
-            cbar_kws={
-                'label': '← V1 Faster  |  Relative Speedup Scale (Clipped at 8x)  |  V2 Faster →'
-            },
+            cbar_kws={'label': '← V1 Faster  |  Relative Speedup Scale  |  V2 Faster →'},
             linewidths=0.8,
             linecolor='#555555',
-            annot_kws={'size': 10, 'weight': 'bold'})
+            annot_kws={'size': 9, 'weight': 'bold'})
 
-ax.set_title('Custom Set Performance Speedup Matrix Heatmap (V1 vs V2)\n(Positive/Blue = V2 Faster, Negative/Red = V1 Faster)',
-             color='#ffffff', fontsize=14, fontweight='bold', pad=20)
-ax.set_ylabel('Set Interface Methods', color='#aaaaaa', fontsize=12, labelpad=10)
-ax.set_xlabel('Collection Size (Elements)', color='#aaaaaa', fontsize=12, labelpad=10)
+# 5. Styling
+ax.set_title('V1 vs V2 Performance Speedup Matrix', color='#ffffff', fontsize=16, fontweight='bold', pad=20)
+ax.set_ylabel('Set Interface Methods', color='#aaaaaa', fontsize=13, labelpad=10)
+ax.set_xlabel('Collection Size (Elements)', color='#aaaaaa', fontsize=13, labelpad=10)
 
 ax.tick_params(colors='#ffffff', labelsize=10)
 plt.xticks(rotation=45)
@@ -82,9 +80,7 @@ plt.yticks(rotation=0)
 cbar = ax.collections[0].colorbar
 cbar.ax.tick_params(colors='#ffffff', labelsize=10)
 cbar.ax.yaxis.label.set_color('#ffffff')
-cbar.ax.yaxis.label.set_fontsize(11)
 
 plt.tight_layout()
-plt.savefig('v1_v2_performance_heatmap.png', dpi=300, transparent=True)
+plt.savefig('v1_v2_performance_heatmap_final.png', dpi=300, transparent=True)
 plt.close()
-print("Heatmap generated successfully!")
