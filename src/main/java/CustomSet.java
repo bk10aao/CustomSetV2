@@ -3,12 +3,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterator;
 
+import static java.util.Objects.requireNonNull;
+
 /**
- Java
  * A custom implementation of the {@link Set} interface backed by a {@link HashMap}.
  * This set does not allow duplicate elements and permits null elements, like {@link HashSet}
  *
@@ -37,7 +37,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws NullPointerException if the specified collection is null
      */
     public CustomSet(final Collection<E> c) {
-        Objects.requireNonNull(c);
+        requireNonNull(c);
         set = new HashMap<>(Math.max(16, (int)(c.size() / 0.75f) + 1));
         addAll(c);
     }
@@ -90,7 +90,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean addAll(final Collection<? extends E> c) {
-        Objects.requireNonNull(c);
+        requireNonNull(c);
         boolean modified = false;
         for(var e : c)
             if(set.put(e, PRESENT) == null)
@@ -138,7 +138,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean containsAll(final Collection<?> c) {
-        Objects.requireNonNull(c);
+        requireNonNull(c);
         for(Object o : c)
             if(!contains(o))
                 return false;
@@ -221,7 +221,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean 	removeAll(final Collection<?> c) {
-        Objects.requireNonNull(c);
+        requireNonNull(c);
         return set.keySet().removeAll(c);
     }
 
@@ -238,7 +238,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean retainAll(final Collection<?> c) {
-        Objects.requireNonNull(c);
+        requireNonNull(c);
         return set.keySet().retainAll(c);
     }
 
