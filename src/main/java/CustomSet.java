@@ -38,7 +38,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      */
     public CustomSet(final Collection<E> c) {
         Objects.requireNonNull(c);
-        set = new HashMap<>(Math.max(16, (int) (c.size() / 0.75f) + 1));
+        set = new HashMap<>(Math.max(16, (int)(c.size() / 0.75f) + 1));
         addAll(c);
     }
 
@@ -62,7 +62,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws IllegalArgumentException if the initial capacity is negative or the load factor is non-positive or NaN
      */
     public CustomSet(final int initialCapacity, final float loadFactor) {
-        if (initialCapacity < 0 || loadFactor <= 0 || Float.isNaN(loadFactor))
+        if(initialCapacity < 0 || loadFactor <= 0 || Float.isNaN(loadFactor))
             throw new IllegalArgumentException();
         set = new HashMap<>(Math.max(16, initialCapacity), loadFactor);
     }
@@ -92,8 +92,8 @@ public class CustomSet<E> implements Set<E>, Cloneable {
     public boolean addAll(final Collection<? extends E> c) {
         Objects.requireNonNull(c);
         boolean modified = false;
-        for (var e : c)
-            if (set.put(e, PRESENT) == null)
+        for(var e : c)
+            if(set.put(e, PRESENT) == null)
                 modified = true;
         return modified;
     }
@@ -106,7 +106,13 @@ public class CustomSet<E> implements Set<E>, Cloneable {
         set.clear();
     }
 
-    public CustomSet<E> clone() {
+    /**
+     * Creates and returns a shallow copy of this {@code CustomSet}.
+     * The clone contains the same elements as this set.
+     *
+     * @return a clone of this set
+     */
+    protected CustomSet<E> clone() {
         CustomSet<E> clonedSet = new CustomSet<>();
         clonedSet.set.putAll(this.set);
         return clonedSet;
@@ -133,8 +139,8 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      */
     public boolean containsAll(final Collection<?> c) {
         Objects.requireNonNull(c);
-        for (Object o : c)
-            if (!contains(o))
+        for(Object o : c)
+            if(!contains(o))
                 return false;
         return true;
     }
@@ -149,10 +155,10 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @param o object to be compared for equality with this set
      * @return {@code true} if the specified object is equal to this set
      */
-    public boolean equals(Object o) {
-        if (o == this)
+    public boolean equals(final Object o) {
+        if(o == this)
             return true;
-        if (!(o instanceof Set<?> other))
+        if(!(o instanceof Set<?> other))
             return false;
         return size() == other.size() && containsAll(other);
     }
@@ -166,8 +172,8 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      */
     public int hashCode() {
         int h = 0;
-        for (E e : set.keySet())
-            if (e != null)
+        for(E e : set.keySet())
+            if(e != null)
                 h += e.hashCode();
         return h;
     }
@@ -279,7 +285,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws ArrayStoreException if the runtime type of the specified array is not a supertype
      *         of the runtime type of every element in this set
      */
-    public <T> T[] toArray(T[] a) {
+    public <T> T[] toArray(final T[] a) {
         return set.keySet().toArray(a);
     }
 

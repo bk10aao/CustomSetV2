@@ -355,14 +355,12 @@ class CustomSetTest {
         customSet.add(1);
         customSet.add(2);
         customSet.add(3);
-
         int count = 0;
         Iterator<Integer> iterator = customSet.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             count++;
         }
-
         assertEquals(3, count);
     }
 
@@ -372,15 +370,10 @@ class CustomSetTest {
         customSet.add(1);
         customSet.add(2);
         customSet.add(3);
-
         Iterator<Integer> iterator = customSet.iterator();
-        while (iterator.hasNext()) {
-            Integer value = iterator.next();
-            if (value.equals(2)) {
+        while (iterator.hasNext())
+            if (iterator.next().equals(2))
                 iterator.remove();
-            }
-        }
-
         assertFalse(customSet.contains(2));
         assertEquals(2, customSet.size());
     }
