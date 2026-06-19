@@ -423,7 +423,7 @@ class CustomSetTest {
         CustomSet<Integer> b = new CustomSet<>();
         b.add(1);
         b.add(3);
-        assertFalse(a.equals(b));
+        assertNotEquals(a, b);
     }
 
     @Test

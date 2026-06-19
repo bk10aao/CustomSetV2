@@ -1,4 +1,5 @@
 # Set
+
 Implementation of a Set using a Map. This was based off of my initial version using an array: https://github.com/bk10aao/CustomSet
 
 1. [time complexity](https://github.com/bk10aao/CustomSetV2/tree/main?tab=readme-ov-file#performance-complexity)
@@ -6,7 +7,6 @@ Implementation of a Set using a Map. This was based off of my initial version us
 3. [performance testing](https://github.com/bk10aao/CustomSetV2/blob/main/README.md#performance-testing)
 
 All methods implemented are identical to those found in the Java [Set](https://docs.oracle.com/javase/8/docs/api/java/util/Set.html) interface.
-
 
 ## Build and Test
 
@@ -29,7 +29,6 @@ All methods implemented are identical to those found in the Java [Set](https://d
 |         size()          |           O(1)            |          O(1)          |         O(1)         |          Tie           |
 |        toArray()        |           O(n)            |          O(n)          |         O(n)         |          Tie           |
 |       toString()        |           O(n)            |          O(n)          |         O(n)         |          Tie           |
-<br/>
 
 ## Space Complexity
 
@@ -56,8 +55,6 @@ All methods implemented are identical to those found in the Java [Set](https://d
 
 Below performance is a comparison made at 65,536 operations per method.
 
-Note: all data is an average of 100,000 runs.
-
 | Method      | HashSet (ns) | Custom Set V2 (ns) |   Winner    | Margin |
 |:------------|:-------------|:-------------------|:-----------:|:-------|
 | Add         | 94922        | 87398              |   **V2**    | 1.09×  |
@@ -75,15 +72,12 @@ Note: all data is an average of 100,000 runs.
 
 # Performance Testing
 
-The following charts were generated using the following values, this was ran 5 times with the average of these runs used to plot the performance:
+The following charts were generated using the following values:
 ```
 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
 ```
 
-
-Larger values were tested for Version 1 and Version 2 but when testing HashSet with those it became very slow and have therefore been scaled down. This happened predominantely by the method `removeAll` suggesting that this is caused by the HashSet resizing.
-
-#### Note: The following performance charts are designed to be viewed in dark mode.
+<b>Note: The following performance charts are designed to be viewed in dark mode.</b>
 
 ### Heat Maps
 ![Heatmap](PerformanceTesting/V2_HashSet/charts/heatmap.png)
@@ -93,9 +87,7 @@ Larger values were tested for Version 1 and Version 2 but when testing HashSet w
 ![Geometric](PerformanceTesting/V2_HashSet/charts/geometric.png)
 ![Geometric](PerformanceTesting/V1_V2/charts/geometric.png)
 
-
 ### CustomSet V1 vs CustomSet V2 vs HashSet Performance
-
 ![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/add.png)
 ![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/clear.png)
