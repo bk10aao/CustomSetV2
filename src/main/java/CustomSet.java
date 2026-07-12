@@ -90,8 +90,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
     public boolean addAll(final Collection<? extends E> c) {
         requireNonNull(c);
         int oldSize = size();
-        for (E e : c)
-            set.put(e, PRESENT);
+        c.forEach(e -> set.put(e, PRESENT));
         return oldSize < size();
     }
 
