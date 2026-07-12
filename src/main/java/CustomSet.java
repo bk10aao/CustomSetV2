@@ -111,8 +111,8 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      *
      * @return a clone of this set
      */
-    protected CustomSet<E> clone() {
-        CustomSet<E> clonedSet = new CustomSet<>();
+    protected CustomSet<E> clone() throws CloneNotSupportedException {
+        CustomSet<E> clonedSet = (CustomSet<E>) super.clone();
         clonedSet.set.putAll(this.set);
         return clonedSet;
     }
