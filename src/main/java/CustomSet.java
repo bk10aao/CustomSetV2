@@ -1,6 +1,5 @@
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -10,7 +9,7 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * A custom implementation of the {@link Set} interface backed by a {@link HashMap}.
- * This set does not allow duplicate elements and permits null elements, like {@link HashSet}
+ * This set does not allow duplicate elements and permits null elements.
  *
  * @param <E> the type of elements maintained by this set
  * @author Benjamin Kane
@@ -90,11 +89,10 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      */
     public boolean addAll(final Collection<? extends E> c) {
         requireNonNull(c);
-        boolean modified = false;
-        for(var e : c)
-            if(set.put(e, PRESENT) == null)
-                modified = true;
-        return modified;
+        int oldSize = size();
+        for (E e : c)
+            set.put(e, PRESENT);
+        return oldSize < size();
     }
 
     /**
@@ -138,10 +136,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      */
     public boolean containsAll(final Collection<?> c) {
         requireNonNull(c);
-        for(Object o : c)
-            if(!contains(o))
-                return false;
-        return true;
+        return set.keySet().containsAll(c);
     }
 
     /**
@@ -170,11 +165,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @return the hash code value for this set
      */
     public int hashCode() {
-        int h = 0;
-        for(E e : set.keySet())
-            if(e != null)
-                h += e.hashCode();
-        return h;
+        return set.keySet().hashCode();
     }
 
     /**
@@ -236,7 +227,6 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean retainAll(final Collection<?> c) {
-        requireNonNull(c);
         return set.keySet().retainAll(c);
     }
 

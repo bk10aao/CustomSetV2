@@ -183,6 +183,12 @@ class CustomSetTest {
     }
 
     @Test
+    public void givenNonEmptySet_onRetainAllWitNullCollection_throwsNullPointerException() {
+        CustomSet<Integer> customSet = createDynamicSet(5);
+        assertThrows(NullPointerException.class, () -> customSet.retainAll(null));
+    }
+
+    @Test
     public void givenNonEmptySet_onRetainAllWithEmptyCollection_clearsSet() {
         CustomSet<Integer> customSet = createDynamicSet(5);
         Collection<Integer> empty = new ArrayList<>();
@@ -481,7 +487,7 @@ class CustomSetTest {
     }
 
     @Test
-    public void givenSetOfType_Integer_withValues_1_2_3_onClone_returnsEqualSets() {
+    public void givenSetOfType_Integer_withValues_1_2_3_onClone_returnsEqualSets() throws CloneNotSupportedException {
         CustomSet<Integer> customSet = new CustomSet<>();
         customSet.add(1);
         customSet.add(2);
