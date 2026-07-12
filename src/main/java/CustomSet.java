@@ -37,7 +37,6 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws NullPointerException if the specified collection is null
      */
     public CustomSet(final Collection<E> c) {
-        requireNonNull(c);
         set = new HashMap<>(Math.max(16, (int)(c.size() / 0.75f) + 1));
         addAll(c);
     }
@@ -220,8 +219,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @return {@code true} if this set changed as a result of the call
      * @throws NullPointerException if the specified collection is null
      */
-    public boolean 	removeAll(final Collection<?> c) {
-        requireNonNull(c);
+    public boolean removeAll(final Collection<?> c) {
         return set.keySet().removeAll(c);
     }
 

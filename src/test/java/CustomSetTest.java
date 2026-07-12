@@ -241,6 +241,12 @@ class CustomSetTest {
     }
 
     @Test
+    public void givenSetOfValue_10_20_30_onRemoveAll_withNullCollection_throwsNullPointerException() {
+        CustomSet<Integer> customSet = new CustomSet<>(List.of(10, 20, 30));
+        assertThrows(NullPointerException.class, () -> customSet.removeAll(null));
+    }
+
+    @Test
     public void givenSetOfValue_10_20_30_40_50_onRemoveAllForCollection_20_30_returnsCollectionOf_10_40_50() {
         CustomSet<Integer> customSet = new CustomSet<>(List.of(10, 20, 30, 40, 50));
         Collection<Integer> c = new ArrayList<>();
