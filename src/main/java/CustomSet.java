@@ -27,7 +27,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * Constructs an empty set with default initial capacity (16) and load factor (0.75).
      */
     public CustomSet() {
-        this.set = new HashMap<>(16, 0.75f);
+        this.set = new HashMap<>();
     }
 
     /**
