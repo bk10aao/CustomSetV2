@@ -237,6 +237,12 @@ class CustomSetTest {
     }
 
     @Test
+    public void dummy() {
+        CustomSet<Integer> customSet = new CustomSet<>(List.of(10, 20, 30));
+        assertThrows(NullPointerException.class, () -> customSet.containsAll(null));
+    }
+
+    @Test
     public void givenSetOfValue_10_20_30_onContainsAllForCollection_20_30_40_returns_false() {
         CustomSet<Integer> customSet = new CustomSet<>(List.of(10, 20, 30));
         Collection<Integer> c = new ArrayList<>();
@@ -304,7 +310,7 @@ class CustomSetTest {
     @Test
     public void onConstructingEmptySet_returnsEmptyCurlyBracket_on_toString() {
         CustomSet<Integer> customSet = new CustomSet<>();
-        assertEquals("{}", customSet.toString());
+        assertEquals("[]", customSet.toString());
     }
 
     @Test
@@ -317,7 +323,7 @@ class CustomSetTest {
         assertTrue(setAsString.contains("30"));
         assertTrue(setAsString.contains("40"));
         assertTrue(setAsString.contains("50"));
-        String pattern = "\\{[0-9]+(, [0-9]+)+}";
+        String pattern = "\\[[0-9]+(, [0-9]+)+]";
         assertTrue(setAsString.matches(pattern));
     }
 

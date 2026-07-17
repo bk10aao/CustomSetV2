@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Spliterator;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * A custom implementation of the {@link Set} interface backed by a {@link HashMap}.
  * This set does not allow duplicate elements and permits null elements.
@@ -47,9 +45,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws IllegalArgumentException if the initial capacity is negative
      */
     public CustomSet(final int initialCapacity) {
-        if(initialCapacity < 0)
-            throw new IllegalArgumentException();
-        set = new HashMap<>(Math.max(16, initialCapacity), 0.75f);
+        set = new HashMap<>(initialCapacity);
     }
 
     /**
@@ -60,9 +56,7 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws IllegalArgumentException if the initial capacity is negative or the load factor is non-positive or NaN
      */
     public CustomSet(final int initialCapacity, final float loadFactor) {
-        if(initialCapacity < 0 || loadFactor <= 0 || Float.isNaN(loadFactor))
-            throw new IllegalArgumentException();
-        set = new HashMap<>(Math.max(16, initialCapacity), loadFactor);
+        set = new HashMap<>(initialCapacity, loadFactor);
     }
 
     /**
@@ -88,7 +82,6 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean addAll(final Collection<? extends E> c) {
-        requireNonNull(c);
         int oldSize = size();
         c.forEach(e -> set.put(e, PRESENT));
         return oldSize < size();
@@ -134,7 +127,6 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @throws NullPointerException if the specified collection is null
      */
     public boolean containsAll(final Collection<?> c) {
-        requireNonNull(c);
         return set.keySet().containsAll(c);
     }
 
@@ -282,6 +274,6 @@ public class CustomSet<E> implements Set<E>, Cloneable {
      * @return String representation of CustomSet
      */
     public String toString() {
-        return set.keySet().toString().replace("[", "{").replace("]", "}");
+        return set.keySet().toString();
     }
 }
