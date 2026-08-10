@@ -12,7 +12,6 @@ custom_set_df['Size'] = pd.to_numeric(custom_set_df['Size'])
 hash_set_df['Size'] = pd.to_numeric(hash_set_df['Size'])
 
 # 2. Define the exact order and names matching your CSV columns
-# Note: 'Size.1' is likely a duplicate of 'Size', so we exclude it.
 ordered_methods = [
     'Add', 'AddAll', 'Clear', 'Contains', 'ContainsAll',
     'IsEmpty', 'Remove', 'RemoveAll', 'RetainAll',
@@ -58,20 +57,40 @@ df_heatmap.index = pd.Categorical(df_heatmap.index, categories=methods, ordered=
 df_heatmap = df_heatmap.sort_index()
 df_annot = df_annot.reindex(df_heatmap.index)
 
+# --- NEW: Build a dynamic text color matrix based on cell intensity ---
+# Cells with absolute log2 ratios further from the center get white text,
+# while cells closer to 0 (lighter backgrounds) get black text.
+color_matrix = np.empty(df_heatmap.shape, dtype=object)
+for i in range(df_heatmap.shape[0]):
+    for j in range(df_heatmap.shape[1]):
+        val = df_heatmap.iloc[i, j]
+        # Adjust the threshold (e.g., 2.5) depending on when the background becomes dark enough for white text
+        color_matrix[i, j] = '#ffffff' if abs(val) > 2.5 else '#000000'
+# ---------------------------------------------------------------------
+
 # 5. Render Heatmap
 fig, ax = plt.subplots(figsize=(14, 11), facecolor='none')
 ax.set_facecolor('none')
 
-sns.heatmap(df_heatmap,
-            annot=df_annot.values,
-            fmt="",
-            cmap=sns.diverging_palette(15, 240, as_cmap=True),
-            center=0,
-            ax=ax,
-            cbar_kws={'label': '← JDK Faster  |  Relative Speedup Scale  |  V2 Faster →'},
-            linewidths=0.8,
-            linecolor='#555555',
-            annot_kws={'size': 9, 'weight': 'bold'})
+heatmap = sns.heatmap(df_heatmap,
+                      annot=df_annot.values,
+                      fmt="",
+                      cmap=sns.diverging_palette(15, 240, as_cmap=True),
+                      center=0,
+                      ax=ax,
+                      cbar_kws={'label': '← JDK Faster  |  Relative Speedup Scale  |  V2 Faster →'},
+                      linewidths=0.8,
+                      linecolor='#555555',
+                      annot_kws={'size': 9, 'weight': 'bold'})
+
+# Apply individual text colors using the text objects inside the axes
+for t, color in zip(ax.texts, color_matrix.flatten()):
+    t.set_color(color)
+
+# Style the colorbar to match
+cbar = heatmap.collections[0].colorbar
+cbar.ax.yaxis.label.set_color('#ffffff')
+cbar.ax.tick_params(colors='#ffffff')
 
 # 6. Styling
 ax.set_title('V2 vs JDK HashSet Performance Speedup Matrix', color='#ffffff', fontsize=16, fontweight='bold', pad=20)
@@ -83,5 +102,5 @@ plt.xticks(rotation=45)
 plt.yticks(rotation=0)
 
 plt.tight_layout()
-plt.savefig('v2_hashset_performance_heatmap.png', dpi=300, transparent=True)
+plt.savefig('heatmap.png', dpi=300, transparent=True)
 plt.close()
