@@ -15,37 +15,37 @@ All methods implemented are identical to those found in the Java [Set](https://d
 
 ## Time Complexity
 
-|         Method          | CustomSet V1 (LinkedList) | CustomSet V2 (HashMap) |     Java HashSet     |         Winner         |
-|:-----------------------:|:-------------------------:|:----------------------:|:--------------------:|:----------------------:|
-|         add(E)          |           O(n)            |  O(1) avg, O(n) worst  | O(1) avg, O(n) worst | CustomSet V2 & HashSet |
-|   addAll(Collection)    |         O(n * m)          |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
-|         clear()         |           O(1)            |          O(1)          |         O(1)         |          Tie           |
-|       contains(E)       |           O(n)            |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
-| containsAll(Collection) |         O(n * m)          |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
-|        isEmpty()        |           O(1)            |          O(1)          |         O(1)         |          Tie           |
-|        remove(E)        |           O(n)            |          O(1)          |         O(1)         | CustomSet V2 & HashSet |
-|  removeAll(Collection)  |         O(n * m)          |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
-|  retainAll(Collection)  |         O(n * m)          |          O(n)          |         O(n)         | CustomSet V2 & HashSet |
-|         size()          |           O(1)            |          O(1)          |         O(1)         |          Tie           |
-|        toArray()        |           O(n)            |          O(n)          |         O(n)         |          Tie           |
-|       toString()        |           O(n)            |          O(n)          |         O(n)         |          Tie           |
+|         Method          |    V1    |          V2          |         JDK          |  Winner  |
+|:-----------------------:|:--------:|:--------------------:|:--------------------:|:--------:|
+|         add(E)          |   O(n)   | O(1) avg, O(n) worst | O(1) avg, O(n) worst | V2 & JDK |
+|   addAll(Collection)    | O(n * m) |         O(n)         |         O(n)         | V2 & JDK |
+|         clear()         |   O(1)   |         O(1)         |         O(1)         |   Tie    |
+|       contains(E)       |   O(n)   |         O(1)         |         O(1)         | V2 & JDK |
+| containsAll(Collection) | O(n * m) |         O(n)         |         O(n)         | V2 & JDK |
+|        isEmpty()        |   O(1)   |         O(1)         |         O(1)         |   Tie    |
+|        remove(E)        |   O(n)   |         O(1)         |         O(1)         | V2 & JDK |
+|  removeAll(Collection)  | O(n * m) |         O(n)         |         O(n)         | V2 & JDK |
+|  retainAll(Collection)  | O(n * m) |         O(n)         |         O(n)         | V2 & JDK |
+|         size()          |   O(1)   |         O(1)         |         O(1)         |   Tie    |
+|        toArray()        |   O(n)   |         O(n)         |         O(n)         |   Tie    |
+|       toString()        |   O(n)   |         O(n)         |         O(n)         |   Tie    |
 
 ## Space Complexity
 
-|         Method          |  CustomSet V1 (LinkedList)  | CustomSet V2 (HashMap) | Java HashSet |         Winner         |
-|:-----------------------:|:---------------------------:|:----------------------:|:------------:|:----------------------:|
-|         add(E)          |  O(n) + chaining overhead   |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
-|   addAll(Collection)    |          O(n + m)           |        O(n + m)        |   O(n + m)   |          Tie           |
-|         clear()         |            O(1)             |          O(1)          |     O(1)     |          Tie           |
-|       contains(E)       | O(1) per bucket, O(n) worst |          O(1)          |     O(1)     | CustomSet V2 & HashSet |
-| containsAll(Collection) |          O(n * m)           |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
-|        isEmpty()        |            O(1)             |          O(1)          |     O(1)     |          Tie           |
-|        remove(E)        | O(1) per bucket, O(n) worst |          O(1)          |     O(1)     | CustomSet V2 & HashSet |
-|  removeAll(Collection)  |          O(n * m)           |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
-|  retainAll(Collection)  |          O(n * m)           |          O(n)          |     O(n)     | CustomSet V2 & HashSet |
-|         size()          |            O(1)             |          O(1)          |     O(1)     |          Tie           |
-|        toArray()        |            O(n)             |          O(n)          |     O(n)     |          Tie           |
-|       toString()        |            O(n)             |          O(n)          |     O(n)     |          Tie           |
+|         Method          |             V1              |    V2    |   JDK    |  Winner  |
+|:-----------------------:|:---------------------------:|:--------:|:--------:|:--------:|
+|         add(E)          |  O(n) + chaining overhead   |   O(n)   |   O(n)   | V2 & JDK |
+|   addAll(Collection)    |          O(n + m)           | O(n + m) | O(n + m) |   Tie    |
+|         clear()         |            O(1)             |   O(1)   |   O(1)   |   Tie    |
+|       contains(E)       | O(1) per bucket, O(n) worst |   O(1)   |   O(1)   | V2 & JDK |
+| containsAll(Collection) |          O(n * m)           |   O(n)   |   O(n)   | V2 & JDK |
+|        isEmpty()        |            O(1)             |   O(1)   |   O(1)   |   Tie    |
+|        remove(E)        | O(1) per bucket, O(n) worst |   O(1)   |   O(1)   | V2 & JDK |
+|  removeAll(Collection)  |          O(n * m)           |   O(n)   |   O(n)   | V2 & JDK |
+|  retainAll(Collection)  |          O(n * m)           |   O(n)   |   O(n)   | V2 & JDK |
+|         size()          |            O(1)             |   O(1)   |   O(1)   |   Tie    |
+|        toArray()        |            O(n)             |   O(n)   |   O(n)   |   Tie    |
+|       toString()        |            O(n)             |   O(n)   |   O(n)   |   Tie    |
 
 **Legend**:
 - `n`: Number of elements in the Set.
@@ -55,20 +55,20 @@ All methods implemented are identical to those found in the Java [Set](https://d
 
 Below performance is a comparison made at 65,536 operations per method.
 
-| Method      | HashSet (ns) | Custom Set V2 (ns) |            Winner            | Margin |
-|:------------|:-------------|:-------------------|:----------------------------:|:-------|
-| Add         | 94922        | 87398              | **Statistically Equivalent** | 1.09×  |
-| AddAll      | 107375       | 112398             | **Statistically Equivalent** | 1.05×  |
-| Clear       | 16769        | 15264              | **Statistically Equivalent** | 1.10×  |
-| Contains    | 26           | 21                 |            **V2**            | 1.24×  |
-| ContainsAll | 60989        | 58433              | **Statistically Equivalent** | 1.04×  |
-| IsEmpty     | 8            | 8                  | **Statistically Equivalent** | 1.00×  |
-| Remove      | 21           | 21                 | **Statistically Equivalent** | 1.00×  |
-| RemoveAll   | 1730896      | 1911580            | **Statistically Equivalent** | 1.10×  |
-| RetainAll   | 1333035      | 1391203            | **Statistically Equivalent** | 1.04×  |
-| Size        | 6            | 7                  |         **HashSet**          | 1.14×  |
-| ToArray     | 50461        | 52070              | **Statistically Equivalent** | 1.03×  |
-| ToString    | 125984       | 148609             |         **HashSet**          | 1.18×  |
+| Method      | V2 (ns) | JDK (ns) |            Winner            | Margin |
+|:------------|:--------|:---------|:----------------------------:|:------:|
+| Add         | 87398   | 94922    | **Statistically Equivalent** | 1.09×  |
+| AddAll      | 112398  | 107375   | **Statistically Equivalent** | 1.05×  |
+| Clear       | 15264   | 16769    | **Statistically Equivalent** | 1.10×  |
+| Contains    | 21      | 26       |            **V2**            | 1.24×  |
+| ContainsAll | 58433   | 60989    | **Statistically Equivalent** | 1.04×  |
+| IsEmpty     | 8       | 8        | **Statistically Equivalent** | 1.00×  |
+| Remove      | 21      | 21       | **Statistically Equivalent** | 1.00×  |
+| RemoveAll   | 1911580 | 1730896  | **Statistically Equivalent** | 1.10×  |
+| RetainAll   | 1391203 | 1333035  | **Statistically Equivalent** | 1.04×  |
+| Size        | 7       | 6        | **Statistically Equivalent** | 1.14×  |
+| ToArray     | 52070   | 50461    | **Statistically Equivalent** | 1.03×  |
+| ToString    | 148609  | 125984   |           **JDK**            | 1.18×  |
 
 # Performance Testing
 
