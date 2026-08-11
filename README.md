@@ -15,37 +15,37 @@ All methods implemented are identical to those found in the Java [Set](https://d
 
 ## Time Complexity
 
-|         Method          |    V1    |          V2          |         JDK          |  Winner  |
-|:-----------------------:|:--------:|:--------------------:|:--------------------:|:--------:|
-|         add(E)          |   O(n)   | O(1) avg, O(n) worst | O(1) avg, O(n) worst | V2 & JDK |
-|   addAll(Collection)    | O(n * m) |         O(n)         |         O(n)         | V2 & JDK |
-|         clear()         |   O(1)   |         O(1)         |         O(1)         |   Tie    |
-|       contains(E)       |   O(n)   |         O(1)         |         O(1)         | V2 & JDK |
-| containsAll(Collection) | O(n * m) |         O(n)         |         O(n)         | V2 & JDK |
-|        isEmpty()        |   O(1)   |         O(1)         |         O(1)         |   Tie    |
-|        remove(E)        |   O(n)   |         O(1)         |         O(1)         | V2 & JDK |
-|  removeAll(Collection)  | O(n * m) |         O(n)         |         O(n)         | V2 & JDK |
-|  retainAll(Collection)  | O(n * m) |         O(n)         |         O(n)         | V2 & JDK |
-|         size()          |   O(1)   |         O(1)         |         O(1)         |   Tie    |
-|        toArray()        |   O(n)   |         O(n)         |         O(n)         |   Tie    |
-|       toString()        |   O(n)   |         O(n)         |         O(n)         |   Tie    |
+| Method                    |    `V1`    |  `V2`  | `JDK`  |  Winner  |
+|:--------------------------|:----------:|:------:|:------:|:--------:|
+| `add(E)`                  |   $O(n)$   | $O(n)$ | $O(n)$ |   Tie    |
+| `addAll(Collection)`      | $O(n * m)$ | $O(n)$ | $O(n)$ | V2 & JDK |
+| `clear()`                 |   $O(1)$   | $O(1)$ | $O(1)$ |   Tie    |
+| `contains(E)`             |   $O(n)$   | $O(1)$ | $O(1)$ | V2 & JDK |
+| `containsAll(Collection)` | $O(n * m)$ | $O(n)$ | $O(n)$ | V2 & JDK |
+| `isEmpty()`               |   $O(1)$   | $O(1)$ | $O(1)$ |   Tie    |
+| `remove(E)`               |   $O(n)$   | $O(1)$ | $O(1)$ | V2 & JDK |
+| `removeAll(Collection)`   | $O(n * m)$ | $O(n)$ | $O(n)$ | V2 & JDK |
+| `retainAll(Collection)`   | $O(n * m)$ | $O(n)$ | $O(n)$ | V2 & JDK |
+| `size()`                  |   $O(1)$   | $O(1)$ | $O(1)$ |   Tie    |
+| `toArray()`               |   $O(n)$   | $O(n)$ | $O(n)$ |   Tie    |
+| `toString()`              |   $O(n)$   | $O(n)$ | $O(n)$ |   Tie    |
 
 ## Space Complexity
 
-|         Method          |             V1              |    V2    |   JDK    |  Winner  |
-|:-----------------------:|:---------------------------:|:--------:|:--------:|:--------:|
-|         add(E)          |  O(n) + chaining overhead   |   O(n)   |   O(n)   | V2 & JDK |
-|   addAll(Collection)    |          O(n + m)           | O(n + m) | O(n + m) |   Tie    |
-|         clear()         |            O(1)             |   O(1)   |   O(1)   |   Tie    |
-|       contains(E)       | O(1) per bucket, O(n) worst |   O(1)   |   O(1)   | V2 & JDK |
-| containsAll(Collection) |          O(n * m)           |   O(n)   |   O(n)   | V2 & JDK |
-|        isEmpty()        |            O(1)             |   O(1)   |   O(1)   |   Tie    |
-|        remove(E)        | O(1) per bucket, O(n) worst |   O(1)   |   O(1)   | V2 & JDK |
-|  removeAll(Collection)  |          O(n * m)           |   O(n)   |   O(n)   | V2 & JDK |
-|  retainAll(Collection)  |          O(n * m)           |   O(n)   |   O(n)   | V2 & JDK |
-|         size()          |            O(1)             |   O(1)   |   O(1)   |   Tie    |
-|        toArray()        |            O(n)             |   O(n)   |   O(n)   |   Tie    |
-|       toString()        |            O(n)             |   O(n)   |   O(n)   |   Tie    |
+| Method                    |    `V1`    |    `V2`    |   `JDK`    |  Winner  |
+|:--------------------------|:----------:|:----------:|:----------:|:--------:|
+| `add(E)`                  |   $O(n)$   |   $O(n)$   |   $O(n)$   |   Tie    |
+| `addAll(Collection)`      | $O(n + m)$ | $O(n + m)$ | $O(n + m)$ |   Tie    |
+| `clear()`                 |   $O(1)$   |   $O(1)$   |   $O(1)$   |   Tie    |
+| `contains(E)`             |   $O(n)$   |   $O(1)$   |   $O(1)$   | V2 & JDK |
+| `containsAll(Collection)` | $O(n * m)$ |   $O(n)$   |   $O(n)$   | V2 & JDK |
+| `isEmpty()`               |   $O(1)$   |   $O(1)$   |   $O(1)$   |   Tie    |
+| `remove(E)`               |   $O(n)$   |   $O(1)$   |   $O(1)$   | V2 & JDK |
+| `removeAll(Collection)`   | $O(n * m)$ |   $O(n)$   |   $O(n)$   | V2 & JDK |
+| `retainAll(Collection)`   | $O(n * m)$ |   $O(n)$   |   $O(n)$   | V2 & JDK |
+| `size()`                  |   $O(1)$   |   $O(1)$   |   $O(1)$   |   Tie    |
+| `toArray()`               |   $O(n)$   |   $O(n)$   |   $O(n)$   |   Tie    |
+| `toString()`              |   $O(n)$   |   $O(n)$   |   $O(n)$   |   Tie    |
 
 **Legend**:
 - `n`: Number of elements in the Set.
