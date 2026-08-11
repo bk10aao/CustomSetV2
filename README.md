@@ -53,22 +53,22 @@ All methods implemented are identical to those found in the Java [Set](https://d
 
 # Performance 
 
-Below performance is a comparison made at 65,536 operations per method.
+Below performance is a comparison made at 50000 operations per method.
 
-| Method      | V2 (ns) | JDK (ns) |            Winner            | Margin |
-|:------------|:--------|:---------|:----------------------------:|:------:|
-| Add         | 87398   | 94922    | **Statistically Equivalent** | 1.09×  |
-| AddAll      | 112398  | 107375   | **Statistically Equivalent** | 1.05×  |
-| Clear       | 15264   | 16769    | **Statistically Equivalent** | 1.10×  |
-| Contains    | 21      | 26       |            **V2**            | 1.24×  |
-| ContainsAll | 58433   | 60989    | **Statistically Equivalent** | 1.04×  |
-| IsEmpty     | 8       | 8        | **Statistically Equivalent** | 1.00×  |
-| Remove      | 21      | 21       | **Statistically Equivalent** | 1.00×  |
-| RemoveAll   | 1911580 | 1730896  | **Statistically Equivalent** | 1.10×  |
-| RetainAll   | 1391203 | 1333035  | **Statistically Equivalent** | 1.04×  |
-| Size        | 7       | 6        | **Statistically Equivalent** | 1.14×  |
-| ToArray     | 52070   | 50461    | **Statistically Equivalent** | 1.03×  |
-| ToString    | 148609  | 125984   |           **JDK**            | 1.18×  |
+| Method      | V2 (ns)  | JDK (ns) |            Winner            | Margin |
+|:------------|:---------|:---------|:----------------------------:|:------:|
+| Add         | 233182   | 229506   | **Statistically Equivalent** | 1.02×  |
+| AddAll      | 255128   | 264354   | **Statistically Equivalent** | 1.04×  |
+| Clear       | 13735    | 14886    | **Statistically Equivalent** | 1.08×  |
+| Contains    | 100      | 66       |           **JDK**            | 1.53×  |
+| ContainsAll | 16922    | 15828    | **Statistically Equivalent** | 1.07×  |
+| IsEmpty     | 42       | 71       |            **V2**            | 1.71×  |
+| Remove      | 66       | 118      |            **V2**            | 1.80×  |
+| RemoveAll   | 35869    | 39977    |            **V2**            | 1.11×  |
+| RetainAll   | 93187198 | 93672223 | **Statistically Equivalent** | 1.01×  |
+| Size        | 38       | 40       | **Statistically Equivalent** | 1.06×  |
+| ToArray     | 56113    | 61206    | **Statistically Equivalent** | 1.09×  |
+| ToString    | 467994   | 482031   | **Statistically Equivalent** | 1.03×  |
 
 # Performance Testing
 
