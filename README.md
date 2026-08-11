@@ -47,7 +47,6 @@ All methods implemented are identical to those found in the Java [Set](https://d
 | `toArray()`               |   $O(n)$   |   $O(n)$   |   $O(n)$   |   Tie    |
 | `toString()`              |   $O(n)$   |   $O(n)$   |   $O(n)$   |   Tie    |
 
-**Legend**:
 - `n`: Number of elements in the Set.
 - `m`: Number of elements in the input collection.
 
