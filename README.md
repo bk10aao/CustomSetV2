@@ -78,11 +78,6 @@ Below performance is a comparison made at 50000 operations per method.
 
 # Performance Testing
 
-The following charts were generated using the following values:
-```
-5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000
-```
-
 <b>Note: The following performance charts are designed to be viewed in dark mode.</b>
 
 ### Heat Maps
