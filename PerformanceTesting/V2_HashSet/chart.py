@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Generate performance benchmark charts as PNG files with transparent background.
-Matches the style of the reference charts exactly.
+Generate performance benchmark charts as PNG files comparing CustomSet V2 and JDK HashSet
+with a transparent background. Matches the style of the reference charts exactly.
 
 Runs directly without requiring command-line arguments.
 Legend positioning is anchored to prevent overlapping X-axis size values.
@@ -13,7 +13,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from matplotlib.lines import Line2D
-import csv
+import pandas as pd
 import os
 import sys
 import numpy as np
@@ -22,14 +22,13 @@ import numpy as np
 # Configuration
 # ──────────────────────────────────────────────────────────────────────────────
 
-# HARDCODED PATHS: Runs directly using your uploaded files
-V1_CSV_PATH = "V1_performance_data.csv"
-V2_CSV_PATH = "../V2_performance_data.csv"
-OUTPUT_DIR = "./charts"
+V2_CSV_PATH = "CustomSetV2_performance.csv"
+HASHSET_CSV_PATH = "HashSet_performance.csv"
+OUTPUT_DIR = "."  # Saves output files in the current directory
 
 COLORS = {
-    'teal': '#2ECFBF',     # Neon Teal for V1
-    'purple': '#9B6EF3',   # Neon Purple for V2
+    'purple': '#9B6EF3',   # Neon Purple for CustomSet V2
+    'blue': '#4DA6FF',     # Bright Blue for JDK HashSet
     'bg': '#0D0D0D',
     'grid': '#252525',
 }
@@ -37,19 +36,27 @@ COLORS = {
 FIGURE_SIZE = (12, 6.2)
 DPI = 150
 
+# Maps clean chart labels/file names to exact column headings in the CSVs
 OPERATIONS = {
-    'AddTime': 'add',
-    'AddAllTime': 'addAll',
-    'ClearTime': 'clear',
-    'ContainsTime': 'contains',
-    'ContainsAllTime': 'containsAll',
-    'IsEmptyTime': 'isEmpty',
-    'RemoveTime': 'remove',
-    'RemoveAllTime': 'removeAll',
-    'RetainAllTime': 'retainAll',
-    'SizeTime': 'size',
-    'ToArrayTime': 'toArray',
-    'ToStringTime': 'toString',
+    'add(E)': 'add',
+    'addAll(Collection)': 'addAll',
+    'clear()': 'clear',
+    'clone()': 'clone',
+    'constructor()': 'constructor',
+    'constructor(Collection)': 'constructorCollection',
+    'contains(Object)': 'contains',
+    'containsAll(Collection)': 'containsAll',
+    'equals(Object)': 'equals',
+    'hashCode()': 'hashCode',
+    'isEmpty()': 'isEmpty',
+    'iterator()': 'iterator',
+    'remove(Object)': 'remove',
+    'removeAll(Collection)': 'removeAll',
+    'retainAll(Collection)': 'retainAll',
+    'size()': 'size',
+    'toArray()': 'toArray',
+    'toArray(T[])': 'toArrayT',
+    'toString()': 'toString',
 }
 
 
@@ -58,15 +65,14 @@ OPERATIONS = {
 # ──────────────────────────────────────────────────────────────────────────────
 
 def load_csv(filepath):
-    """Load CSV file and return dict: {size: {op_name: time_value}}"""
+    """Load semicolon-delimited JMH CSV file and return dict: {size: {op_name: time_value}}"""
+    df = pd.read_csv(filepath, sep=';')
     data = {}
-    with open(filepath, 'r') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            size = int(row['Size'])
-            data[size] = {
-                k: int(v) for k, v in row.items() if k != 'Size'
-            }
+    for _, row in df.iterrows():
+        size = int(row['Size'])
+        data[size] = {
+            col: int(row[col]) for col in df.columns if col != 'Size'
+        }
     return data
 
 
@@ -81,19 +87,19 @@ def format_y_axis(value, pos):
     return f'{int(value):,}'
 
 
-def create_chart(operation_key, operation_label, v1_data, v2_data,
+def create_chart(csv_col, operation_label, v2_data, hashset_data,
                  canonical_sizes, output_path):
     """
-    Create a single performance chart comparing V1 and V2.
+    Create a single performance chart comparing CustomSet V2 and JDK HashSet.
     """
 
     # Extract values, using NaN for missing points safely
-    v1_values = [
-        v1_data[s][operation_key] if s in v1_data else np.nan
+    v2_values = [
+        v2_data[s][csv_col] if s in v2_data and csv_col in v2_data[s] else np.nan
         for s in canonical_sizes
     ]
-    v2_values = [
-        v2_data[s][operation_key] if s in v2_data else np.nan
+    hashset_values = [
+        hashset_data[s][csv_col] if s in hashset_data and csv_col in hashset_data[s] else np.nan
         for s in canonical_sizes
     ]
 
@@ -107,36 +113,36 @@ def create_chart(operation_key, operation_label, v1_data, v2_data,
 
     # ── Plot Lines ────────────────────────────────────────────────────────────
     ax.plot(
-        x_positions, v1_values,
-        color=COLORS['teal'],
+        x_positions, v2_values,
+        color=COLORS['purple'],
         linewidth=1.5,
         zorder=2
     )
 
     ax.plot(
-        x_positions, v2_values,
-        color=COLORS['purple'],
+        x_positions, hashset_values,
+        color=COLORS['blue'],
         linewidth=1.5,
         zorder=2
     )
 
     # ── Plot Scatter Markers ──────────────────────────────────────────────────
     ax.scatter(
-        x_positions, v1_values,
-        color=COLORS['teal'],
-        s=35,
-        marker='o',
-        edgecolors=COLORS['teal'],
-        linewidths=1.5,
-        zorder=3
-    )
-
-    ax.scatter(
         x_positions, v2_values,
         color=COLORS['purple'],
         s=35,
         marker='o',
         edgecolors=COLORS['purple'],
+        linewidths=1.5,
+        zorder=3
+    )
+
+    ax.scatter(
+        x_positions, hashset_values,
+        color=COLORS['blue'],
+        s=35,
+        marker='o',
+        edgecolors=COLORS['blue'],
         linewidths=1.5,
         zorder=3
     )
@@ -168,23 +174,11 @@ def create_chart(operation_key, operation_label, v1_data, v2_data,
 
     # ── Labels ────────────────────────────────────────────────────────────────
     ax.set_xlabel('Size', color='white', fontsize=12, labelpad=12)
-    ax.set_ylabel('Time (ns)', color='white', fontsize=11, labelpad=10)
-    ax.set_title(operation_label, color='white', fontsize=15, fontweight='bold', pad=14)
+    ax.set_ylabel('Time (ns/op)', color='white', fontsize=11, labelpad=10)
+    ax.set_title(csv_col, color='white', fontsize=15, fontweight='bold', pad=14)
 
     # ── Legend ────────────────────────────────────────────────────────────────
-    # Custom legend elements (solid circles, no horizontal lines through them)
     legend_elements = [
-        Line2D(
-            [0], [0],
-            marker='o',
-            color='none',
-            markerfacecolor=COLORS['teal'],
-            markeredgecolor=COLORS['teal'],
-            markeredgewidth=1.5,
-            markersize=8,
-            label='V1',
-            linestyle='none'
-        ),
         Line2D(
             [0], [0],
             marker='o',
@@ -196,10 +190,19 @@ def create_chart(operation_key, operation_label, v1_data, v2_data,
             label='V2',
             linestyle='none'
         ),
+        Line2D(
+            [0], [0],
+            marker='o',
+            color='none',
+            markerfacecolor=COLORS['blue'],
+            markeredgecolor=COLORS['blue'],
+            markeredgewidth=1.5,
+            markersize=8,
+            label='JDK',
+            linestyle='none'
+        ),
     ]
 
-    # FIXED POSITIONING:
-    # Anchors the TOP of the legend box safely below the "Size" x-label (-0.26 coordinate)
     leg = ax.legend(
         handles=legend_elements,
         loc='upper center',
@@ -212,12 +215,10 @@ def create_chart(operation_key, operation_label, v1_data, v2_data,
         columnspacing=2.0
     )
 
-    # Style legend text
     for text in leg.get_texts():
         text.set_color('white')
         text.set_fontsize(12)
 
-    # Expanded bottom safety buffer to give the legend plenty of breathing room
     plt.tight_layout(rect=[0, 0.18, 1, 1])
     fig.savefig(
         output_path,
@@ -235,41 +236,37 @@ def create_chart(operation_key, operation_label, v1_data, v2_data,
 # ──────────────────────────────────────────────────────────────────────────────
 
 def main():
-    # Verify input files exist before processing
-    if not os.path.exists(V1_CSV_PATH):
-        print(f"Error: Required file '{V1_CSV_PATH}' not found in the folder.")
-        sys.exit(1)
     if not os.path.exists(V2_CSV_PATH):
         print(f"Error: Required file '{V2_CSV_PATH}' not found in the folder.")
         sys.exit(1)
+    if not os.path.exists(HASHSET_CSV_PATH):
+        print(f"Error: Required file '{HASHSET_CSV_PATH}' not found in the folder.")
+        sys.exit(1)
 
-    # Create output directory
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-    # Load data
-    print(f"Loading {V1_CSV_PATH}...")
-    v1_data = load_csv(V1_CSV_PATH)
-    print(f"  Loaded {len(v1_data)} sizes")
 
     print(f"Loading {V2_CSV_PATH}...")
     v2_data = load_csv(V2_CSV_PATH)
     print(f"  Loaded {len(v2_data)} sizes")
 
-    # Combine unique sizes for x-axis
-    canonical_sizes = sorted(list(set(v1_data.keys()) | set(v2_data.keys())))
+    print(f"Loading {HASHSET_CSV_PATH}...")
+    hashset_data = load_csv(HASHSET_CSV_PATH)
+    print(f"  Loaded {len(hashset_data)} sizes")
+
+    canonical_sizes = sorted(list(set(v2_data.keys()) | set(hashset_data.keys())))
     print(f"\nUsing {len(canonical_sizes)} unified sizes for x-axis: {canonical_sizes}")
 
     print(f"\nGenerating comparison charts...")
-    print(f"  Teal Line   = V1")
-    print(f"  Purple Line = V2\n")
+    print(f"  Purple Line = V2")
+    print(f"  Blue Line   = JDK\n")
 
     for csv_col, chart_label in OPERATIONS.items():
         output_path = os.path.join(OUTPUT_DIR, f'{chart_label}.png')
-        create_chart(csv_col, chart_label, v1_data, v2_data,
+        create_chart(csv_col, chart_label, v2_data, hashset_data,
                      canonical_sizes, output_path)
         print(f"  ✓ {chart_label}.png")
 
-    print(f"\n✓ All charts saved cleanly to {OUTPUT_DIR}")
+    print(f"\n✓ All comparison charts saved cleanly to {OUTPUT_DIR}")
 
 
 if __name__ == '__main__':

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
 Generate performance benchmark charts as PNG files with transparent background.
-Supports tracking 3 implementations: HashSet, V1, and V2.
+Supports tracking 3 implementations: JDK, V1, and V2, using the new
+semicolon-delimited CSV format.
 
-Usage:
+Runs directly or via command-line arguments:
     python3 generate_charts.py <hashset_csv> <v1_csv> <v2_csv> <output_dir>
 """
 
@@ -13,7 +14,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from matplotlib.lines import Line2D
-import csv
+import pandas as pd
 import os
 import sys
 import numpy as np
@@ -23,28 +24,36 @@ import numpy as np
 # ──────────────────────────────────────────────────────────────────────────────
 
 COLORS = {
-    'hashset': '#2ECFBF',  # Neon Teal
+    'JDK': '#2ECFBF',  # Neon Teal
     'v1': '#FF9F43',       # Neon Orange
     'v2': '#9B6EF3',       # Neon Purple
     'grid': '#252525',
 }
 
-FIGURE_SIZE = (12, 6.0)
+FIGURE_SIZE = (12, 6.2)
 DPI = 150
 
+# Updated OPERATIONS dictionary mapping exact new CSV column headings
 OPERATIONS = {
-    'AddTime': 'add',
-    'AddAllTime': 'addAll',
-    'ClearTime': 'clear',
-    'ContainsTime': 'contains',
-    'ContainsAllTime': 'containsAll',
-    'IsEmptyTime': 'isEmpty',
-    'RemoveTime': 'remove',
-    'RemoveAllTime': 'removeAll',
-    'RetainAllTime': 'retainAll',
-    'SizeTime': 'size',
-    'ToArrayTime': 'toArray',
-    'ToStringTime': 'toString',
+    'add(E)': 'add',
+    'addAll(Collection)': 'addAll',
+    'clear()': 'clear',
+    'clone()': 'clone',
+    'constructor()': 'constructor',
+    'constructor(Collection)': 'constructorCollection',
+    'contains(Object)': 'contains',
+    'containsAll(Collection)': 'containsAll',
+    'equals(Object)': 'equals',
+    'hashCode()': 'hashCode',
+    'isEmpty()': 'isEmpty',
+    'iterator()': 'iterator',
+    'remove(Object)': 'remove',
+    'removeAll(Collection)': 'removeAll',
+    'retainAll(Collection)': 'retainAll',
+    'size()': 'size',
+    'toArray()': 'toArray',
+    'toArray(T[])': 'toArrayT',
+    'toString()': 'toString',
 }
 
 
@@ -53,15 +62,14 @@ OPERATIONS = {
 # ──────────────────────────────────────────────────────────────────────────────
 
 def load_csv(filepath):
-    """Load CSV file and return dict: {size: {op_name: time_value}}"""
+    """Load semicolon-delimited JMH CSV file and return dict: {size: {op_name: time_value}}"""
+    df = pd.read_csv(filepath, sep=';')
     data = {}
-    with open(filepath, 'r') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            size = int(row['Size'])
-            data[size] = {
-                k: int(v) for k, v in row.items() if k != 'Size'
-            }
+    for _, row in df.iterrows():
+        size = int(row['Size'])
+        data[size] = {
+            col: int(row[col]) for col in df.columns if col != 'Size'
+        }
     return data
 
 
@@ -82,17 +90,17 @@ def create_chart(operation_key, operation_label, hashset_data, v1_data, v2_data,
     Create a single performance chart comparing three datasets.
     """
 
-    # Extract values, using NaN for missing points across varying size grids
+    # Extract values, using NaN for missing points across varying size grids safely
     hashset_values = [
-        hashset_data[s][operation_key] if s in hashset_data else np.nan
+        hashset_data[s][operation_key] if s in hashset_data and operation_key in hashset_data[s] else np.nan
         for s in canonical_sizes
     ]
     v1_values = [
-        v1_data[s][operation_key] if s in v1_data else np.nan
+        v1_data[s][operation_key] if s in v1_data and operation_key in v1_data[s] else np.nan
         for s in canonical_sizes
     ]
     v2_values = [
-        v2_data[s][operation_key] if s in v2_data else np.nan
+        v2_data[s][operation_key] if s in v2_data and operation_key in v2_data[s] else np.nan
         for s in canonical_sizes
     ]
 
@@ -107,7 +115,7 @@ def create_chart(operation_key, operation_label, hashset_data, v1_data, v2_data,
     # ── Plot Lines ────────────────────────────────────────────────────────────
     ax.plot(
         x_positions, hashset_values,
-        color=COLORS['hashset'],
+        color=COLORS['JDK'],
         linewidth=1.5,
         zorder=2
     )
@@ -129,10 +137,10 @@ def create_chart(operation_key, operation_label, hashset_data, v1_data, v2_data,
     # ── Plot Scatter Markers ──────────────────────────────────────────────────
     ax.scatter(
         x_positions, hashset_values,
-        color=COLORS['hashset'],
+        color=COLORS['JDK'],
         s=35,
         marker='o',
-        edgecolors=COLORS['hashset'],
+        edgecolors=COLORS['JDK'],
         linewidths=1.5,
         zorder=3
     )
@@ -183,9 +191,9 @@ def create_chart(operation_key, operation_label, hashset_data, v1_data, v2_data,
         spine.set_visible(False)
 
     # ── Labels ────────────────────────────────────────────────────────────────
-    ax.set_xlabel('Size', color='white', fontsize=12, labelpad=10)
-    ax.set_ylabel('Time (ns)', color='white', fontsize=11, labelpad=10)
-    ax.set_title(operation_label, color='white', fontsize=15, fontweight='bold', pad=14)
+    ax.set_xlabel('Size', color='white', fontsize=12, labelpad=12)
+    ax.set_ylabel('Time (ns/op)', color='white', fontsize=11, labelpad=10)
+    ax.set_title(operation_key, color='white', fontsize=15, fontweight='bold', pad=14)
 
     # ── Legend ────────────────────────────────────────────────────────────────
     legend_elements = [
@@ -193,11 +201,11 @@ def create_chart(operation_key, operation_label, hashset_data, v1_data, v2_data,
             [0], [0],
             marker='o',
             color='none',
-            markerfacecolor=COLORS['hashset'],
-            markeredgecolor=COLORS['hashset'],
+            markerfacecolor=COLORS['JDK'],
+            markeredgecolor=COLORS['JDK'],
             markeredgewidth=1.5,
             markersize=8,
-            label='HashSet',
+            label='JDK',
             linestyle='none'
         ),
         Line2D(
@@ -224,11 +232,10 @@ def create_chart(operation_key, operation_label, hashset_data, v1_data, v2_data,
         ),
     ]
 
-    # ADJUSTED: bbox_to_anchor moved from -0.20 down to -0.28
     leg = ax.legend(
         handles=legend_elements,
-        loc='lower center',
-        bbox_to_anchor=(0.5, -0.28),
+        loc='upper center',
+        bbox_to_anchor=(0.5, -0.22),
         ncol=3,
         frameon=False,
         fontsize=12,
@@ -237,14 +244,11 @@ def create_chart(operation_key, operation_label, hashset_data, v1_data, v2_data,
         columnspacing=2.0
     )
 
-    # Style legend text
     for text in leg.get_texts():
         text.set_color('white')
         text.set_fontsize(12)
 
-    # ADJUSTED: Changed bottom boundary rect allocation from 0.08 to 0.15
-    # This prevents the lowered legend from getting clipped off the image canvas
-    plt.tight_layout(rect=[0, 0.15, 1, 1])
+    plt.tight_layout(rect=[0, 0.12, 1, 1])
     fig.savefig(
         output_path,
         dpi=DPI,
@@ -261,21 +265,20 @@ def create_chart(operation_key, operation_label, hashset_data, v1_data, v2_data,
 # ──────────────────────────────────────────────────────────────────────────────
 
 def main():
-    if len(sys.argv) != 5:
-        print("Usage: python3 generate_charts.py <hashset_csv> <v1_csv> <v2_csv> <output_dir>")
-        print("\nExample:")
-        print("  python3 generate_charts.py HashSet_performance_data.csv V1_performance_data.csv V2_Hash_2_performance_data.csv ./charts")
-        sys.exit(1)
+    if len(sys.argv) == 5:
+        hashset_path = sys.argv[1]
+        v1_path = sys.argv[2]
+        v2_path = sys.argv[3]
+        output_dir = sys.argv[4]
+    else:
+        # Default fallback paths if run without arguments
+        hashset_path = "HashSet_performance.csv"
+        v1_path = "CustomSetV1_performance.csv"
+        v2_path = "CustomSetV2_performance.csv"
+        output_dir = "."
 
-    hashset_path = sys.argv[1]
-    v1_path = sys.argv[2]
-    v2_path = sys.argv[3]
-    output_dir = sys.argv[4]
-
-    # Create output directory
     os.makedirs(output_dir, exist_ok=True)
 
-    # Load all three datasets
     print(f"Loading {hashset_path}...")
     hashset_data = load_csv(hashset_path)
     print(f"  Loaded {len(hashset_data)} sizes")
@@ -288,12 +291,11 @@ def main():
     v2_data = load_csv(v2_path)
     print(f"  Loaded {len(v2_data)} sizes")
 
-    # Construct robust canonical X-axis by joining unique sizes from all logs
     canonical_sizes = sorted(list(set(hashset_data.keys()) | set(v1_data.keys()) | set(v2_data.keys())))
     print(f"\nUsing {len(canonical_sizes)} unified sizes for x-axis: {canonical_sizes}")
 
     print(f"\nGenerating 3-line comparison charts...")
-    print(f"  Line 1 (Teal)   = HashSet")
+    print(f"  Line 1 (Teal)   = JDK")
     print(f"  Line 2 (Orange) = V1")
     print(f"  Line 3 (Purple) = V2\n")
 
@@ -303,7 +305,7 @@ def main():
                      canonical_sizes, output_path)
         print(f"  ✓ {chart_label}.png")
 
-    print(f"\n✓ All charts successfully saved to {output_dir}")
+    print(f"\n✓ All 3-way charts successfully saved to {output_dir}")
 
 
 if __name__ == '__main__':

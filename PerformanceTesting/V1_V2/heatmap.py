@@ -82,5 +82,5 @@ cbar.ax.tick_params(colors='#ffffff', labelsize=10)
 cbar.ax.yaxis.label.set_color('#ffffff')
 
 plt.tight_layout()
-plt.savefig('v1_v2_performance_heatmap_final.png', dpi=300, transparent=True)
+plt.savefig('heatmap.png', dpi=300, transparent=True)
 plt.close()

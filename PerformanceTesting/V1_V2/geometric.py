@@ -92,6 +92,6 @@ for spine in ax.spines.values():
     spine.set_edgecolor('#555555')
 
 plt.tight_layout()
-plt.savefig('v1_v2_asymmetric.png', dpi=300, transparent=True)
+plt.savefig('geometric.png', dpi=300, transparent=True)
 plt.close()
 print("Generated asymmetric graph successfully!")

@@ -3,29 +3,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# 1. Load and prepare data
-custom_set_df = pd.read_csv('V2_performance_data.csv')
-hash_set_df = pd.read_csv('HashSet_performance_data.csv')
+# 1. Load data from CustomSetV2 and JDK HashSet semicolon-delimited CSV files
+v2_df = pd.read_csv('CustomSetV2_performance.csv', sep=';').sort_values('Size').reset_index(drop=True)
+hs_df = pd.read_csv('HashSet_performance.csv', sep=';').sort_values('Size').reset_index(drop=True)
 
-# Ensure 'Size' is numeric
-custom_set_df['Size'] = pd.to_numeric(custom_set_df['Size'])
-hash_set_df['Size'] = pd.to_numeric(hash_set_df['Size'])
-
-# 2. Define the exact order and names matching your CSV columns
+# Define desired vertical order here (Top to Bottom) matching exact JMH method names
 ordered_methods = [
-    'Add', 'AddAll', 'Clear', 'Contains', 'ContainsAll',
-    'IsEmpty', 'Remove', 'RemoveAll', 'RetainAll',
-    'ToArray', 'ToString', 'Size'
+    'constructor()', 'constructor(Collection)', 'add(E)', 'addAll(Collection)',
+    'clone()', 'contains(Object)', 'containsAll(Collection)', 'equals(Object)',
+    'hashCode()', 'isEmpty()', 'iterator()', 'remove(Object)', 'removeAll(Collection)',
+    'retainAll(Collection)', 'size()', 'toArray()', 'toArray(T[])', 'toString()', 'clear()'
 ]
 
-# Get common sizes
-common_sizes = sorted(list(set(custom_set_df['Size']).intersection(set(hash_set_df['Size']))))
+# Get common sizes and filter operations
+common_sizes = sorted(list(set(v2_df['Size']).intersection(set(hs_df['Size']))))
+available_methods = [col for col in v2_df.columns if col != 'Size']
+methods = [m for m in ordered_methods if m in available_methods]
 
-# Filter methods: ensure the method exists in the CSV and is in our ordered list
-cols_in_df = set(custom_set_df.columns).intersection(set(hash_set_df.columns))
-methods = [m for m in ordered_methods if m in cols_in_df]
-
-# 3. Construct DataFrames
+# 2. Construct DataFrames
 heatmap_data = []
 text_labels = []
 
@@ -33,17 +28,17 @@ for m in methods:
     row_vals = []
     row_annots = []
     for size in common_sizes:
-        c_val = custom_set_df.loc[custom_set_df['Size'] == size, m].values[0]
-        j_val = hash_set_df.loc[hash_set_df['Size'] == size, m].values[0]
+        v2_val = v2_df.loc[v2_df['Size'] == size, m].values[0]
+        hs_val = hs_df.loc[hs_df['Size'] == size, m].values[0]
 
-        # Avoid division by zero
-        c_val, j_val = (1 if v <= 0 else v for v in (c_val, j_val))
+        v2_v, hs_v = (1 if v == 0 else v for v in (v2_val, hs_val))
 
-        ratio = np.log2(j_val / c_val)
+        # Log2(HashSet / V2): Positive = V2 faster than HashSet
+        ratio = np.log2(hs_v / v2_v)
         row_vals.append(ratio)
 
-        factor = j_val / c_val if j_val > c_val else c_val / j_val
-        prefix = "+" if j_val > c_val else "-"
+        factor = hs_v / v2_v if hs_v > v2_v else v2_v / hs_v
+        prefix = "+" if v2_v < hs_v else "-"  # "+" indicates CustomSet V2 took less time
         row_annots.append(f"{prefix}{factor:.1f}x")
 
     heatmap_data.append(row_vals)
@@ -52,55 +47,43 @@ for m in methods:
 df_heatmap = pd.DataFrame(heatmap_data, index=methods, columns=common_sizes)
 df_annot = pd.DataFrame(text_labels, index=methods, columns=common_sizes)
 
-# 4. Enforce categorical ordering
+# 3. Lock the ordering via Categorical Indexing
 df_heatmap.index = pd.Categorical(df_heatmap.index, categories=methods, ordered=True)
 df_heatmap = df_heatmap.sort_index()
 df_annot = df_annot.reindex(df_heatmap.index)
 
-# --- NEW: Build a dynamic text color matrix based on cell intensity ---
-# Cells with absolute log2 ratios further from the center get white text,
-# while cells closer to 0 (lighter backgrounds) get black text.
-color_matrix = np.empty(df_heatmap.shape, dtype=object)
-for i in range(df_heatmap.shape[0]):
-    for j in range(df_heatmap.shape[1]):
-        val = df_heatmap.iloc[i, j]
-        # Adjust the threshold (e.g., 2.5) depending on when the background becomes dark enough for white text
-        color_matrix[i, j] = '#ffffff' if abs(val) > 2.5 else '#000000'
-# ---------------------------------------------------------------------
-
-# 5. Render Heatmap
+# 4. Render Heatmap
 fig, ax = plt.subplots(figsize=(14, 11), facecolor='none')
 ax.set_facecolor('none')
 
-heatmap = sns.heatmap(df_heatmap,
-                      annot=df_annot.values,
-                      fmt="",
-                      cmap=sns.diverging_palette(15, 240, as_cmap=True),
-                      center=0,
-                      ax=ax,
-                      cbar_kws={'label': '← JDK Faster  |  Relative Speedup Scale  |  V2 Faster →'},
-                      linewidths=0.8,
-                      linecolor='#555555',
-                      annot_kws={'size': 9, 'weight': 'bold'})
+clipped_data = np.clip(df_heatmap.values, -3.0, 3.0)
 
-# Apply individual text colors using the text objects inside the axes
-for t, color in zip(ax.texts, color_matrix.flatten()):
-    t.set_color(color)
+sns.heatmap(df_heatmap,
+            annot=df_annot.values,
+            fmt="",
+            cmap=sns.diverging_palette(15, 240, as_cmap=True),
+            center=0,
+            ax=ax,
+            cbar_kws={'label': '← JDK Faster  |  Relative Speedup Scale  |  V2 Faster →'},
+            linewidths=0.8,
+            linecolor='#555555',
+            annot_kws={'size': 9, 'weight': 'bold'})
 
-# Style the colorbar to match
-cbar = heatmap.collections[0].colorbar
-cbar.ax.yaxis.label.set_color('#ffffff')
-cbar.ax.tick_params(colors='#ffffff')
-
-# 6. Styling
+# 5. Styling
 ax.set_title('V2 vs JDK HashSet Performance Speedup Matrix', color='#ffffff', fontsize=16, fontweight='bold', pad=20)
 ax.set_ylabel('Set Interface Methods', color='#aaaaaa', fontsize=13, labelpad=10)
 ax.set_xlabel('Collection Size (Elements)', color='#aaaaaa', fontsize=13, labelpad=10)
-ax.tick_params(colors='#ffffff', labelsize=10)
 
+ax.tick_params(colors='#ffffff', labelsize=10)
 plt.xticks(rotation=45)
 plt.yticks(rotation=0)
 
+cbar = ax.collections[0].colorbar
+cbar.ax.tick_params(colors='#ffffff', labelsize=10)
+cbar.ax.yaxis.label.set_color('#ffffff')
+
 plt.tight_layout()
+# Saves directly to the current directory
 plt.savefig('heatmap.png', dpi=300, transparent=True)
 plt.close()
+print("Generated heatmap successfully for V2 vs JDK HashSet!")

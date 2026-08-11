@@ -11,7 +11,7 @@ All methods implemented are identical to those found in the Java [Set](https://d
 ## Build and Test
 
 1. To build and test the project run command `./gradlew clean build`
-2. To test the project run command `gradle test --tests CustomSetTest`
+2. To test the project run command `gradle test --tests customset.CustomSetTest`
 
 ## Time Complexity
 
@@ -74,7 +74,7 @@ Below performance is a comparison made at 65,536 operations per method.
 
 The following charts were generated using the following values:
 ```
-16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
+5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000
 ```
 
 <b>Note: The following performance charts are designed to be viewed in dark mode.</b>
@@ -87,7 +87,7 @@ The following charts were generated using the following values:
 ![Geometric](PerformanceTesting/V2_HashSet/charts/geometric.png)
 ![Geometric](PerformanceTesting/V1_V2/charts/geometric.png)
 
-### CustomSet V1 vs CustomSet V2 vs HashSet Performance
+### V1 vs V2 vs JDK (HashSet) Performance
 ![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/add.png)
 ![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/clear.png)
@@ -101,7 +101,7 @@ The following charts were generated using the following values:
 ![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/toArray.png)
 ![Combined Performance Charts](PerformanceTesting/V1_V2_HashSet/charts/toString.png)
 
-### CustomSet V2 vs HashSet Performance
+### V2 vs JDK (HashSet) Performance
 ![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/add.png)
 ![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/clear.png)
@@ -115,7 +115,7 @@ The following charts were generated using the following values:
 ![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/toArray.png)
 ![Combined Performance Charts](PerformanceTesting/V2_HashSet/charts/toString.png)
 
-### CustomSet V1 vs CustomSet V2 Performance
+### V1 vs V2 Performance
 ![Combined Performance Charts](PerformanceTesting/V1_V2/charts/add.png)
 ![Combined Performance Charts](PerformanceTesting/V1_V2/charts/addAll.png)
 ![Combined Performance Charts](PerformanceTesting/V1_V2/charts/clear.png)
