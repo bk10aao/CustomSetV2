@@ -185,8 +185,8 @@ public class HashSetBenchmark {
         Options opt = new OptionsBuilder()
                 .include(HashSetBenchmark.class.getSimpleName())
                 .forks(1)
-                .result("hash-set-results.csv") // Output file path
-                .resultFormat(ResultFormatType.CSV)             // Force CSV format
+                .result("hash-set-results.csv")
+                .resultFormat(ResultFormatType.CSV)
                 .build();
 
         Collection<RunResult> results = new Runner(opt).run();
